@@ -1,0 +1,143 @@
+[{
+  "_id": {
+    "$oid": "63b545eb1ad444d2d97af239"
+  },
+  "id": "1",
+  "name": "Rosa",
+  "surname": "Rossi",
+  "city": "Salerno",
+  "birthDate": {
+    "$date": {
+      "$numberLong": "-60310800000"
+    }
+  },
+  "username": "RosaRossi",
+  "password": "RosaRossi",
+  "specialization": "oncologo",
+  "type": 1
+},
+{
+  "_id": {
+    "$oid": "63b545eb1ad444d2d97af23a"
+  },
+  "id": "2",
+  "name": "Carla",
+  "surname": "Bianchi",
+  "city": "Agropoli",
+  "birthDate": {
+    "$date": {
+      "$numberLong": "-10029600000"
+    }
+  },
+  "username": "CarlaBianchi",
+  "password": "CarlaBianchi",
+  "type": 2
+},
+{
+  "_id": {
+    "$oid": "63b6a3214938c69a8a227435"
+  },
+  "id": "3",
+  "name": "Mario",
+  "surname": "Verdi",
+  "city": "Napoli",
+  "birthDate": "01/10/1990",
+  "username": "MarioVerdi",
+  "password": "1234",
+  "specialization": "Oncologo",
+  "type": "1"
+},
+{
+  "_id": {
+    "$oid": "63b6a3214938c69a8a227436"
+  },
+  "id": "4",
+  "name": "Vincenzo",
+  "surname": "Gialli",
+  "city": "Roma",
+  "birthDate": "13/05/1982",
+  "username": "VincenzoGialli",
+  "password": "qwerty",
+  "specialization": "Ematologo",
+  "type": "1"
+},
+{
+  "_id": {
+    "$oid": "63b6a3214938c69a8a227437"
+  },
+  "id": "5",
+  "name": "Luca",
+  "surname": "Bianchi",
+  "city": "Napoli",
+  "birthDate": "25/09/1970",
+  "username": "LucaBianchi",
+  "password": "78920",
+  "specialization": "Oncologo",
+  "type": "1"
+},
+{
+  "_id": {
+    "$oid": "63b6a3214938c69a8a227438"
+  },
+  "id": "6",
+  "name": "Giuseppe",
+  "surname": "De Luca",
+  "city": "Salerno",
+  "birthDate": "23/01/1985",
+  "username": "GiuseppeDeLuca",
+  "password": "ciao",
+  "specialization": "Ematologo",
+  "type": "1"
+},
+{
+  "_id": {
+    "$oid": "63b6a3214938c69a8a227439"
+  },
+  "id": "7",
+  "name": "Antonio",
+  "surname": "Esposito",
+  "city": "Vico Equense",
+  "birthDate": "16/04/1975",
+  "username": "AntonioEsposito",
+  "password": "stellato",
+  "type": "2"
+},
+{
+  "_id": {
+    "$oid": "63b6a3214938c69a8a22743a"
+  },
+  "id": "8",
+  "name": "Paolo",
+  "surname": "Barba",
+  "city": "Milano",
+  "birthDate": "12/01/1962",
+  "username": "PaoloBarba",
+  "password": "barba1962",
+  "type": "2"
+},
+{
+  "_id": {
+    "$oid": "63b6a3214938c69a8a22743b"
+  },
+  "id": "9",
+  "name": "Giorgio",
+  "surname": "Lenti",
+  "city": "Varese",
+  "birthDate": "07/04/1963",
+  "username": "GiorgioLenti",
+  "password": "Giorgio1234",
+  "type": "2"
+},
+{
+  "_id": {
+    "$oid": "63b6a3214938c69a8a22743c"
+  },
+  "id": "10",
+  "name": "Michele",
+  "surname": "Cracco",
+  "city": "Milano",
+  "birthDate": "08/10/1965",
+  "username": "MicheleCracco",
+  "password": "CraccoMichele",
+  "type": "2"
+}]

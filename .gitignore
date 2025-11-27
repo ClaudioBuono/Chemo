@@ -34,9 +34,13 @@ build/
 ### Mac OS ###
 .DS_Store
 
-### Docker and Sonar
+### Sonar ###
 mongo_data/
 sonar_data/
 sonar_extensions/
 sonar_logs/
 .scannerwork/
+sonarqube*/
+sonar-*/
+mongodb*/
+data/db/
