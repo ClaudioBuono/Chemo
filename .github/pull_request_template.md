@@ -1,3 +1,3 @@
-### Contesto
-### Obiettivo
-Fixes # (Inserisci numero issue)
+### Context
+### Objective
+Fixes # (Enter issue number)

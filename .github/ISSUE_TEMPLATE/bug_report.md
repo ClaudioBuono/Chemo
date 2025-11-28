@@ -1,17 +1,17 @@
 ---
 name: Bug Report
-about: Segnala un errore
-title: "fix: [Descrizione breve]"
+about: Report a bug
+title: "fix: [Short description]"
 labels: bug
 ---
 
-### Descrizione
-Cosa non funziona?
+### Description
+What is not working?
 
-### Passaggi per Riprodurre
-1. Vai su...
-2. Clicca su...
-3. Errore visibile: ...
+### Steps to Reproduce
+1. Go to...
+2. Click on...
+3. Visible error: ...
 
-### Comportamento Atteso
-Cosa doveva succedere invece?
+### Expected Behavior
+What should have happened instead?
