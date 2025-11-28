@@ -1,0 +1,678 @@
+[{
+  "_id": {
+    "$oid": "63b552af1ad444d2d97af245"
+  },
+  "taxCode": "VRDMRC80E02F839H",
+  "name": "Marco",
+  "surname": "Verdi",
+  "birthDate": {
+    "$date": "1980-05-02T22:00:00.000Z"
+  },
+  "city": "Napoli",
+  "phoneNumber": "3667898788",
+  "status": false,
+  "notes": "Allergia a bleomicina",
+  "condition": "Tumore ai polmoni",
+  "therapy": {
+    "sessions": 6,
+    "duration": 60,
+    "frequency": 1,
+    "medicines": [
+      {
+        "dose": 100,
+        "medicineId": "63b54bc11ad444d2d97af23c"
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63b6afcf4938c69a8a227460"
+  },
+  "taxCode": "NRELCU80A01F839U",
+  "name": "Luca",
+  "surname": "Ranieri",
+  "birthDate": {
+    "$date": "1980-01-01T22:00:00.000Z"
+  },
+  "city": "Napoli",
+  "phoneNumber": "3335698574",
+  "status": true,
+  "condition": "tumore alla prostata",
+  "therapy": {
+    "sessions": 5,
+    "duration": 300,
+    "frequency": 1,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a227445",
+        "dose": 150
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63b6b0854938c69a8a227461"
+  },
+  "taxCode": "VCCGNN87B01A064U",
+  "name": "Giovanni",
+  "surname": "Vecchione",
+  "birthDate": {
+    "$date": "1987-02-01T22:00:00.000Z"
+  },
+  "city": "Afragola (NA)",
+  "phoneNumber": "3315649583",
+  "status": true,
+  "condition": "tumore al pancreas",
+  "therapy": {
+    "sessions": 2,
+    "duration": 30,
+    "frequency": 2,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a22744e",
+        "dose": 100
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63b6b2334938c69a8a227462"
+  },
+  "taxCode": "PGLFNC85C11H501M",
+  "name": "Franchino",
+  "surname": "Pugile",
+  "birthDate": {
+    "$date": "1985-03-11T22:00:00.000Z"
+  },
+  "city": "Roma",
+  "phoneNumber": "34569583853",
+  "status": false,
+  "condition": "mieloma",
+  "therapy": {
+    "sessions": 6,
+    "duration": 150,
+    "frequency": 1,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a22744e",
+        "dose": 100
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a227454",
+        "dose": 250
+      }
+    ]
+  },
+  "notes": "In attesa dell'esito degli esami del sangue"
+},
+{
+  "_id": {
+    "$oid": "63b6b2d14938c69a8a227463"
+  },
+  "taxCode": "MGLMRC88C08H501R",
+  "name": "Marco",
+  "surname": "Migliore",
+  "birthDate": {
+    "$date": "1988-03-08T22:00:00.000Z"
+  },
+  "city": "Roma",
+  "phoneNumber": "3458553849",
+  "status": true,
+  "condition": "tumore al colon",
+  "therapy": {
+    "sessions": 4,
+    "duration": 360,
+    "frequency": 1,
+    "medicines": [
+      {
+        "medicineId": "63b54bc11ad444d2d97af23c",
+        "dose": 250
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a227456",
+        "dose": 300
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a22744f",
+        "dose": 200
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63b6b38f4938c69a8a227464"
+  },
+  "taxCode": "GLLLCU03L69H703C",
+  "name": "Lucia",
+  "surname": "Gialli",
+  "birthDate": {
+    "$date": "2003-07-29T22:00:00.000Z"
+  },
+  "city": "Salerno",
+  "phoneNumber": "3354832743",
+  "status": true,
+  "condition": "tumore alle ovaie",
+  "therapy": {
+    "sessions": 8,
+    "duration": 240,
+    "frequency": 1,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a227444",
+        "dose": 300
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63b6b4484938c69a8a227465"
+  },
+  "taxCode": "RLLMNL92D70F839W",
+  "name": "Emenuela",
+  "surname": "Rolla",
+  "birthDate": {
+    "$date": "1992-04-30T22:00:00.000Z"
+  },
+  "city": "Napoli",
+  "phoneNumber": "3324854934",
+  "status": false
+},
+{
+  "_id": {
+    "$oid": "63b6b4e24938c69a8a227466"
+  },
+  "taxCode": "GMBGLI95B06F205F",
+  "name": "Giulio",
+  "surname": "Gambardelli",
+  "birthDate": {
+    "$date": "1995-02-06T22:00:00.000Z"
+  },
+  "city": "Milano",
+  "phoneNumber": "3405495493",
+  "status": true,
+  "condition": "leucemia",
+  "therapy": {
+    "sessions": 10,
+    "duration": 120,
+    "frequency": 2,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a22744f",
+        "dose": 300
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a22744b",
+        "dose": 100
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63b6b55a4938c69a8a227467"
+  },
+  "taxCode": "SCGMRA69P69F839V",
+  "name": "Maria",
+  "surname": "Scoglio",
+  "birthDate": {
+    "$date": {
+      "$numberLong": "-8042400000"
+    }
+  },
+  "city": "Napoli",
+  "phoneNumber": "3284553748",
+  "status": true,
+  "condition": "tumore al seno",
+  "therapy": {
+    "sessions": 3,
+    "duration": 60,
+    "frequency": 2,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a227445",
+        "dose": 200
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a227451",
+        "dose": 150
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63b6b6234938c69a8a227468"
+  },
+  "taxCode": "RNASVT30S16G273R",
+  "name": "Salvatore",
+  "surname": "Rana",
+  "birthDate": {
+    "$date": {
+      "$numberLong": "-1234663200000"
+    }
+  },
+  "city": "Palermo",
+  "phoneNumber": "3332059439",
+  "status": false,
+  "notes": "La terapia non ha effetto"
+},
+{
+  "_id": {
+    "$oid": "63b6b6874938c69a8a227469"
+  },
+  "taxCode": "BSCTMS90L13G273G",
+  "name": "Tommaso",
+  "surname": "Busci",
+  "birthDate": {
+    "$date": "1990-07-13T22:00:00.000Z"
+  },
+  "city": "Palermo",
+  "phoneNumber": "3353285489",
+  "status": false
+},
+{
+  "_id": {
+    "$oid": "63baeb4345d04b76685e9e1f"
+  },
+  "taxCode": "LBRNTN80H12F205O",
+  "name": "Alberico",
+  "surname": "Antonio",
+  "birthDate": {
+    "$date": "1980-06-12T22:00:00.000Z"
+  },
+  "city": "Milano",
+  "phoneNumber": "3255869485",
+  "status": true,
+  "condition": "linfoma",
+  "therapy": {
+    "sessions": 7,
+    "duration": 300,
+    "frequency": 1,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a227451",
+        "dose": 100
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a227452",
+        "dose": 300
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63baec5645d04b76685e9e20"
+  },
+  "taxCode": "SPSCRI82A10F839Z",
+  "name": "Ciro",
+  "surname": "Esposito",
+  "birthDate": {
+    "$date": "1982-01-10T22:00:00.000Z"
+  },
+  "city": "Napoli",
+  "phoneNumber": "3334954021",
+  "status": true,
+  "condition": "tumore ai polmoni",
+  "therapy": {
+    "sessions": 5,
+    "duration": 30,
+    "frequency": 2,
+    "medicines": [
+      {
+        "medicineId": "63b54bc11ad444d2d97af23c",
+        "dose": 150
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a227447",
+        "dose": 200
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a22744f",
+        "dose": 100
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63baecc445d04b76685e9e22"
+  },
+  "taxCode": "SPSMRA77C69F839H",
+  "name": "Maria",
+  "surname": "Esposito",
+  "birthDate": {
+    "$date": "1977-03-29T22:00:00.000Z"
+  },
+  "city": "Napoli",
+  "phoneNumber": "3556859602",
+  "status": false,
+  "condition": "tumore al seno",
+  "therapy": {
+    "sessions": 5,
+    "duration": 270,
+    "frequency": 1,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a227445",
+        "dose": 150
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a227445",
+        "dose": 200
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a22744c",
+        "dose": 100
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63baee3b45d04b76685e9e23"
+  },
+  "taxCode": "BSSDBR90M65F205B",
+  "name": "Debora",
+  "surname": "Bassi",
+  "birthDate": {
+    "$date": "1990-08-25T22:00:00.000Z"
+  },
+  "city": "Milano",
+  "phoneNumber": "33458493043",
+  "status": true,
+  "condition": "neurofibroma",
+  "therapy": {
+    "sessions": 4,
+    "duration": 120,
+    "frequency": 1,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a227448",
+        "dose": 350
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63baef1558d6dd3e34e2fa0d"
+  },
+  "taxCode": "BNCBNC99E55F205R",
+  "name": "Bianca",
+  "surname": "Bianchi",
+  "birthDate": {
+    "$date": "1999-05-15T22:00:00.000Z"
+  },
+  "city": "Milano",
+  "phoneNumber": "3456859410",
+  "status": true,
+  "condition": "tumore al colon",
+  "therapy": {
+    "sessions": 6,
+    "duration": 120,
+    "frequency": 2,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a22744d",
+        "dose": 200
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a227452",
+        "dose": 100
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63baef9758d6dd3e34e2fa0e"
+  },
+  "taxCode": "RSSLCU76S22H703R",
+  "name": "Luca",
+  "surname": "Rossi",
+  "birthDate": {
+    "$date": "1976-11-22T22:00:00.000Z"
+  },
+  "city": "Salerno",
+  "phoneNumber": "3323486205",
+  "status": false,
+  "notes": "In attesa esito ecografia"
+},
+{
+  "_id": {
+    "$oid": "63baf04258d6dd3e34e2fa0f"
+  },
+  "taxCode": "SPSDDE78A55F839P",
+  "name": "Eddie",
+  "surname": "Esposito",
+  "birthDate": {
+    "$date": "1978-01-15T22:00:00.000Z"
+  },
+  "city": "Napoli",
+  "phoneNumber": "3315039582",
+  "status": true,
+  "condition": "carcinoma",
+  "therapy": {
+    "sessions": 9,
+    "duration": 240,
+    "frequency": 1,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a227454",
+        "dose": 300
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a22744a",
+        "dose": 100
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63baf0ac58d6dd3e34e2fa10"
+  },
+  "taxCode": "NRELCU74C15F839O",
+  "name": "Luca",
+  "surname": "Neri",
+  "birthDate": {
+    "$date": "1974-03-15T22:00:00.000Z"
+  },
+  "city": "Napoli",
+  "phoneNumber": "3315502954",
+  "status": true,
+  "condition": "sarcoma",
+  "therapy": {
+    "sessions": 2,
+    "duration": 60,
+    "frequency": 2,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a22744e",
+        "dose": 250
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63baf14d58d6dd3e34e2fa11"
+  },
+  "taxCode": "PNCPLA67S28F205B",
+  "name": "Paola",
+  "surname": "Pinco",
+  "birthDate": {
+    "$date": {
+      "$numberLong": "-66016800000"
+    }
+  },
+  "city": "Milano",
+  "phoneNumber": "3335849316",
+  "status": true,
+  "condition": "mieloma",
+  "therapy": {
+    "sessions": 4,
+    "duration": 150,
+    "frequency": 1,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a227452",
+        "dose": 200
+      },
+      {
+        "medicineId": "63b54bc11ad444d2d97af23c",
+        "dose": 150
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a227442",
+        "dose": 100
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63baf1bc58d6dd3e34e2fa12"
+  },
+  "taxCode": "CSLVCN81D14F839V",
+  "name": "Vincenzo",
+  "surname": "Casale",
+  "birthDate": {
+    "$date": "1981-04-14T22:00:00.000Z"
+  },
+  "city": "Napoli",
+  "phoneNumber": "3345927604",
+  "status": false
+},
+{
+  "_id": {
+    "$oid": "63baf27c58d6dd3e34e2fa13"
+  },
+  "taxCode": "CRLRSO85E16H931C",
+  "name": "Rosa",
+  "surname": "Cirillo",
+  "birthDate": {
+    "$date": "1985-05-16T22:00:00.000Z"
+  },
+  "city": "Napoli",
+  "phoneNumber": "3333920594",
+  "status": true,
+  "condition": "linfoma",
+  "therapy": {
+    "sessions": 1,
+    "duration": 330,
+    "frequency": 1,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a22744f",
+        "dose": 200
+      }
+    ]
+  },
+  "notes": "Allergia a leucleran"
+},
+{
+  "_id": {
+    "$oid": "63baf31258d6dd3e34e2fa14"
+  },
+  "taxCode": "CTLLGU75D10H931B",
+  "name": "Luigi",
+  "surname": "Cutolo",
+  "birthDate": {
+    "$date": "1975-04-10T22:00:00.000Z"
+  },
+  "city": "San Giuseppe Vesuviano",
+  "phoneNumber": "3353925042",
+  "status": false
+},
+{
+  "_id": {
+    "$oid": "63baf3a658d6dd3e34e2fa15"
+  },
+  "taxCode": "MZNCRI85E16H931C",
+  "name": "Ciro",
+  "surname": "Mazzone",
+  "birthDate": {
+    "$date": "1985-05-16T22:00:00.000Z"
+  },
+  "city": "Napoli",
+  "phoneNumber": "3334582056",
+  "status": true,
+  "condition": "tumore alla vescica",
+  "therapy": {
+    "sessions": 6,
+    "duration": 120,
+    "frequency": 2,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a22744a",
+        "dose": 200
+      },
+      {
+        "medicineId": "63b6ac4e4938c69a8a227445",
+        "dose": 100
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63baf3fe58d6dd3e34e2fa16"
+  },
+  "taxCode": "GLICCC91M57F205J",
+  "name": "Giulia",
+  "surname": "Cracco",
+  "birthDate": {
+    "$date": "1985-05-16T22:00:00.000Z"
+  },
+  "city": "Milano",
+  "phoneNumber": "3315830694",
+  "status": true,
+  "condition": "tumore al seno",
+  "therapy": {
+    "sessions": 4,
+    "duration": 240,
+    "frequency": 1,
+    "medicines": [
+      {
+        "medicineId": "63b6ac4e4938c69a8a227449",
+        "dose": 200
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "63dd3eac74c697331b1f019a"
+  },
+  "taxCode": "JHNDOE80M05F839V",
+  "name": "John",
+  "surname": "Doe",
+  "birthDate": {
+    "$date": {
+      "$numberLong": "-61812291600000"
+    }
+  },
+  "city": "Salerno",
+  "phoneNumber": "3661280333",
+  "status": true,
+  "notes": "Vendicativo",
+  "condition": "Ustioni",
+  "therapy": {
+    "sessions": 12,
+    "duration": 60,
+    "frequency": 3,
+    "medicines": [
+      {
+        "dose": 200,
+        "medicineId": "63b6ac4e4938c69a8a227449"
+      }
+    ]
+  }
+}]

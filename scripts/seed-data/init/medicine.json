@@ -1,0 +1,524 @@
+[{
+  "_id": {
+    "$oid": "63b54bc11ad444d2d97af23c"
+  },
+  "name": "doxorubicina",
+  "ingredients": "doxorubicina cloridrato",
+  "amount": 2,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2029-06-22T00:00:00.000Z"
+      },
+      "capacity": 300,
+      "packageId": "1"
+    },
+    {
+      "packageId": "1",
+      "status": true,
+      "capacity": 1500,
+      "expiryDate": {
+        "$date": "2026-10-22T22:00:00.000Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b54bc11ad444d2d97af23d"
+  },
+  "name": "docetaxel",
+  "ingredients": "docetaxel (anidro)",
+  "amount": 4,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2024-05-11T00:00:00.000Z"
+      },
+      "capacity": 500,
+      "packageId": "1"
+    },
+    {
+      "packageId": "2",
+      "status": true,
+      "capacity": 1500,
+      "expiryDate": {
+        "$date": "2027-10-11T22:00:00.000Z"
+      }
+    },
+    {
+      "packageId": "3",
+      "status": true,
+      "capacity": 150,
+      "expiryDate": {
+        "$date": "2025-05-22T22:00:00.000Z"
+      }
+    },
+    {
+      "packageId": "3",
+      "status": true,
+      "capacity": 700,
+      "expiryDate": {
+        "$date": "2028-10-09T22:00:00.000Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227442"
+  },
+  "name": "actinomicina d",
+  "ingredients": "actinomicina d",
+  "amount": 1,
+  "package": [
+    {
+      "packageId": "0",
+      "status": true,
+      "capacity": 2500,
+      "expiryDate": {
+        "$date": "2027-10-22T22:00:00.000Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227443"
+  },
+  "name": "asparaginasi",
+  "ingredients": "l-asparaginasi",
+  "amount": 2,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2024-11-24T00:00:00.000Z"
+      },
+      "capacity": 100,
+      "packageId": "1"
+    },
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2027-02-01T00:00:00.000Z"
+      },
+      "capacity": 600,
+      "packageId": "2"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227444"
+  },
+  "name": "bleomicina",
+  "ingredients": "bleomicina",
+  "amount": 3,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2025-07-30T00:00:00.000Z"
+      },
+      "capacity": 200,
+      "packageId": "1"
+    },
+    {
+      "packageId": "1",
+      "status": true,
+      "capacity": 700,
+      "expiryDate": {
+        "$date": "2028-08-24T22:00:00.000Z"
+      }
+    },
+    {
+      "packageId": "2",
+      "status": true,
+      "capacity": 4444,
+      "expiryDate": {
+        "$date": "2026-10-06T22:00:00.000Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227445"
+  },
+  "name": "busulfano",
+  "ingredients": "busulfan",
+  "amount": 2,
+  "package": [
+    {
+      "packageId": "0",
+      "status": true,
+      "capacity": 1,
+      "expiryDate": {
+        "$date": "2023-03-07T23:00:00.000Z"
+      }
+    },
+    {
+      "packageId": "1",
+      "status": true,
+      "capacity": 4,
+      "expiryDate": {
+        "$date": "2023-02-22T23:00:00.000Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227446"
+  },
+  "name": "cabazitaxel",
+  "ingredients": "cabazitaxel, enatolo",
+  "amount": 3,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2023-05-17T00:00:00.000Z"
+      },
+      "capacity": 100,
+      "packageId": "1"
+    },
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2026-01-23T00:00:00.000Z"
+      },
+      "capacity": 500,
+      "packageId": "2"
+    },
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2026-03-28T00:00:00.000Z"
+      },
+      "capacity": 300,
+      "packageId": "3"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227447"
+  },
+  "name": "capecitabina",
+  "ingredients": "capecitabina",
+  "amount": 1,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2025-11-01T00:00:00.000Z"
+      },
+      "capacity": 700,
+      "packageId": "1"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227448"
+  },
+  "name": "carboplatino",
+  "ingredients": "carboplatino, mannitolo",
+  "amount": 2,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2024-01-13T00:00:00.000Z"
+      },
+      "capacity": 400,
+      "packageId": "1"
+    },
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2024-11-10T00:00:00.000Z"
+      },
+      "capacity": 1000,
+      "packageId": "2"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227449"
+  },
+  "name": "carmustina",
+  "ingredients": "carmustina",
+  "amount": 0,
+  "package": []
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a22744a"
+  },
+  "name": "ciclofosfamide",
+  "ingredients": "ciclososfamide, monoidrata",
+  "amount": 1,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2027-03-19T00:00:00.000Z"
+      },
+      "capacity": 500,
+      "packageId": "1"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a22744b"
+  },
+  "name": "cisplatino",
+  "ingredients": "cisplatino, sodio",
+  "amount": 0,
+  "package": []
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a22744c"
+  },
+  "name": "citarabina",
+  "ingredients": "citarabina",
+  "amount": 1,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2025-02-22T00:00:00.000Z"
+      },
+      "capacity": 400,
+      "packageId": "1"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a22744d"
+  },
+  "name": "leukeran",
+  "ingredients": "clorambucile",
+  "amount": 2,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2024-02-10T00:00:00.000Z"
+      },
+      "capacity": 400,
+      "packageId": "1"
+    },
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2024-12-12T00:00:00.000Z"
+      },
+      "capacity": 500,
+      "packageId": "2"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a22744e"
+  },
+  "name": "dacarbazina",
+  "ingredients": "dacarbazina",
+  "amount": 1,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2023-02-20T00:00:00.000Z"
+      },
+      "capacity": 100,
+      "packageId": "1"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a22744f"
+  },
+  "name": "daunorubicina",
+  "ingredients": "daunorubicina cloridato, mannitolo",
+  "amount": 0,
+  "package": []
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227450"
+  },
+  "name": "epirubicina",
+  "status": true,
+  "ingredients": "epirubicina cloridrato, sodio cloruro",
+  "amount": 3,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2024-05-10T00:00:00.000Z"
+      },
+      "capacity": 400,
+      "packageId": "1"
+    },
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2025-02-01T00:00:00.000Z"
+      },
+      "capacity": 200,
+      "packageId": "2"
+    },
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2028-10-17T00:00:00.000Z"
+      },
+      "capacity": 1000,
+      "packageId": "3"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227451"
+  },
+  "name": "eribulina",
+  "ingredients": "eribulina mesilato",
+  "amount": 1,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2026-11-05T00:00:00.000Z"
+      },
+      "capacity": 900,
+      "packageId": "1"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227452"
+  },
+  "name": "estramustina",
+  "ingredients": "estrmustina",
+  "amount": 0,
+  "package": []
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227453"
+  },
+  "name": "etoposide",
+  "ingredients": "acido citrico, polisorbato, etanolo, polietilenlipole",
+  "amount": 2,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2025-10-30T00:00:00.000Z"
+      },
+      "capacity": 400,
+      "packageId": "1"
+    },
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2026-08-12T00:00:00.000Z"
+      },
+      "capacity": 300,
+      "packageId": "2"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227454"
+  },
+  "name": "fludarabina",
+  "ingredients": "fludarabina fosfato",
+  "amount": 0,
+  "package": []
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227455"
+  },
+  "name": "fluorouracile",
+  "ingredients": "fluorouracile, sodio idrossido",
+  "amount": 1,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2023-07-13T00:00:00.000Z"
+      },
+      "capacity": 700,
+      "packageId": "1"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227456"
+  },
+  "name": "gemcitabina",
+  "ingredients": "gemcitabina, mannitolo, sodio acetato triidrato, sodio idrossido, acido coloridico",
+  "amount": 2,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2026-12-04T00:00:00.000Z"
+      },
+      "capacity": 700,
+      "packageId": "1"
+    },
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2025-02-01T00:00:00.000Z"
+      },
+      "capacity": 100,
+      "packageId": "2"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63b6ac4e4938c69a8a227457"
+  },
+  "name": "melflalan",
+  "ingredients": "melfalan cloridrato",
+  "amount": 2,
+  "package": [
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2024-10-02T00:00:00.000Z"
+      },
+      "capacity": 200,
+      "packageId": "1"
+    },
+    {
+      "status": true,
+      "expiryDate": {
+        "$date": "2026-01-01T00:00:00.000Z"
+      },
+      "capacity": 900,
+      "packageId": "2"
+    }
+  ]
+}]

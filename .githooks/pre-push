@@ -1,0 +1,39 @@
+#!/bin/sh
+echo "🔍 PRE-PUSH: Check Quality Gate..."
+
+# Verify that SonarQube is on
+if ! curl -s --max-time 1 http://localhost:9000/api/system/status > /dev/null; then
+    echo "⚠️  WARNING: SonarQube not responding on localhost:9000."
+    echo "    Do you want to skip quality controls? (y/n)"
+    exec < /dev/tty
+    read answer
+    if [ "$answer" != "y" ]; then
+        exit 1
+    fi
+    echo "⏩ Skipping Quality Gate (Risky Push)..."
+    exit 0
+fi
+
+# Verify that token exists
+if [ -z "$SONAR_TOKEN" ]; then
+    echo "❌ ERROR: Environment variable SONAR_TOKEN not found."
+    exit 1
+fi
+
+echo "✅ Starting Analysis..."
+
+# Execute Maven Analysis
+./mvnw -B verify sonar:sonar \
+  -Dsonar.host.url=http://localhost:9000 \
+  -Dsonar.token=$SONAR_TOKEN \
+  -Dsonar.qualitygate.wait=true
+
+# Verify output
+if [ $? -ne 0 ]; then
+    echo "❌ PUSH BLOCKED: Quality Gate failed."
+    echo "   Check full report on: http://localhost:9000"
+    exit 1
+fi
+
+echo "🚀 Quality Gate Passed."
+exit 0

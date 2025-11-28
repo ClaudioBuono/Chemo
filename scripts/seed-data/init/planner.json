@@ -1,0 +1,3706 @@
+[{
+  "_id": {
+    "$oid": "63e7ca50d48c5503ed055082"
+  },
+  "start": {
+    "$date": "2023-02-06T09:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T09:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-11T09:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-11T09:00:00.000Z"
+      },
+      "duration": 330,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63baf27c58d6dd3e34e2fa13"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-11T09:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-11T09:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-11T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-11T10:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-11T10:00:00.000Z"
+      },
+      "duration": 330,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63baf27c58d6dd3e34e2fa13"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-11T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-11T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-11T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a227448",
+      "idPatient": "63baee3b45d04b76685e9e23"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-11T11:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-11T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-11T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-11T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-11T12:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-11T12:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227451",
+      "idPatient": "63baeb4345d04b76685e9e1f"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-11T12:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e7d068d48c5503ed05528f"
+  },
+  "start": {
+    "$date": "2023-02-06T09:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T09:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-11T09:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-11T09:00:00.000Z"
+      },
+      "duration": 330,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63baf27c58d6dd3e34e2fa13"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-11T09:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-11T09:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-11T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-11T10:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-11T10:00:00.000Z"
+      },
+      "duration": 330,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63baf27c58d6dd3e34e2fa13"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-11T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-11T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-11T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a227448",
+      "idPatient": "63baee3b45d04b76685e9e23"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-11T11:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-11T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-11T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-11T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-11T12:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-11T12:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227451",
+      "idPatient": "63baeb4345d04b76685e9e1f"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-11T12:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e7dc9a46786262872559ca"
+  },
+  "start": {
+    "$date": "2023-02-06T09:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T09:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744d",
+      "idPatient": "63baef1558d6dd3e34e2fa0d"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e7dd734678626287255a75"
+  },
+  "start": {
+    "$date": "2023-02-06T09:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T09:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744d",
+      "idPatient": "63baef1558d6dd3e34e2fa0d"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8adc7439b134f3ed12276"
+  },
+  "start": {
+    "$date": "2023-02-06T09:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T09:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744d",
+      "idPatient": "63baef1558d6dd3e34e2fa0d"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744d",
+      "idPatient": "63baef1558d6dd3e34e2fa0d"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744d",
+      "idPatient": "63baef1558d6dd3e34e2fa0d"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227442",
+      "idPatient": "63e2845dbf0763505be595fa"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 330,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63baf27c58d6dd3e34e2fa13"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227451",
+      "idPatient": "63baeb4345d04b76685e9e1f"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744d",
+      "idPatient": "63baef1558d6dd3e34e2fa0d"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T13:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T13:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227442",
+      "idPatient": "63e2845dbf0763505be595fa"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T13:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8c5a9439b134f3ed12547"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227442",
+      "idPatient": "63e2845dbf0763505be595fa"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63da7b7e34183329c773de1a"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 150,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63baf14d58d6dd3e34e2fa11"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227451",
+      "idPatient": "63baeb4345d04b76685e9e1f"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8c6e1439b134f3ed1262f"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 150,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63baf14d58d6dd3e34e2fa11"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 150,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63baf14d58d6dd3e34e2fa11"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 150,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63baf14d58d6dd3e34e2fa11"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 150,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63baf14d58d6dd3e34e2fa11"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 330,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63baf27c58d6dd3e34e2fa13"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744d",
+      "idPatient": "63baef1558d6dd3e34e2fa0d"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227451",
+      "idPatient": "63baeb4345d04b76685e9e1f"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744d",
+      "idPatient": "63baef1558d6dd3e34e2fa0d"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227442",
+      "idPatient": "63e2845dbf0763505be595fa"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8c70e439b134f3ed1273d"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 150,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63baf14d58d6dd3e34e2fa11"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 150,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63baf14d58d6dd3e34e2fa11"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63da7b7e34183329c773de1a"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63da7b7e34183329c773de1a"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8c86a439b134f3ed128e0"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63da7b7e34183329c773de1a"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 150,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63baf14d58d6dd3e34e2fa11"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63da7b7e34183329c773de1a"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63da7b7e34183329c773de1a"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 150,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63baf14d58d6dd3e34e2fa11"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8cb36439b134f3ed129c8"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a227448",
+      "idPatient": "63baee3b45d04b76685e9e23"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227442",
+      "idPatient": "63e2845dbf0763505be595fa"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 330,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63baf27c58d6dd3e34e2fa13"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 330,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63baf27c58d6dd3e34e2fa13"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744d",
+      "idPatient": "63baef1558d6dd3e34e2fa0d"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8ce3e439b134f3ed12aca"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744d",
+      "idPatient": "63baef1558d6dd3e34e2fa0d"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63da7b7e34183329c773de1a"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63da7b7e34183329c773de1a"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63baf04258d6dd3e34e2fa0f"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63da7b7e34183329c773de1a"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744d",
+      "idPatient": "63baef1558d6dd3e34e2fa0d"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a227448",
+      "idPatient": "63baee3b45d04b76685e9e23"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8ce82439b134f3ed12b16"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8d8cbb4815a5bd5ed1b48"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8ececf62d5a1db593448a"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8efa060ac5b501484830d"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8f95760ac5b501484839b"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "8",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8f97960ac5b5014848480"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 330,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63baf27c58d6dd3e34e2fa13"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 330,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63baf27c58d6dd3e34e2fa13"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744d",
+      "idPatient": "63baef1558d6dd3e34e2fa0d"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227451",
+      "idPatient": "63baeb4345d04b76685e9e1f"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63da7b7e34183329c773de1a"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-06T10:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a227448",
+      "idPatient": "63baee3b45d04b76685e9e23"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 330,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63baf27c58d6dd3e34e2fa13"
+    },
+    {
+      "chair": "9",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a227448",
+      "idPatient": "63baee3b45d04b76685e9e23"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T11:00:00.000Z"
+      },
+      "duration": 330,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63baf27c58d6dd3e34e2fa13"
+    },
+    {
+      "chair": "6",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63d68c0fab65bf4fe5c228a6"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-06T12:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63e8f9d460ac5b50148484b1"
+  },
+  "start": {
+    "$date": "2023-02-06T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "7",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-06T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea07c91a3d1a62399e645b"
+  },
+  "start": {
+    "$date": "2023-02-13T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227451",
+      "idPatient": "63baeb4345d04b76685e9e1f"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T10:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227451",
+      "idPatient": "63baeb4345d04b76685e9e1f"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-13T10:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63baec5645d04b76685e9e20"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T10:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744a",
+      "idPatient": "63baf3a658d6dd3e34e2fa15"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T11:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-13T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T11:00:00.000Z"
+      },
+      "duration": 150,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63baf14d58d6dd3e34e2fa11"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T11:00:00.000Z"
+      },
+      "duration": 150,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63baf14d58d6dd3e34e2fa11"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T11:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T12:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-13T12:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T12:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227449",
+      "idPatient": "63baf3fe58d6dd3e34e2fa16"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T12:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63baf0ac58d6dd3e34e2fa10"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea08ec1a3d1a62399e6593"
+  },
+  "start": {
+    "$date": "2023-02-13T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea09af1a3d1a62399e6636"
+  },
+  "start": {
+    "$date": "2023-02-13T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea2e6404bd6736d2ca992d"
+  },
+  "start": {
+    "$date": "2023-02-13T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea2e7804bd6736d2ca9988"
+  },
+  "start": {
+    "$date": "2023-02-13T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea2f7f7edbaa15a5103110"
+  },
+  "start": {
+    "$date": "2023-02-13T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "0",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea2fc07edbaa15a510317a"
+  },
+  "start": {
+    "$date": "2023-02-13T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T17:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea618c034bfa50d440d266"
+  },
+  "start": {
+    "$date": "2023-02-20T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-17T14:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-20T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-20T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-20T08:00:00.000Z"
+      },
+      "duration": 30,
+      "idMedicine": "63b6ac4e4938c69a8a22744e",
+      "idPatient": "63b6b0854938c69a8a227461"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-20T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227454",
+      "idPatient": "63da7b7e34183329c773de1a"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-20T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-20T10:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227451",
+      "idPatient": "63baeb4345d04b76685e9e1f"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-20T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea625c034bfa50d440d2f4"
+  },
+  "start": {
+    "$date": "2023-02-13T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T14:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6b55a4938c69a8a227467"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 300,
+      "idMedicine": "63b6ac4e4938c69a8a227445",
+      "idPatient": "63b6afcf4938c69a8a227460"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea6271034bfa50d440d37f"
+  },
+  "start": {
+    "$date": "2023-02-20T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-17T14:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-20T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-20T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-20T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-20T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227442",
+      "idPatient": "63e2845dbf0763505be595fa"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2679d47a63144e204d2"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea6336034bfa50d440d3f2"
+  },
+  "start": {
+    "$date": "2023-02-13T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-10T14:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 120,
+      "idMedicine": "63b6ac4e4938c69a8a22744f",
+      "idPatient": "63b6b4e24938c69a8a227466"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea6386034bfa50d440d468"
+  },
+  "start": {
+    "$date": "2023-02-20T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-24T14:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-20T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-20T08:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-20T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-20T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-20T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "63ea63b7034bfa50d440d50b"
+  },
+  "start": {
+    "$date": "2023-02-13T08:00:00.000Z"
+  },
+  "end": {
+    "$date": "2023-02-17T14:00:00.000Z"
+  },
+  "appointments": [
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227452",
+      "idPatient": "63e8aa23466d8e6470715f47"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 240,
+      "idMedicine": "63b6ac4e4938c69a8a227444",
+      "idPatient": "63b6b38f4938c69a8a227464"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T08:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "2",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "3",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 360,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63b6b2d14938c69a8a227463"
+    },
+    {
+      "chair": "4",
+      "date": {
+        "$date": "2023-02-13T09:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b54bc11ad444d2d97af23c",
+      "idPatient": "63e2a2fb9d47a63144e204df"
+    },
+    {
+      "chair": "5",
+      "date": {
+        "$date": "2023-02-13T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227442",
+      "idPatient": "63e2845dbf0763505be595fa"
+    },
+    {
+      "chair": "1",
+      "date": {
+        "$date": "2023-02-13T10:00:00.000Z"
+      },
+      "duration": 60,
+      "idMedicine": "63b6ac4e4938c69a8a227442",
+      "idPatient": "63e2845dbf0763505be595fa"
+    }
+  ]
+}]
