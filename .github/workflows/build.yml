@@ -46,4 +46,6 @@ jobs:
           echo "✅ Data loaded!"
 
       - name: Build with Maven
-        run: ./mvnw -B verify
+        run: |
+          chmod +x mvnw
+          ./mvnw -B verify
