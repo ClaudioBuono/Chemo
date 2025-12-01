@@ -1,8 +1,8 @@
 package queryBean;
 
 import org.bson.types.ObjectId;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -15,10 +15,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-public class TC_CreateNewSchedule {
+class CreateNewScheduleTest {
     @Mock
     PlannerBean plannerBean;
     @Mock
@@ -28,26 +29,28 @@ public class TC_CreateNewSchedule {
     @InjectMocks
     PlannerQueryBean plannerQueryBean;
 
-    @Before
-    public void setUp(){
-        MockitoAnnotations.initMocks(this);
+    @BeforeEach
+    void setUp(){
+        MockitoAnnotations.openMocks(this);
     }
 
     //TC_UC_PM_03_2
     @Test
-    public void testCreateCorrectNewSchedule(){
+    void testCreateCorrectNewSchedule(){
         try {
             Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse("04/02/2023");
-            Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse("11/02/2023");;
+            Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse("11/02/2023");
             appointmentBean = new AppointmentBean();
             appointments = new ArrayList<>();
             appointments.add(appointmentBean);
             ObjectId id = new ObjectId();
+
             when(plannerBean.getId()).thenReturn(String.valueOf(id));
             when(plannerBean.getStartDate()).thenReturn(startDate);
             when(plannerBean.getEndDate()).thenReturn(endDate);
             when(plannerBean.getAppointments()).thenReturn(appointments);
-            assertEquals(true, plannerQueryBean.insertDocument(plannerBean));
+
+            assertTrue(plannerQueryBean.insertDocument(plannerBean));
             plannerQueryBean.deleteDocument("_id", plannerBean.getId());
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -57,18 +60,20 @@ public class TC_CreateNewSchedule {
 
     //TC_UC_PM_03_1
     @Test
-    public void testCreateScheduleWithNoAppointments(){
+    void testCreateScheduleWithNoAppointments(){
         try {
             Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse("04/02/2023");
-            Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse("11/02/2023");;
+            Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse("11/02/2023");
             appointmentBean = new AppointmentBean();
             appointments = new ArrayList<>();
             ObjectId id = new ObjectId();
+
             when(plannerBean.getId()).thenReturn(String.valueOf(id));
             when(plannerBean.getStartDate()).thenReturn(startDate);
             when(plannerBean.getEndDate()).thenReturn(endDate);
             when(plannerBean.getAppointments()).thenReturn(appointments);
-            assertEquals(false, plannerQueryBean.insertDocument(plannerBean));
+
+            assertFalse(plannerQueryBean.insertDocument(plannerBean));
             plannerQueryBean.deleteDocument("_id", plannerBean.getId());
         } catch (ParseException e) {
             throw new RuntimeException(e);
