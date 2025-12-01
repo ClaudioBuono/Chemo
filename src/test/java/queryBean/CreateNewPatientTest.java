@@ -1,8 +1,8 @@
 package queryBean;
 
 import org.bson.types.ObjectId;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -12,28 +12,31 @@ import patientmanagement.storage.PatientQueryBean;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-public class TC_CreateNewPatient {
+class CreateNewPatientTest {
     @Mock
     PatientBean patientBean;
 
     @InjectMocks
     PatientQueryBean patientQueryBean;
-    @Before
-    public final void setUp() {
+    @BeforeEach
+     final void setUp() {
         patientQueryBean = new PatientQueryBean();
         patientBean = new PatientBean();
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     //TC_UC_PM_01_2
     @Test
-    public void testPatientCreationWithIncorrectNameLenght() {
+    void testPatientCreationWithIncorrectNameLenght() {
         try {
             Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse("21/06/1984");
             ObjectId id = new ObjectId();
+
             when(patientBean.getPatientId()).thenReturn(String.valueOf(id));
             when(patientBean.getTaxCode()).thenReturn("RS5MRAC4H21F8R9S");
             when(patientBean.getName()).thenReturn("");
@@ -43,7 +46,8 @@ public class TC_CreateNewPatient {
             when(patientBean.getPhoneNumber()).thenReturn("3933358960");
             when(patientBean.getStatus()).thenReturn(true);
             when(patientBean.getNotes()).thenReturn("Allergia ad alcuni farmaci");
-            assertEquals(false, patientQueryBean.insertDocument(patientBean));
+
+            assertFalse(patientQueryBean.insertDocument(patientBean));
             patientQueryBean.deleteDocument("_id", patientBean.getPatientId());
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -53,10 +57,11 @@ public class TC_CreateNewPatient {
 
     //TC_UC_PM_01_3
     @Test
-    public void testPatientCreationWithIncorrectSurameLenght() {
+    void testPatientCreationWithIncorrectSurameLenght() {
         try {
             Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse("21/06/1984");
             ObjectId id = new ObjectId();
+
             when(patientBean.getPatientId()).thenReturn(String.valueOf(id));
             when(patientBean.getTaxCode()).thenReturn("RS5MRAC4H21F8R9S");
             when(patientBean.getName()).thenReturn("Mario");
@@ -66,7 +71,8 @@ public class TC_CreateNewPatient {
             when(patientBean.getPhoneNumber()).thenReturn("3933358960");
             when(patientBean.getStatus()).thenReturn(true);
             when(patientBean.getNotes()).thenReturn("Allergia ad alcuni farmaci");
-            assertEquals(false, patientQueryBean.insertDocument(patientBean));
+
+            assertFalse(patientQueryBean.insertDocument(patientBean));
             patientQueryBean.deleteDocument("_id", patientBean.getPatientId());
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -75,10 +81,11 @@ public class TC_CreateNewPatient {
 
     //TC_UC_PM_01_5
     @Test
-    public void testPatientCreationWithIncorrectBirthDate() {
+    void testPatientCreationWithIncorrectBirthDate() {
         try {
-            Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse("30/05/2025");
+            Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse("30/05/2029");
             ObjectId id = new ObjectId();
+
             when(patientBean.getPatientId()).thenReturn(String.valueOf(id));
             when(patientBean.getTaxCode()).thenReturn("RS5MRAC4H21F8R9S");
             when(patientBean.getName()).thenReturn("Mario");
@@ -88,7 +95,8 @@ public class TC_CreateNewPatient {
             when(patientBean.getPhoneNumber()).thenReturn("3933358960");
             when(patientBean.getStatus()).thenReturn(true);
             when(patientBean.getNotes()).thenReturn("Allergia ad alcuni farmaci");
-            assertEquals(false, patientQueryBean.insertDocument(patientBean));
+
+            assertFalse(patientQueryBean.insertDocument(patientBean));
             patientQueryBean.deleteDocument("_id", patientBean.getPatientId());
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -97,10 +105,11 @@ public class TC_CreateNewPatient {
 
     //TC_UC_PM_01_7
     @Test
-    public void testPatientCreationWithIncorrectCityLenght() {
+    void testPatientCreationWithIncorrectCityLenght() {
         try {
             Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse("21/06/1984");
             ObjectId id = new ObjectId();
+
             when(patientBean.getPatientId()).thenReturn(String.valueOf(id));
             when(patientBean.getTaxCode()).thenReturn("RS5MRAC4H21F8R9S");
             when(patientBean.getName()).thenReturn("Mario");
@@ -110,7 +119,8 @@ public class TC_CreateNewPatient {
             when(patientBean.getPhoneNumber()).thenReturn("3933358960");
             when(patientBean.getStatus()).thenReturn(true);
             when(patientBean.getNotes()).thenReturn("Allergia ad alcuni farmaci");
-            assertEquals(false, patientQueryBean.insertDocument(patientBean));
+
+            assertFalse(patientQueryBean.insertDocument(patientBean));
             patientQueryBean.deleteDocument("_id", patientBean.getPatientId());
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -119,10 +129,11 @@ public class TC_CreateNewPatient {
 
     //TC_UC_PM_01_9
     @Test
-    public void testPatientCreationWithIncorrectTaxCodeLenght() {
+    void testPatientCreationWithIncorrectTaxCodeLenght() {
         try {
             Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse("21/06/1984");
             ObjectId id = new ObjectId();
+
             when(patientBean.getPatientId()).thenReturn(String.valueOf(id));
             when(patientBean.getTaxCode()).thenReturn("");
             when(patientBean.getName()).thenReturn("Mario");
@@ -132,7 +143,8 @@ public class TC_CreateNewPatient {
             when(patientBean.getPhoneNumber()).thenReturn("3933358960");
             when(patientBean.getStatus()).thenReturn(true);
             when(patientBean.getNotes()).thenReturn("Allergia ad alcuni farmaci");
-            assertEquals(false, patientQueryBean.insertDocument(patientBean));
+
+            assertFalse(patientQueryBean.insertDocument(patientBean));
             patientQueryBean.deleteDocument("_id", patientBean.getPatientId());
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -141,20 +153,22 @@ public class TC_CreateNewPatient {
 
     //TC_UC_PM_01_11--> da fare
     @Test
-    public void testPatientCreationWithIncorrectPhoneNumberLenght() {
+    void testPatientCreationWithIncorrectPhoneNumberLenght() {
         try {
             Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse("21/06/1984");
             ObjectId id = new ObjectId();
+
             when(patientBean.getPatientId()).thenReturn(String.valueOf(id));
             when(patientBean.getTaxCode()).thenReturn("RS5MRAC4H21F8R9S");
             when(patientBean.getName()).thenReturn("Mario");
             when(patientBean.getSurname()).thenReturn("Rossi");
             when(patientBean.getBirthDate()).thenReturn(birthDate);
             when(patientBean.getCity()).thenReturn("Napoli");
-            when(patientBean.getPhoneNumber()).thenReturn("");
+            when(patientBean.getPhoneNumber()).thenReturn("8968673484668387364874645486416463");
             when(patientBean.getStatus()).thenReturn(true);
             when(patientBean.getNotes()).thenReturn("Allergia ad alcuni farmaci");
-            assertEquals(false, patientQueryBean.insertDocument(patientBean));
+
+            assertFalse(patientQueryBean.insertDocument(patientBean));
             patientQueryBean.deleteDocument("_id", patientBean.getPatientId());
         } catch (ParseException e){
             throw new RuntimeException(e);
@@ -163,10 +177,11 @@ public class TC_CreateNewPatient {
 
     //TC_UC_PM_01_15
     @Test
-    public void testPatientCreationWithCorrectInput() {
+    void testPatientCreationWithCorrectInput() {
         try {
             Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse("21/06/1984");
             ObjectId id = new ObjectId();
+
             when(patientBean.getPatientId()).thenReturn(String.valueOf(id));
             when(patientBean.getTaxCode()).thenReturn("RS5MRAC4H21F8R9S");
             when(patientBean.getName()).thenReturn("Mario");
@@ -176,7 +191,8 @@ public class TC_CreateNewPatient {
             when(patientBean.getPhoneNumber()).thenReturn("3933358960");
             when(patientBean.getStatus()).thenReturn(true);
             when(patientBean.getNotes()).thenReturn("Allergia ad alcuni farmaci");
-            assertEquals(true, patientQueryBean.insertDocument(patientBean));
+
+            assertTrue(patientQueryBean.insertDocument(patientBean));
             patientQueryBean.deleteDocument("_id", patientBean.getPatientId());
         } catch (ParseException e) {
             throw new RuntimeException(e);
