@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # --- MONGODB ---
+  mongodb:
+    image: mongo:5.0
+    container_name: chemo_mongo
+    ports: ["27017:27017"]
+    environment:
+      - MONGO_INITDB_DATABASE=Chemo
+    volumes:
+      - mongo_data:/data/db
+      - ./docker/mongo-init:/docker-entrypoint-initdb.d
+      - ./docker/mongo-init/seed-data:/data/seed
+
+  # --- SONARQUBE ---
+  sonarqube:
+    image: sonarqube
+    container_name: sonarqube
+    ports: ["9000:9000"]
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
+volumes:
+  mongo_data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:

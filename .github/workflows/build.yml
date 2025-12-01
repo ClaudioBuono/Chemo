@@ -2,9 +2,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -39,14 +39,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y mongo-tools
 
-      # Load JSON data into the database (same as load-data.bat)
+      # Load JSON data into the database (same as init-db.sh)
       - name: Seed Database
         run: |
           echo "🌱 Seeding Database..."
-          mongoimport --host localhost --db Chemo --collection user --drop --file scripts/seed-data/init/user.json --jsonArray
-          mongoimport --host localhost --db Chemo --collection medicine --drop --file scripts/seed-data/init/medicine.json --jsonArray
-          mongoimport --host localhost --db Chemo --collection patient --drop --file scripts/seed-data/init/patient.json --jsonArray
-          mongoimport --host localhost --db Chemo --collection planner --drop --file scripts/seed-data/init/planner.json --jsonArray
+          mongoimport --host localhost --db Chemo --collection users --drop --file docker/mongo-init/seed-data/init/user.json --jsonArray
+          mongoimport --host localhost --db Chemo --collection medicine --drop --file docker/mongo-init/seed-data/init/medicine.json --jsonArray
+          mongoimport --host localhost --db Chemo --collection patient --drop --file docker/mongo-init/seed-data/init/patient.json --jsonArray
+          mongoimport --host localhost --db Chemo --collection planner --drop --file docker/mongo-init/seed-data/init/planner.json --jsonArray
           echo "✅ Data loaded!"
 
       # Build and Test (maven)
