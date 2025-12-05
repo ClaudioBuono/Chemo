@@ -1,5 +1,5 @@
 // Select target database
-const db = db.getSiblingDB('Chemo');
+var db = db.getSiblingDB('Chemo');
 
 // Configuration constants
 const TARGET_MEDICINES = 1000;
