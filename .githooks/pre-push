@@ -20,6 +20,15 @@ if [ -z "$SONAR_TOKEN" ]; then
     exit 1
 fi
 
+echo "🧹 Preparing Test Environment..."
+# Reset Chemo_TEST
+./refresh-test-db.sh Chemo_TEST
+
+if [ $? -ne 0 ]; then
+    echo "❌ PUSH BLOCKED: Failed to reset test database."
+    exit 1
+fi
+
 echo "✅ Starting Analysis..."
 
 # Execute Maven Analysis

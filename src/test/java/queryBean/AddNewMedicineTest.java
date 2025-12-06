@@ -1,8 +1,10 @@
 package queryBean;
 
+import connector.DatabaseConnector;
 import medicinemanagement.application.MedicineBean;
 import medicinemanagement.storage.MedicineQueryBean;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,7 +24,13 @@ class AddNewMedicineTest {
 
     @BeforeEach
     void setUp() {
+        DatabaseConnector.setDbName("Chemo_TEST");
         MockitoAnnotations.openMocks(this); // initMocks è vecchio, usa openMocks
+    }
+
+    @AfterEach
+    void tearDown() {
+        DatabaseConnector.setDbName("Chemo");
     }
 
     //TC_UC_PM_03_6
