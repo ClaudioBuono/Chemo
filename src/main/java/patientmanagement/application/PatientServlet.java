@@ -22,19 +22,28 @@ import java.util.logging.Logger;
 
 @WebServlet("/PatientServlet")
 public class PatientServlet extends HttpServlet {
+    private static final String SURNAME = "surname";
+    private static final String TAX_CODE = "taxCode";
+    private static final String NAME = "name";
+    private static final String BIRTH_DATE = "birthDate";
+    private static final String CITY = "city";
+    private static final String PHONE_NUMBER = "phoneNumber";
+    private static final String NOTES = "notes";
+    private static final String STATUS = "status";
+    private static final String MEDICINE = "medicine";
     final Logger logger = Logger.getLogger(getClass().getName());
 
     static final int PAGE_SIZE = 10;
     static Facade facade = new Facade();
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         // Check if user is logged in
-        HttpSession session = request.getSession(false);
-        UserBean user = (session != null) ? (UserBean) session.getAttribute("currentSessionUser") : null;
+        final HttpSession session = request.getSession(false);
+        final UserBean user = (session != null) ? (UserBean) session.getAttribute("currentSessionUser") : null;
         if (user == null) {
             try {
                 response.sendRedirect("error401.jsp");
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 logger.log(Level.SEVERE, e.getMessage(), e);
             }
 
@@ -42,27 +51,9 @@ public class PatientServlet extends HttpServlet {
         }
 
         // Check if a single patient is required
-        String id = request.getParameter("id");
+        final String id = request.getParameter("id");
         if (id != null) {
-            // Find the patient
-            ArrayList<PatientBean> patients = facade.findPatients("_id", id, user);
-            if (!patients.isEmpty()) {
-                request.setAttribute("patient", patients.get(0));
-                try {
-                    // Redirect to patient details page
-                    getServletContext().getRequestDispatcher(response.encodeURL("/patientDetails.jsp")).forward(request, response);
-                } catch (ServletException e) {
-                    logger.log(Level.SEVERE, "ServletException: ", e);
-                } catch (IOException e) {
-                    logger.log(Level.SEVERE, "IOException: ", e);
-                }
-            } else {
-                try {
-                    response.sendRedirect("error404.jsp");
-                } catch (IOException e) {
-                    logger.log(Level.SEVERE, "IOException: ", e);
-                }
-            }
+            redirectToPatientDetailsPage(request, response, id, user);
 
             return;
         }
@@ -76,7 +67,7 @@ public class PatientServlet extends HttpServlet {
         if (request.getParameter("page") != null) {
             try {
                 page = Integer.parseInt(request.getParameter("page"));
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 logger.log(Level.SEVERE, "NumberFormatException: ", e);
             }
         }
@@ -86,54 +77,16 @@ public class PatientServlet extends HttpServlet {
         ArrayList<Object> values = new ArrayList<>();
 
         // Maintain parameters link inside JSP (ex: &name=Mario&page=2)
-        StringBuilder searchParams = new StringBuilder();
+        final StringBuilder searchParams = buildParameters(request, keys, values);
 
-        // Check if action requested is a filtered search
-        String action = request.getParameter("action");
-        if ("searchPatient".equals(action)) {
-            logger.info("Action: searchPatient");
-            searchParams.append("&action=searchPatient");
-
-            // --- Name filter ---
-            String name = request.getParameter("name");
-            if (name != null && !name.trim().isEmpty()) {
-                keys.add("name");
-                values.add(name.trim());
-                searchParams.append("&name=").append(name.trim());
-            }
-
-            // --- Surname filter ---
-            String surname = request.getParameter("surname");
-            if (surname != null && !surname.trim().isEmpty()) {
-                keys.add("surname");
-                values.add(surname.trim());
-                searchParams.append("&surname=").append(surname.trim());
-            }
-
-            // --- Medicine filter ---
-            String medicine = request.getParameter("patientMedicine");
-            if (medicine != null && !medicine.equals("null") && !medicine.isEmpty()) {
-                keys.add("medicine");
-                values.add(medicine);
-                searchParams.append("&patientMedicine=").append(medicine);
-            }
-
-            // --- Patient status filter ---
-            String status = request.getParameter("patientStatus");
-            if (status != null && !status.equals("na") && !status.isEmpty()) {
-                keys.add("status");
-                values.add(Boolean.parseBoolean(status));
-                searchParams.append("&patientStatus=").append(status);
-            }
-        }
 
         // If action is null, keys and values will be null as well
         // So all patients will be retrieved
-        ArrayList<PatientBean> paginatedResult = (ArrayList<PatientBean>) facade.findPatientsPaginated(keys, values, page, PAGE_SIZE, user);
+        final ArrayList<PatientBean> paginatedResult = (ArrayList<PatientBean>) facade.findPatientsPaginated(keys, values, page, PAGE_SIZE, user);
 
 
         // Calculate total pages
-        long totalRecords = facade.countPatientsFiltered(keys, values, user);
+        final long totalRecords = facade.countPatientsFiltered(keys, values, user);
         int totalPages = (int) Math.ceil((double) totalRecords / PAGE_SIZE);
         if (totalPages == 0) totalPages = 1; // Avoid "Page 1 of 0"
 
@@ -145,16 +98,17 @@ public class PatientServlet extends HttpServlet {
 
         // Pass parameter string to make "next" and "previous" buttons work during search
         request.setAttribute("searchParams", searchParams.toString());
-        RequestDispatcher dispatcher = request.getRequestDispatcher("patientList.jsp");
+        final RequestDispatcher dispatcher = request.getRequestDispatcher("patientList.jsp");
         try {
             dispatcher.forward(request, response);
-        } catch (ServletException e) {
+        } catch (final ServletException e) {
             logger.log(Level.SEVERE, "ServletException: ", e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             logger.log(Level.SEVERE, "IOException: ", e);
         }
 
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Recupero l'action dalla request
@@ -167,14 +121,14 @@ public class PatientServlet extends HttpServlet {
             switch (action) {
                 case "createPatientProfile" -> {  //Creazione profilo paziente
                     PatientBean patient = new PatientBean(
-                            request.getParameter("taxCode"),
-                            request.getParameter("name"),
-                            request.getParameter("surname"),
-                            dateParser(request.getParameter("birthDate")),
-                            request.getParameter("city"),
-                            request.getParameter("phoneNumber"),
+                            request.getParameter(TAX_CODE),
+                            request.getParameter(NAME),
+                            request.getParameter(SURNAME),
+                            dateParser(request.getParameter(BIRTH_DATE)),
+                            request.getParameter(CITY),
+                            request.getParameter(PHONE_NUMBER),
                             false ,
-                            request.getParameter("notes"));
+                            request.getParameter(NOTES));
 
                     if (!patientValidation(patient)) {
                         response.addHeader("OPERATION_RESULT","false");
@@ -236,17 +190,17 @@ public class PatientServlet extends HttpServlet {
 
                     ArrayList<PatientBean> patients = facade.findPatients("_id", patientId, user);
                     //controlla se esiste una condition e una terapia per quel paziente
-                    if (patients.get(0).getTherapy() == null || request.getParameter("status") == null) {
+                    if (patients.get(0).getTherapy() == null || request.getParameter(STATUS) == null) {
                         //se non esiste c'è un errore e l'operazione fallisce
                         operationResult = "false";
                         response.addHeader("ERROR_MESSAGE","Modifica stato fallita.");
                     } else {
-                        boolean patientStatus = Boolean.parseBoolean(request.getParameter("status"));
+                        final boolean patientStatus = Boolean.parseBoolean(request.getParameter(STATUS));
                         //se esiste viene effettuata la modifica
                         operationResult = "true";
                         if (patients.get(0).getStatus() != patientStatus) {
                             //Aggiorno lo stato del paziente
-                            facade.updatePatient("_id", patientId, "status", patientStatus, user);
+                            facade.updatePatient("_id", patientId, STATUS, patientStatus, user);
                         }
                     }
 
@@ -260,7 +214,81 @@ public class PatientServlet extends HttpServlet {
         }
     }
 
-    //Metodi di supporto
+
+    // ==============================
+    // doGet HELPER METHODS
+    // ==============================
+    private void redirectToPatientDetailsPage(final HttpServletRequest request, final HttpServletResponse response, final String id, final UserBean user) {
+        // Find the patient
+        final ArrayList<PatientBean> patients = facade.findPatients("_id", id, user);
+        if (!patients.isEmpty()) {
+            request.setAttribute("patient", patients.get(0));
+            try {
+                // Redirect to patient details page
+                getServletContext().getRequestDispatcher(response.encodeURL("/patientDetails.jsp")).forward(request, response);
+            } catch (final ServletException e) {
+                logger.log(Level.SEVERE, "ServletException: ", e);
+            } catch (final IOException e) {
+                logger.log(Level.SEVERE, "IOException: ", e);
+            }
+        } else {
+            try {
+                response.sendRedirect("error404.jsp");
+            } catch (final IOException e) {
+                logger.log(Level.SEVERE, "IOException: ", e);
+            }
+        }
+    }
+
+
+    private StringBuilder buildParameters(final HttpServletRequest request, final ArrayList<String> keys, final ArrayList<Object> values) {
+        final StringBuilder searchParams = new StringBuilder(128);
+
+        // Check if action requested is a filtered search
+        final String action = request.getParameter("action");
+        if ("searchPatient".equals(action)) {
+            logger.info("Action: searchPatient");
+            searchParams.append("&action=searchPatient");
+
+            // --- Name filter ---
+            final String name = request.getParameter(NAME);
+            if (name != null && !name.trim().isEmpty()) {
+                keys.add(NAME);
+                values.add(name.trim());
+                searchParams.append("&name=").append(name.trim());
+            }
+
+            // --- Surname filter ---
+            final String surname = request.getParameter(SURNAME);
+            if (surname != null && !surname.trim().isEmpty()) {
+                keys.add(SURNAME);
+                values.add(surname.trim());
+                searchParams.append("&surname=").append(surname.trim());
+            }
+
+            // --- Medicine filter ---
+            final String medicine = request.getParameter("patientMedicine");
+            if (medicine != null && !medicine.equals("null") && !medicine.isEmpty()) {
+                keys.add(MEDICINE);
+                values.add(medicine);
+                searchParams.append("&patientMedicine=").append(medicine);
+            }
+
+            // --- Patient status filter ---
+            final String status = request.getParameter("patientStatus");
+            if (status != null && !status.equals("na") && !status.isEmpty()) {
+                keys.add(STATUS);
+                values.add(Boolean.parseBoolean(status));
+                searchParams.append("&patientStatus=").append(status);
+            }
+        }
+
+        return searchParams;
+    }
+
+    // ==============================
+    // PARSING AND VALIDATION METHODS
+    // ==============================
     private Date dateParser(String date) {
         SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
         try {
