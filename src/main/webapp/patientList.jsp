@@ -44,7 +44,7 @@
             <h1 class="title">Storico pazienti</h1>
             <jsp:include page="./static/templates/loggedUserButtons.html"/>
         </div>
-        <form id="search-form" class="form box" action="PatientServlet" method="post">
+        <form id="search-form" class="form box" action="PatientServlet" method="get">
             <div class="title-section">
                 <h2 class="title">Ricerca</h2>
             </div>
@@ -92,15 +92,8 @@
         <div id="patient-list">
             <!-- Si itera fino a quando ci sono risultati-->
             <%
-                ArrayList<PatientBean> patients = new ArrayList<PatientBean>();
-                if (request.getAttribute("patientsResult") == null) {
-                    //nessuna richiesta di ricerca
-                    //si visualizzano tutti i pazienti
-                    facade = new Facade();
-                    patients = facade.findAllPatients(user);
-                } else {
-                    patients = (ArrayList<PatientBean>) request.getAttribute("patientsResult");
-                }
+                // Get patients from servlet
+                ArrayList<PatientBean> patients = (ArrayList<PatientBean>) request.getAttribute("patientsResult");
 
                 if (patients.size() == 0) {
                     //visualizzazione messaggio nessun paziente trovato

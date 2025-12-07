@@ -15,8 +15,12 @@ import userManagement.storage.UserQueryBean;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Facade {
+    final Logger logger = Logger.getLogger(getClass().getName());
     private UserQueryBean userQueryBean = new UserQueryBean();
     private PlannerQueryBean plannerQueryBean = new PlannerQueryBean();
     private MedicineQueryBean medicineQueryBean = new MedicineQueryBean();
@@ -431,6 +435,39 @@ public class Facade {
             System.out.println(e.getMessage());
         }
         return null;
-    };
+    }
+
+    /**
+     * Single method for searching patients: manages both the complete list (empty lists)
+     * and filtered searches, always with pagination
+     */
+    public List<PatientBean> findPatientsPaginated(List<String> keys, List<Object> values, int page, int size, UserBean user) {
+        try {
+            if (isUserAuthorized(user.getUsername(), 1)) {
+                // Chiama il metodo del Bean
+                return patientQueryBean.findDocumentsPaginated(keys, values, page, size);
+            } else {
+                throw new Exception("Utente non autorizzato");
+            }
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Errore Facade search: {0}", e.getMessage());
+            return new ArrayList<>(); // Ritorna lista vuota per sicurezza
+        }
+    }
+
+    /**
+     * Method for counting the total results of a search (or the entire database if filters are empty).
+     * Used to calculate the number of pages.
+     */
+    public long countPatientsFiltered(List<String> keys, List<Object> values, UserBean user) {
+        try {
+            if (isUserAuthorized(user.getUsername(), 1)) {
+                return patientQueryBean.countPatientsFiltered(keys, values);
+            }
+        } catch (Exception e) {
+            logger.log(Level.SEVERE,"Errore Facade count: {0}", e.getMessage());
+        }
+        return 0;
+    }
 
 }
