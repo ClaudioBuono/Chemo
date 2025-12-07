@@ -39,7 +39,7 @@ for (let i = 0; i < TARGET_PATIENTS; i++) {
     const medsList = [];
     medsList.push({
         "dose": NumberInt(Math.floor(Math.random() * 500) + 50),
-        "medicineId": randomMed._id.toString()
+        "medicineId": randomMed._id.str
     });
 
     // Construct the Patient document

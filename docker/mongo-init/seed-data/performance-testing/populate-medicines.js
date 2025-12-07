@@ -28,6 +28,9 @@ for (let i = 0; i < TARGET_MEDICINES; i++) {
     let brand = brands[Math.floor(Math.random() * brands.length)];
     let form = forms[Math.floor(Math.random() * forms.length)];
 
+    // Append a progressive index to ensure unique names
+    let uniqueName = mol + " - " + brand + " (Ref. " + (i + 1) + ")";
+
     // Generate random sub-documents (packages)
     let packages = [];
     let numPackages = Math.floor(Math.random() * 5) + 1; // Random number between 1 and 5
@@ -47,7 +50,7 @@ for (let i = 0; i < TARGET_MEDICINES; i++) {
 
     // Construct the main medicine document
     let doc = {
-        "name": mol + " - " + brand,
+        "name": uniqueName, // Use the generated unique name
         "ingredients": mol + " " + form,
         "amount": NumberInt(packages.length),
         "package": packages,
@@ -68,4 +71,4 @@ for (let i = 0; i < TARGET_MEDICINES; i++) {
 // Execute any remaining operations in the queue (e.g., if total is not a multiple of BATCH_SIZE)
 if (count % BATCH_SIZE !== 0) { bulk.execute(); }
 
-print("✅ Finished generating medicines");
+print("✅ Finished generating " + count + " unique medicines");
