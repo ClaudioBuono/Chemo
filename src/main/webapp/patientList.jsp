@@ -15,6 +15,7 @@
     <title>Chemo | Storico pazienti</title>
     <script src="./static/scripts/search.js"></script>
     <script src="./static/scripts/patient.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/styles/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
@@ -34,6 +35,45 @@
             }
         } else {
 %>
+
+<%
+    // Recupera gli attributi impostati dal Servelt/Controller
+
+    ArrayList<PatientBean> patients = (ArrayList<PatientBean>) request.getAttribute("patientsResult");
+
+    // Total Pages (già calcolato nel backend usando totalRecords / PAGE_SIZE)
+    int totalPages = 1; // Default
+    if (request.getAttribute("totalPages") != null) {
+        totalPages = (Integer) request.getAttribute("totalPages");
+    }
+
+    // Current Page (già determinato dal backend)
+    int currentPage = 1; // Default
+    if (request.getAttribute("currentPage") != null) {
+        currentPage = (Integer) request.getAttribute("currentPage");
+    }
+
+    // Dimensione fissa del range di pagine da mostrare
+    int rangeSize = 9;
+
+    // Calcola la pagina di inizio e fine del range visibile
+    int startPage = Math.max(1, currentPage - (rangeSize / 2));
+    int endPage = Math.min(totalPages, startPage + rangeSize - 1);
+
+    // Aggiusta startPage se siamo vicini alla fine
+    if (endPage - startPage + 1 < rangeSize) {
+        startPage = Math.max(1, endPage - rangeSize + 1);
+    }
+
+    // Parametri di ricerca
+    String searchParams = ""; // Default
+    if (request.getAttribute("searchParams") != null) {
+        searchParams = (String) request.getAttribute("searchParams");
+    }
+
+%>
+
+
 <header>
     <jsp:include page="./static/templates/userHeaderLogged.html"/>
 </header>
@@ -89,27 +129,60 @@
                 </div>
             </div>
         </form>
-        <div id="patient-list">
+
+        <div class="pagination-container">
+            <nav aria-label="Patient pagination">
+                <ul class="pagination">
+                    <% if(currentPage > 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <% } %>
+
+                    <% for(int i = startPage; i <= endPage; i++) { %>
+                    <li class="page-item <%= (i == currentPage) ? "active disabled" : "" %>">
+                        <a class="page-link"
+                           href="PatientServlet?page=<%= i %><%= searchParams %>">
+                            <%= i %>
+                        </a>
+                    </li>
+                    <% } %>
+
+                    <% if(currentPage < totalPages) { %>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="PatientServlet?page=<%= currentPage + 1 %><%= searchParams %>"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+            </nav>
+        </div>
+
+        <div id="patient-list" class="patient-list">
             <!-- Si itera fino a quando ci sono risultati-->
             <%
-                // Get patients from servlet
-                ArrayList<PatientBean> patients = (ArrayList<PatientBean>) request.getAttribute("patientsResult");
 
                 if (patients.size() == 0) {
                     //visualizzazione messaggio nessun paziente trovato
             %>
-            <div class="result-box-container">
-                <h2 class="no-result">Nessun paziente trovato</h2>
-            </div>
-            <%
-                    } else {
-                        String patientStatus;
-                        for (PatientBean patient:patients) {
-                            //visualizzazione box singolo paziente
-                            if (patient.getStatus())
-                                patientStatus = "status-available";
-                            else
-                                patientStatus = "status-unavailable";
+                <div class="result-box-container">
+                    <h2 class="no-result">Nessun paziente trovato</h2>
+                </div>
+                <%
+                } else {
+                    String patientStatus;
+
+                    for (PatientBean patient:patients) {
+                        //visualizzazione box singolo paziente
+                        if (patient.getStatus())
+                            patientStatus = "status-available";
+                        else
+                            patientStatus = "status-unavailable";
             %>
             <div class="result-box-container">
                 <button type="submit" id="patient-box-id" class="box" onclick="redirectToPatientDetails('<%=patient.getPatientId()%>')">
