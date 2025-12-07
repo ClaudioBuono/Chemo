@@ -38,10 +38,10 @@ jobs:
             -v ${{ github.workspace }}/docker/mongo-init/seed-data:/import-data \
             mongo:5.0 \
             bash -c '
-              mongoimport --host localhost --db Chemo --collection user --drop --file /import-data/init/user.json --jsonArray &&
-              mongoimport --host localhost --db Chemo --collection medicine --drop --file /import-data/init/medicine.json --jsonArray &&
-              mongoimport --host localhost --db Chemo --collection patient --drop --file /import-data/init/patient.json --jsonArray &&
-              mongoimport --host localhost --db Chemo --collection planner --drop --file /import-data/init/planner.json --jsonArray
+              mongoimport --host localhost --db Chemo_TEST --collection user --drop --file /import-data/init/user.json --jsonArray &&
+              mongoimport --host localhost --db Chemo_TEST --collection medicine --drop --file /import-data/init/medicine.json --jsonArray &&
+              mongoimport --host localhost --db Chemo_TEST --collection patient --drop --file /import-data/init/patient.json --jsonArray &&
+              mongoimport --host localhost --db Chemo_TEST --collection planner --drop --file /import-data/init/planner.json --jsonArray
             '
           echo "✅ Data loaded!"
 
