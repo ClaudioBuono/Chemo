@@ -1,5 +1,7 @@
 package queryBean;
 
+import connector.DatabaseConnector;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,7 +32,13 @@ class CompletePatientProfileTest {
 
     @BeforeEach
     void setUp() {
+        DatabaseConnector.setDbName("Chemo_TEST");
         MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() {
+        DatabaseConnector.setDbName("Chemo");
     }
 
     //TC_UC_PM_05_10
