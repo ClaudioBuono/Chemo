@@ -46,7 +46,6 @@ public class PatientServlet extends HttpServlet {
             } catch (final IOException e) {
                 logger.log(Level.SEVERE, e.getMessage(), e);
             }
-
             return;
         }
 
@@ -54,7 +53,6 @@ public class PatientServlet extends HttpServlet {
         final String id = request.getParameter("id");
         if (id != null) {
             redirectToPatientDetailsPage(request, response, id, user);
-
             return;
         }
 
@@ -72,21 +70,28 @@ public class PatientServlet extends HttpServlet {
             }
         }
 
-        // Filters
+        // Filters & Parameters building
         ArrayList<String> keys = new ArrayList<>();
         ArrayList<Object> values = new ArrayList<>();
 
         // Maintain parameters link inside JSP (ex: &name=Mario&page=2)
         final StringBuilder searchParams = buildParameters(request, keys, values);
 
-
-        // If action is null, keys and values will be null as well
-        // So all patients will be retrieved
+        // Retrieve Data (Optimized Query with Projection & Pagination)
         final ArrayList<PatientBean> paginatedResult = (ArrayList<PatientBean>) facade.findPatientsPaginated(keys, values, page, PAGE_SIZE, user);
+        final long totalRecords = facade.countPatientsFiltered(keys, values, user);
 
+        // If the browser already has this exact data, send 304 and stop.
+        // This saves 100% of JSP rendering CPU and Response Body bandwidth.
+        if (manageETagCache(request, response, paginatedResult, page, totalRecords)) {
+            return;
+        }
+
+        // ============================
+        // PREPARE JSP RESPONSE
+        // ============================
 
         // Calculate total pages
-        final long totalRecords = facade.countPatientsFiltered(keys, values, user);
         int totalPages = (int) Math.ceil((double) totalRecords / PAGE_SIZE);
         if (totalPages == 0) totalPages = 1; // Avoid "Page 1 of 0"
 
@@ -95,9 +100,9 @@ public class PatientServlet extends HttpServlet {
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
 
-
         // Pass parameter string to make "next" and "previous" buttons work during search
         request.setAttribute("searchParams", searchParams.toString());
+
         final RequestDispatcher dispatcher = request.getRequestDispatcher("patientList.jsp");
         try {
             dispatcher.forward(request, response);
@@ -106,7 +111,6 @@ public class PatientServlet extends HttpServlet {
         } catch (final IOException e) {
             logger.log(Level.SEVERE, "IOException: ", e);
         }
-
     }
 
     @Override
@@ -284,6 +288,36 @@ public class PatientServlet extends HttpServlet {
         }
 
         return searchParams;
+    }
+
+    /**
+     * Implements the Conditional GET logic (ETag).
+     * Calculates a unique hash for the current data view. If it matches the client's cache,
+     * returns 304 Not Modified to save bandwidth and server CPU (JSP rendering).
+     */
+    private boolean manageETagCache(final HttpServletRequest request, final HttpServletResponse response,
+                                    final ArrayList<PatientBean> results, final int page, final long totalRecords) {
+
+        // Calculate the unique signature (Hash) of the visible data.
+        final String contentSignature = results.toString() + page + totalRecords;
+
+        // Generate the ETag (W/ indicates a "Weak ETag", sufficient for semantic comparison)
+        final String eTag = "W/\"" + contentSignature.hashCode() + "\"";
+
+        // Check the header sent by the browser
+        final String incomingETag = request.getHeader("If-None-Match");
+
+        // Compare the ETags
+        if (incomingETag != null && incomingETag.equals(eTag)) {
+            // MATCH. he client has the latest version.
+            // Return 304. The server will NOT send the JSP body.
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return true; // Stop execution
+        }
+
+        // No MATCH. Set the ETag for the next visit and proceed.
+        response.setHeader("ETag", eTag);
+        return false;
     }
 
     // ==============================
