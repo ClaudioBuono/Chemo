@@ -1,6 +1,7 @@
 package patientmanagement.application;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TherapyBean {
 
@@ -69,5 +70,17 @@ public class TherapyBean {
                 ", duration=" + duration +
                 ", frequency=" + frequency +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TherapyBean that = (TherapyBean) o;
+        return sessions == that.sessions;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(sessions);
     }
 }
