@@ -1,8 +1,6 @@
 package medicinemanagement.application;
 
 import connector.Facade;
-import patientmanagement.application.TherapyBean;
-import patientmanagement.application.TherapyMedicineBean;
 import userManagement.application.UserBean;
 
 import javax.servlet.RequestDispatcher;
@@ -11,163 +9,189 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet("/MedicineServlet")
 public class MedicineServlet extends HttpServlet {
     private static final Facade facade = new Facade();
+    private final Logger logger = Logger.getLogger(MedicineServlet.class.getName());
+    private static final int PAGE_SIZE = 10;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Recupero dalla request il parametro id del medicinale
-        String id = request.getParameter("id");
+    protected void doGet(final HttpServletRequest request, final HttpServletResponse response) {
+        // Check if user is logged in
+        final HttpSession session = request.getSession(false);
+        final UserBean user = (session != null) ? (UserBean) session.getAttribute("currentSessionUser") : null;
 
+        if (user == null) {
+            try {
+                response.sendRedirect("error401.jsp");
+            } catch (final IOException e) {
+                logger.log(Level.SEVERE, "Redirect failed: ", e);
+            }
+            return;
+        }
+
+        // Check if a single medicine is required
+        final String id = request.getParameter("id");
         if (id != null) {
-            //Recupero l'utente dalla sessione
-            UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
+            redirectToMedicineDetailsPage(request, response, id, user);
+            return;
+        }
 
-            //Cerco il medicinale richiesto
-            ArrayList<MedicineBean> medicine = facade.findMedicines("_id", id, user);
+        // =======================
+        // PAGINATED LIST & SEARCH
+        // =======================
 
-            //Imposto i dati del paziente come attributo
-            request.setAttribute("medicine", medicine.get(0));
+        // Pagination parameters
+        int page = 1;
+        if (request.getParameter("page") != null) {
+            try {
+                page = Integer.parseInt(request.getParameter("page"));
+            } catch (final NumberFormatException e) {
+                logger.log(Level.WARNING, "Invalid page number, defaulting to 1", e);
+            }
+        }
 
-            //Reindirizzo alla pagina del paziente
-            getServletContext().getRequestDispatcher(response.encodeURL(response.encodeURL("/medicineDetails.jsp"))).forward(request, response);
+        // Filters & Parameters building
+        ArrayList<String> keys = new ArrayList<>();
+        ArrayList<Object> values = new ArrayList<>();
+
+        // Maintain parameters link inside JSP (ex: &medicineName=Paracetamol&page=2)
+        final StringBuilder searchParams = buildParameters(request, keys, values);
+
+        // Retrieve Data
+        final ArrayList<MedicineBean> paginatedResult = (ArrayList<MedicineBean>) facade.findMedicinesPaginated(keys, values, page, PAGE_SIZE, user);
+
+        // ============================
+        // PREPARE JSP RESPONSE
+        // ============================
+
+        // Calculate total pages
+        final long totalRecords = facade.countMedicinesFiltered(keys, values, user);
+        int totalPages = (int) Math.ceil((double) totalRecords / PAGE_SIZE);
+        if (totalPages == 0) totalPages = 1;
+
+        // Send data to JSP
+        request.setAttribute("medicinesResult", paginatedResult); // NOTA: Ho uniformato il nome a 'medicinesResult'
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+
+        // Pass parameter string to make "next" and "previous" buttons work during search
+        request.setAttribute("searchParams", searchParams.toString());
+
+        final RequestDispatcher dispatcher = request.getRequestDispatcher("medicinesList.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (final ServletException | IOException e) {
+            logger.log(Level.SEVERE, "Forwarding failed: ", e);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Recupero dalla request il parametro action
         String action = request.getParameter("action");
-
-        //Recupero l'utente dalla sessione
         UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
 
         try {
-            switch (action) {
-                case "insertMedicine" -> { //Inserimento medicinale
-                    //Inserisco il medicinale
-                    MedicineBean medicine = new MedicineBean(request.getParameter("name"), request.getParameter("ingredients"));
+            if (action == null) return;
 
-                    //Controllo di validità
-                    if(!(medicineValidation(medicine))) {
-                        response.addHeader("OPERATION_RESULT","false");
-                        response.addHeader("ERROR_MESSAGE","Aggiunta medicinale fallita: i dati inseriti non sono validi.");
-                    } else {
-                        facade.insertMedicine(medicine, user);
+            if (action.equals("insertMedicine")) {// Inserimento medicinale
+                MedicineBean medicine = new MedicineBean(request.getParameter("name"), request.getParameter("ingredients"));
 
-                        //Salvo l'id del medicinale nell'header della response, così da poterlo reindirizzare alla sua pagina
-                        response.addHeader("OPERATION_RESULT","true");
-                        response.addHeader("MEDICINE_ID", medicine.getId());
-                    }
+                // Validazione
+                if (!medicineValidation(medicine)) {
+                    response.addHeader("OPERATION_RESULT", "false");
+                    response.addHeader("ERROR_MESSAGE", "Aggiunta medicinale fallita: i dati inseriti non sono validi.");
+                } else {
+                    facade.insertMedicine(medicine, user);
+                    response.addHeader("OPERATION_RESULT", "true");
+                    response.addHeader("MEDICINE_ID", medicine.getId());
                 }
+            } else if (action.equals("insertPackage")) {// Inserimento confezione
+                String medicineId = request.getParameter("medicineId");
+                int capacity = Integer.parseInt(request.getParameter("capacity"));
+                Date expiryDate = dateParser(request.getParameter("expiryDate"));
 
-                case "insertPackage" -> { //Inserimento confezione medicinale
-                    //Recupero i parametri dalla request
-                    String medicineId = request.getParameter("medicineId");
-                    int capacity = Integer.parseInt(request.getParameter("capacity"));
-                    Date expiryDate = dateParser(request.getParameter("expiryDate"));
+                PackageBean medicinePackage = new PackageBean(true, expiryDate, capacity, "");
 
-                    //Creo una confezione
-                    PackageBean medicinePackage = new PackageBean(true, expiryDate, capacity, "");
-
-                    //Controllo validazione
-                    if (!packageValidation(medicinePackage)) {
-                        response.addHeader("OPERATION_RESULT","false");
-                        response.addHeader("ERROR_MESSAGE","Aggiunta confezione fallita: i dati inseriti non sono validi.");
-
-                    } else {
-                        // Inserisco la confezione nel medicinale
-                        facade.insertMedicinePackage(medicineId, medicinePackage, user);
-
-                        response.addHeader("OPERATION_RESULT","true");
-                    }
-                }
-
-                case "searchMedicine" -> { //Ricerca medicinale
-                    //Recupero i filtri
-                    ArrayList<String> keys = new ArrayList<>();
-                    ArrayList<Object> values = new ArrayList<>();
-                    String parameter;
-                    boolean findAll = true; //booleano che ci serve per capire se non sono stati selezionati parametri nella ricerca, quindi per indicare che serve una findAll
-
-                    //Nome
-                    parameter = request.getParameter("medicineName");
-                    if(parameter != null && !(parameter.equals(""))) {
-                        keys.add("name");
-                        values.add(parameter);
-                        findAll = false;
-                    }
-
-                    //Data di scadenza
-                    String date = request.getParameter("expiryDate");
-                    System.out.println("date: "+date);
-                    if(date != null && !date.equals("")) {
-                        keys.add("expiryDate");
-                        values.add(date);
-                        findAll = false;
-                    }
-
-                    //Stato
-                    parameter = request.getParameter("medicineStatus");
-                    if(parameter != null && !(parameter.equals("na"))) {
-                        keys.add("status");
-                        values.add(Boolean.parseBoolean(parameter));
-                        findAll = false;
-                    }
-
-                    //Creo l'ArrayList da restituire
-                    ArrayList<MedicineBean> medicines;
-
-                    //Se non sono stati selezionati parametri, allora dobbiamo effettuare una ricerca di tutti i medicinali
-                    if (findAll)
-                        medicines = facade.findAllMedicines(user);
-                    //Altrimenti ci serve una ricerca in base ai parametri selezionati
-                    else
-                        medicines = facade.findMedicines(keys, values, user);
-
-                    if(medicines.size() == 1) { //Un solo medicinale trovato
-                        //Aggiungo il parametro alla request
-                        request.setAttribute("medicineResults", medicines.get(0));
-
-                        //Reindirizzo alla pagina paziente
-                        response.sendRedirect("MedicineServlet?id=" + medicines.get(0).getId());
-                    } else { //Più medicinali trovati
-                        //Aggiungo il parametro alla request
-                        request.setAttribute("medicineResults", medicines);
-
-                        //Mando la richiesta con il dispatcher
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("medicinesList.jsp");
-                        requestDispatcher.forward(request, response);
-                    }
-                }
-
-                case "findAllMedicines" -> {
-                    //Recupero i medicinali
-                    ArrayList<MedicineBean> medicines = facade.findAllMedicines(user);
-
-                    //Aggiungo lista di medicinali e numero di medicinali alla response
-                    response.addHeader("medicineNumber", String.valueOf(medicines.size()));
-                    for (int i = 0; i < medicines.size(); i++) {
-                        response.addHeader("medicineId" + i, medicines.get(i).getId());
-                        response.addHeader("medicineName" + i, medicines.get(i).getName());
-                    }
-
-                    //Aggiungo l'header
-                    response.addHeader("OPERATION_RESULT","true");
+                if (!packageValidation(medicinePackage)) {
+                    response.addHeader("OPERATION_RESULT", "false");
+                    response.addHeader("ERROR_MESSAGE", "Aggiunta confezione fallita: i dati inseriti non sono validi.");
+                } else {
+                    facade.insertMedicinePackage(medicineId, medicinePackage, user);
+                    response.addHeader("OPERATION_RESULT", "true");
                 }
             }
+        } catch (final Exception e) {
+            logger.log(Level.SEVERE, "Error in doPost: {0}", e.getMessage());
         }
-        catch (Throwable e) {
-            System.out.println(e.getMessage());
+    }
+
+    // ==============================
+    // doGet HELPER METHODS
+    // ==============================
+    private void redirectToMedicineDetailsPage(final HttpServletRequest request, final HttpServletResponse response, final String id, final UserBean user) {
+        // Find the medicine
+        final ArrayList<MedicineBean> medicines = facade.findMedicines("_id", id, user);
+
+        if (!medicines.isEmpty()) {
+            request.setAttribute("medicine", medicines.get(0));
+            try {
+                // Redirect alla pagina dettagli
+                getServletContext().getRequestDispatcher(response.encodeURL("/medicineDetails.jsp")).forward(request, response);
+            } catch (final ServletException | IOException e) {
+                logger.log(Level.SEVERE, "Redirect to details failed: ", e);
+            }
+        } else {
+            try {
+                response.sendRedirect("error404.jsp"); // O gestisci l'errore come preferisci
+            } catch (final IOException e) {
+                logger.log(Level.SEVERE, "Redirect 404 failed", e);
+            }
+        }
+    }
+
+    private StringBuilder buildParameters(final HttpServletRequest request, final ArrayList<String> keys, final ArrayList<Object> values) {
+        final StringBuilder searchParams = new StringBuilder(128);
+
+        // Check if action requested is a filtered search
+        final String action = request.getParameter("action");
+        if ("searchMedicine".equals(action)) {
+            searchParams.append("&action=searchMedicine");
+
+            // --- Name Filter ---
+            final String name = request.getParameter("medicineName");
+            if (name != null && !name.trim().isEmpty()) {
+                keys.add("name");
+                values.add(name.trim());
+                searchParams.append("&medicineName=").append(name.trim());
+            }
+
+            // --- Expiry Date Filter ---
+            final String expiryDate = request.getParameter("expiryDate");
+            if (expiryDate != null && !expiryDate.trim().isEmpty()) {
+                keys.add("expiryDate");
+                values.add(dateParser(expiryDate.trim()));
+                searchParams.append("&expiryDate=").append(expiryDate.trim());
+            }
+
+            // --- Status Filter ---
+            final String status = request.getParameter("medicineStatus");
+            if (status != null && !status.equals("na") && !status.isEmpty()) {
+                keys.add("status");
+                values.add(Boolean.parseBoolean(status));
+                searchParams.append("&medicineStatus=").append(status);
+            }
         }
 
+        return searchParams;
     }
 
     //Metodi di supporto
