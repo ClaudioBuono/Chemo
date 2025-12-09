@@ -37,16 +37,16 @@ public class MedicineQueryBean {
 
         //Crea il documento da inserire nella Collection
         Document document = createDocument(medicine);
-        if(medicine.getName().length() < 0 || medicine.getName().length() > 32){
-            System.out.println("ERROR: name length incorrect!");
+        if(medicine.getName().length() > 32){
+            logger.severe("ERROR: name length incorrect!");
             return false;
         }else if(medicine.getIngredients().length() > 100){
-            System.out.println("ERROR: ingredients length out of range!");
+            logger.severe("ERROR: ingredients length out of range!");
             return false;
         }
         //Inserisci il documento nella collection
         collection.insertOne(document);
-        System.out.println("Documento inserito con successo nella Collection");
+        logger.info("Documento inserito con successo nella Collection");
         return true;
     }
 
@@ -76,11 +76,11 @@ public class MedicineQueryBean {
         //Inserisci il documento nella collection
         collection.updateOne(medicineDocument, new Document("$push", packageDocument));
 
-        System.out.println("Documento inserito con successo nella Collection");
+        logger.info("Documento inserito con successo nella Collection");
     }
 
     //Inserimento collezione di documenti nella Collection
-    public void insertDocuments(ArrayList<MedicineBean> medicines) {
+    public void insertDocuments(List<MedicineBean> medicines) {
         //Recupera la Collection
         MongoCollection<Document> collection = getCollection();
 
@@ -94,7 +94,7 @@ public class MedicineQueryBean {
         //Inserisci i documenti nella collection
         collection.insertMany(docs);
 
-        System.out.println("Documenti inseriti con successo nella Collection");
+        logger.info("Documenti inseriti con successo nella Collection");
     }
 
     //Elimina documento dalla Collection
@@ -108,7 +108,7 @@ public class MedicineQueryBean {
         //Cancella il documento
         collection.deleteOne(filter);
 
-        System.out.println("Documento eliminato con successo nella Collection");
+        logger.info("Documento eliminato con successo nella Collection");
     }
 
     //Modifica di un documento
@@ -122,7 +122,7 @@ public class MedicineQueryBean {
         //Aggiorna il documento
         collection.updateOne(filter, Updates.set(key, valKey));
 
-        System.out.println("Documento aggiornato con successo nella Collection");
+        logger.info("Documento aggiornato con successo nella Collection");
     }
 
     //Ricerca di un documento nella Collection data una coppia (key, value)
@@ -149,62 +149,17 @@ public class MedicineQueryBean {
         return medicines;
     }
 
-    public ArrayList<MedicineBean> findDocument(ArrayList<String> key, ArrayList<Object> value) {
+    public ArrayList<MedicineBean> findDocument(List<String> key, List<Object> value) {
         //Recupera la Collection
         MongoCollection<Document> collection = getCollection();
 
         //Crea il filtro
-        Bson filter = null;
-        Bson finalFilter = null;
-        Pattern regex;
-        int i = 0;
-
-        do {
-            System.out.println("i: " + i + " filter: " + key.get(i));
-            //Controllo di che tipo di valore si tratta
-            switch (key.get(i)) {
-                case NAME -> { //Nome
-                    regex = Pattern.compile(Pattern.quote((String) value.get(i)), Pattern.CASE_INSENSITIVE);
-                    if (i == 0)
-                        finalFilter = Filters.eq(key.get(i), regex);
-                    else
-                        filter = Filters.eq(key.get(i), regex);
-                }
-
-                case STATUS -> { //Stato
-                    if((boolean) value.get(i)) { //Disponibile
-                        if (i == 0)
-                            finalFilter = Filters.gt(AMOUNT, 0);
-                        else
-                            filter = Filters.gt(AMOUNT, 0);
-                    } else { //Esaurito
-                        if (i == 0)
-                            finalFilter = Filters.eq(AMOUNT, 0);
-                        else
-                            filter = Filters.eq(AMOUNT, 0);
-                    }
-                }
-
-                case EXPIRY_DATE -> { //Data scadenza: medicinali con almeno un package in scadenza entro quella data
-                    if (i == 0)
-                        finalFilter = Document.parse("{'package': {$elemMatch: { expiryDate: { $lt: ISODate('"+value.get(i)+"')}}}}");
-                    else
-                        filter = Document.parse("{'package': {$elemMatch: { expiryDate: { $lt: ISODate('"+value.get(i)+"')}}}}");
-                }
-            }
-
-            if (i > 0)
-                finalFilter = Filters.and(finalFilter, filter);
-
-            i++;
-        } while (i < key.size());
-
-        System.out.println(finalFilter);
+        final Bson filter = buildFilter(key, value);
 
         //Cerca il documento
-        FindIterable<Document> iterDoc = collection.find(finalFilter);
+        final FindIterable<Document> iterDoc = collection.find(filter);
 
-        Iterator<Document> it = iterDoc.iterator();
+        final Iterator<Document> it = iterDoc.iterator();
         ArrayList<MedicineBean> medicines = new ArrayList<>();
 
         while (it.hasNext()) {
@@ -289,7 +244,7 @@ public class MedicineQueryBean {
         MongoDatabase mongoDatabase = DatabaseConnector.getDatabase();
 
         MongoCollection<Document> collection = mongoDatabase.getCollection("medicine");
-        System.out.println("Collection 'medicinale' recuperata con successo");
+        logger.info("Collection 'medicinale' recuperata con successo");
         return collection;
     }
 
@@ -315,7 +270,7 @@ public class MedicineQueryBean {
     private ArrayList<PackageBean> convertToArray(List<Document> packages) {
         //Se non ci sono package restituisco null
         if (packages == null)
-            return null;
+            return new ArrayList<>();
 
         //Se ci sono package
 
@@ -359,13 +314,10 @@ public class MedicineQueryBean {
                         }
                     }
 
-                    // TODO: CONTROLLARE SE LA SERVLET PASSA UNA STRINGA O UN DATE
                     case EXPIRY_DATE -> {
                         // Logic: Find medicines with at least one package expiring BEFORE the given date.
                         // Uses $elemMatch to search inside the 'package' array.
-                        Date dateLimit = (Date) currentValue;
-
-                        // query: { 'package': { $elemMatch: { expiryDate: { $lt: dateLimit } } } }
+                        final Date dateLimit = (Date) currentValue;
                         filtersList.add(Filters.elemMatch(PACKAGE, Filters.lt(EXPIRY_DATE, dateLimit)));
                     }
 
