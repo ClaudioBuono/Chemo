@@ -11,6 +11,8 @@
 
 
 ## Scopo del sistema
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FClaudioBuono%2FChemo.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FClaudioBuono%2FChemo?ref=badge_shield)
+
 Lo scopo del sistema è fornire ai lavoratori del reparto di oncologia un servizio che migliori drasticamente
 l’iter da svolgere per effettuare la chemioterapia, comprendente lo sviluppo di un calendario e la gestione
 di medicinali per effettuare le terapie. Queste operazioni, essendo svolte da appositi impiegati, al fine di
@@ -49,3 +51,7 @@ Per effettuare l'installazione fare riferimento al <a href="https://github.com/C
 - <a href="https://github.com/amarcone42">Antonio Marcone</a>
 - <a href="https://github.com/Gianpyy">Gianpio Silvestri</a>
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FClaudioBuono%2FChemo.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FClaudioBuono%2FChemo?ref=badge_large)
