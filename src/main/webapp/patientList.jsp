@@ -4,7 +4,7 @@
   Date: 16/01/2023
   Time: 13:23
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java"
+<%@ page contentType="text/html;charset=UTF-8"
          import="connector.Facade"
          import="java.util.ArrayList"
          import="userManagement.application.UserBean"
@@ -15,11 +15,12 @@
     <title>Chemo | Storico pazienti</title>
     <script src="./static/scripts/search.js"></script>
     <script src="./static/scripts/patient.js"></script>
-    <link rel="stylesheet" type="text/css" href="static/styles/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
 <%
+    final Facade facade = new Facade();
+
     HttpSession sessione=request.getSession(false);
     if (sessione == null) {
         //redirect alla pagina di error 401 Unauthorized
@@ -108,9 +109,9 @@
                         <select id="search-patient-medicine" class="input-field" name="patientMedicine">
                             <option value="null" selected>Seleziona medicinale</option>
                             <%
-                                ArrayList<MedicineBean> medicines = new ArrayList<MedicineBean>();
-                                Facade facade = new Facade();
-                                medicines = facade.findAllMedicines(user);
+
+                                ArrayList<MedicineBean> medicines = facade.findAllMedicines(user);
+
                                 for (MedicineBean medicine: medicines) {
                             %>
                             <option value="<%=medicine.getId()%>"><%=medicine.getName()%></option>
@@ -167,7 +168,7 @@
                     <% } %>
 
                     <%-- Bottone per Pagina Successiva --%>
-                    <% if(currentPage < totalPages - rangeSize/2) { %>
+                    <% if(currentPage < totalPages) { %>
                     <li class="page-item">
                         <a class="page-link"
                            href="PatientServlet?page=<%= currentPage + 1 %><%= searchParams %>"
@@ -178,7 +179,7 @@
                     <% } %>
 
                     <%-- Bottone per Ultima Pagina --%>
-                    <% if(currentPage < totalPages) { %>
+                    <% if(currentPage < totalPages - rangeSize/2) { %>
                     <li class="page-item">
                         <a class="page-link"
                            href="PatientServlet?page=<%= totalPages %><%= searchParams %>"
@@ -194,7 +195,7 @@
         <div id="patient-list" class="patient-list">
             <%
 
-                if (patients.size() == 0) {
+                if (patients.isEmpty()) {
                     //visualizzazione messaggio nessun paziente trovato
             %>
             <div class="result-box-container">
@@ -220,8 +221,8 @@
                         </div>
                         <div class="column icon <%=patientStatus%> right">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
                             </svg>
                         </div>
                     </div>
