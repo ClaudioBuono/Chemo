@@ -53,8 +53,9 @@
         currentPage = (Integer) request.getAttribute("currentPage");
     }
 
+
     // Dimensione fissa del range di pagine da mostrare
-    int rangeSize = 9;
+    int rangeSize = 8;
 
     // Calcola la pagina di inizio e fine del range visibile
     int startPage = Math.max(1, currentPage - (rangeSize / 2));
@@ -129,18 +130,33 @@
                 </div>
             </div>
         </form>
-
         <div class="pagination-container">
             <nav aria-label="Patient pagination">
                 <ul class="pagination">
+
+                    <%-- Bottone per Pagina 1 --%>
+                    <% if(currentPage > rangeSize/2 ) { %>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="PatientServlet?page=1<%= searchParams %>"
+                           aria-label="First">
+                            <span aria-hidden="true">1</span>
+                        </a>
+                    </li>
+                    <% } %>
+
+                    <%-- Bottone per Pagina Precedente --%>
                     <% if(currentPage > 1) { %>
                     <li class="page-item">
-                        <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+                        <a class="page-link"
+                           href="PatientServlet?page=<%= currentPage - 1 %><%= searchParams %>"
+                           aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <% } %>
 
+                    <%-- Pagine Numeriche (range visibile) --%>
                     <% for(int i = startPage; i <= endPage; i++) { %>
                     <li class="page-item <%= (i == currentPage) ? "active disabled" : "" %>">
                         <a class="page-link"
@@ -150,7 +166,8 @@
                     </li>
                     <% } %>
 
-                    <% if(currentPage < totalPages) { %>
+                    <%-- Bottone per Pagina Successiva --%>
+                    <% if(currentPage < totalPages - rangeSize/2) { %>
                     <li class="page-item">
                         <a class="page-link"
                            href="PatientServlet?page=<%= currentPage + 1 %><%= searchParams %>"
@@ -159,36 +176,46 @@
                         </a>
                     </li>
                     <% } %>
+
+                    <%-- Bottone per Ultima Pagina --%>
+                    <% if(currentPage < totalPages) { %>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="PatientServlet?page=<%= totalPages %><%= searchParams %>"
+                           aria-label="Last">
+                            <span aria-hidden="true"><%= totalPages %></span>
+                        </a>
+                    </li>
+                    <% } %>
                 </ul>
             </nav>
         </div>
 
         <div id="patient-list" class="patient-list">
-            <!-- Si itera fino a quando ci sono risultati-->
             <%
 
                 if (patients.size() == 0) {
                     //visualizzazione messaggio nessun paziente trovato
             %>
-                <div class="result-box-container">
-                    <h2 class="no-result">Nessun paziente trovato</h2>
-                </div>
-                <%
-                } else {
-                    String patientStatus;
+            <div class="result-box-container">
+                <h2 class="no-result">Nessun paziente trovato</h2>
+            </div>
+            <%
+            } else {
+                String patientStatus;
 
-                    for (PatientBean patient:patients) {
-                        //visualizzazione box singolo paziente
-                        if (patient.getStatus())
-                            patientStatus = "status-available";
-                        else
-                            patientStatus = "status-unavailable";
+                for (PatientBean patient:patients) {
+                    //visualizzazione box singolo paziente
+                    if (patient.getStatus())
+                        patientStatus = "status-available";
+                    else
+                        patientStatus = "status-unavailable";
             %>
             <div class="result-box-container">
                 <button type="submit" id="patient-box-id" class="box" onclick="redirectToPatientDetails('<%=patient.getPatientId()%>')">
                     <div class="first-row">
                         <div class="column left">
-                            <h2 class="result-name"><%=patient.getName()%> <%=patient.getSurname()%></h2>
+                            <h2 class="result-name"><%=patient.getName()%> <%=patient.getSurname()%></h2 >
                             <p><%=patient.getTaxCode()%></p>
                         </div>
                         <div class="column icon <%=patientStatus%> right">
