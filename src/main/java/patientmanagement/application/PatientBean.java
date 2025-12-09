@@ -6,6 +6,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class PatientBean {
     //Parametri
@@ -164,5 +165,17 @@ public class PatientBean {
     private String dateParser(Date date) {
         Format formatter = new SimpleDateFormat("yyyy-MM-dd");
         return formatter.format(date);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        final PatientBean that = (PatientBean) o;
+        return Objects.equals(patientId, that.patientId) && Objects.equals(taxCode, that.taxCode) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(condition, that.condition) && Objects.equals(therapy, that.therapy);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(patientId, taxCode, name, surname, condition, therapy);
     }
 }
