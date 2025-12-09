@@ -73,9 +73,9 @@ public class TherapyBean {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        TherapyBean that = (TherapyBean) o;
+        final TherapyBean that = (TherapyBean) o;
         return sessions == that.sessions;
     }
 

@@ -168,9 +168,9 @@ public class PatientBean {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        PatientBean that = (PatientBean) o;
+        final PatientBean that = (PatientBean) o;
         return Objects.equals(patientId, that.patientId) && Objects.equals(taxCode, that.taxCode) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(condition, that.condition) && Objects.equals(therapy, that.therapy);
     }
 
