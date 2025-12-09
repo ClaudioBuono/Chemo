@@ -6,21 +6,29 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import connector.DatabaseConnector;
-import medicinemanagement.application.PackageBean;
 import medicinemanagement.application.MedicineBean;
+import medicinemanagement.application.PackageBean;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import static com.mongodb.client.model.Filters.elemMatch;
-
 public class MedicineQueryBean {
+    final Logger logger = Logger.getLogger(getClass().getName());
+
+    private static final String NAME = "name";
+    private static final String STATUS = "status";
+    private static final String EXPIRY_DATE = "expiryDate";
+    private static final String PACKAGE = "package";
+    private static final String AMOUNT = "amount";
+    private static final String INGREDIENTS = "ingredients";
 
     //Inserimento singolo documento nella Collection
     public boolean insertDocument(MedicineBean medicine) {
@@ -54,8 +62,8 @@ public class MedicineQueryBean {
         Document medicineDocument = collection.find(filter).first();
 
         //Aggiorna l'amount di package
-        int amount = medicineDocument.getInteger("amount");
-        collection.updateOne(medicineDocument, new Document("$set", new Document("amount", amount+1)));
+        final int amount = medicineDocument.getInteger(AMOUNT);
+        collection.updateOne(medicineDocument, new Document("$set", new Document(AMOUNT, amount+1)));
 
         //Aggiorna l'id del package
         newPackage.setPackageId(String.valueOf(amount));
@@ -134,8 +142,7 @@ public class MedicineQueryBean {
 
         while (it.hasNext()) {
             Document document = it.next();
-            ArrayList<PackageBean> packageBeans = convertToArray(document.getList("package", Document.class));
-            MedicineBean medicine = new MedicineBean(document.get(("_id")).toString(), document.getString("name"), document.getString("ingredients"), document.getInteger("amount"), packageBeans);
+            final MedicineBean medicine = parseMedicine(document);
             medicines.add(medicine);
         }
 
@@ -156,7 +163,7 @@ public class MedicineQueryBean {
             System.out.println("i: " + i + " filter: " + key.get(i));
             //Controllo di che tipo di valore si tratta
             switch (key.get(i)) {
-                case "name" -> { //Nome
+                case NAME -> { //Nome
                     regex = Pattern.compile(Pattern.quote((String) value.get(i)), Pattern.CASE_INSENSITIVE);
                     if (i == 0)
                         finalFilter = Filters.eq(key.get(i), regex);
@@ -164,21 +171,21 @@ public class MedicineQueryBean {
                         filter = Filters.eq(key.get(i), regex);
                 }
 
-                case "status" -> { //Stato
+                case STATUS -> { //Stato
                     if((boolean) value.get(i)) { //Disponibile
                         if (i == 0)
-                            finalFilter = Filters.gt("amount", 0);
+                            finalFilter = Filters.gt(AMOUNT, 0);
                         else
-                            filter = Filters.gt("amount", 0);
+                            filter = Filters.gt(AMOUNT, 0);
                     } else { //Esaurito
                         if (i == 0)
-                            finalFilter = Filters.eq("amount", 0);
+                            finalFilter = Filters.eq(AMOUNT, 0);
                         else
-                            filter = Filters.eq("amount", 0);
+                            filter = Filters.eq(AMOUNT, 0);
                     }
                 }
 
-                case "expiryDate" -> { //Data scadenza: medicinali con almeno un package in scadenza entro quella data
+                case EXPIRY_DATE -> { //Data scadenza: medicinali con almeno un package in scadenza entro quella data
                     if (i == 0)
                         finalFilter = Document.parse("{'package': {$elemMatch: { expiryDate: { $lt: ISODate('"+value.get(i)+"')}}}}");
                     else
@@ -202,8 +209,7 @@ public class MedicineQueryBean {
 
         while (it.hasNext()) {
             Document document = it.next();
-            ArrayList<PackageBean> packageBeans = convertToArray(document.getList("package", Document.class));
-            MedicineBean medicine = new MedicineBean(document.get(("_id")).toString(), document.getString("name"), document.getString("ingredients"), document.getInteger("amount"), packageBeans);
+            final MedicineBean medicine = parseMedicine(document);
             medicines.add(medicine);
         }
 
@@ -221,7 +227,8 @@ public class MedicineQueryBean {
         Document document = collection.find(filter).first();
 
         //Restituisce il medicinale
-        return new MedicineBean(document.get(("_id")).toString(), document.getString("name"), document.getString("ingredients"), document.getInteger("amount"), convertToArray(document.getList("package", Document.class)));
+        if (document == null) return null;
+        return parseMedicine(document);
     }
 
     public ArrayList<MedicineBean> findAll() {
@@ -236,12 +243,44 @@ public class MedicineQueryBean {
 
         while (it.hasNext()) {
             Document document = it.next();
-            ArrayList<PackageBean> packageBeans = convertToArray(document.getList("package", Document.class));
-            MedicineBean medicine = new MedicineBean(document.get(("_id")).toString(), document.getString("name"), document.getString("ingredients"), document.getInteger("amount"), packageBeans);
+            final MedicineBean medicine = parseMedicine(document);
             medicines.add(medicine);
         }
 
         return medicines;
+    }
+
+    /**
+     * Retrieves a paginated list of medicines based on dynamic filters.
+     */
+    public List<MedicineBean> findMedicinesPaginated(final List<String> keys, final List<Object> values, final int page, final int size) {
+        final MongoCollection<Document> collection = getCollection();
+
+        // Build the filter
+        final Bson filter = buildFilter(keys, values);
+
+        // Pagination query
+        final int skipCount = (page - 1) * size;
+        final ArrayList<MedicineBean> medicines = new ArrayList<>();
+        final FindIterable<Document> result = collection.find(filter)
+                .skip(skipCount)
+                .limit(size);
+
+        // Create medicine documents to return
+        for (final Document document : result) {
+            final MedicineBean m = parseMedicine(document);
+            m.setId(document.get("_id").toString());
+            medicines.add(m);
+        }
+
+        return medicines;
+    }
+
+    /**
+     * Counts the total number of documents matching the filters.
+     */
+    public long countMedicinesFiltered(final List<String> keys, final List<Object> values) {
+        return getCollection().countDocuments(buildFilter(keys, values));
     }
 
 
@@ -258,19 +297,19 @@ public class MedicineQueryBean {
         ObjectId objectId = new ObjectId();
         medicine.setId(objectId.toString());
         return new Document("_id", objectId)
-                .append("name", medicine.getName())
-                .append("ingredients", medicine.getIngredients())
-                .append("amount", medicine.getAmount())
-                .append("package", medicine.getPackages());
+                .append(NAME, medicine.getName())
+                .append(INGREDIENTS, medicine.getIngredients())
+                .append(AMOUNT, medicine.getAmount())
+                .append(PACKAGE, medicine.getPackages());
     }
 
     private Document createDocument(PackageBean box) {
         Document document = new Document("packageId", box.getPackageId())
-                .append("status", box.getStatus())
+                .append(STATUS, box.getStatus())
                 .append("capacity", box.getCapacity())
-                .append("expiryDate", box.getExpiryDate());
+                .append(EXPIRY_DATE, box.getExpiryDate());
 
-        return new Document("package", document);
+        return new Document(PACKAGE, document);
     }
 
     private ArrayList<PackageBean> convertToArray(List<Document> packages) {
@@ -284,10 +323,70 @@ public class MedicineQueryBean {
         ArrayList<PackageBean> packageArrayList = new ArrayList<>();
 
         for(Document d : packages)
-            packageArrayList.add(new PackageBean(d.getBoolean("status"), d.getDate("expiryDate"), d.getInteger("capacity"), d.getString("packageId")));
+            packageArrayList.add(new PackageBean(d.getBoolean(STATUS), d.getDate(EXPIRY_DATE), d.getInteger("capacity"), d.getString("packageId")));
 
         //Restituisco l'ArrayList
         return packageArrayList;
     }
 
+    /**
+     * Helper method to build the MongoDB Bson filter dynamically.
+     */
+    private Bson buildFilter(final List<String> keys, final List<Object> values) {
+        final List<Bson> filtersList = new ArrayList<>();
+
+        // Safety check: verify lists are not null and have the same size
+        final int keysSize = keys.size();
+        final int valuesSize = values.size();
+        if (keysSize == valuesSize) {
+            for (int i = 0; i < keysSize; ++i) {
+                final String currentKey = keys.get(i);
+                final Object currentValue = values.get(i);
+
+                switch (currentKey) {
+                    // Search by name using Regex (Case Insensitive)
+                    case NAME -> filtersList.add(Filters.regex(NAME, Pattern.quote(currentValue.toString()), "i"));
+
+                    // Logic based on stock availability:
+                    // true  -> Available (amount > 0)
+                    // false -> Out of stock (amount == 0)
+                    case STATUS -> {
+                        final boolean isAvailable = (Boolean) currentValue;
+                        if (isAvailable) {
+                            filtersList.add(Filters.gt(AMOUNT, 0));
+                        } else {
+                            filtersList.add(Filters.eq(AMOUNT, 0));
+                        }
+                    }
+
+                    // TODO: CONTROLLARE SE LA SERVLET PASSA UNA STRINGA O UN DATE
+                    case EXPIRY_DATE -> {
+                        // Logic: Find medicines with at least one package expiring BEFORE the given date.
+                        // Uses $elemMatch to search inside the 'package' array.
+                        Date dateLimit = (Date) currentValue;
+
+                        // query: { 'package': { $elemMatch: { expiryDate: { $lt: dateLimit } } } }
+                        filtersList.add(Filters.elemMatch(PACKAGE, Filters.lt(EXPIRY_DATE, dateLimit)));
+                    }
+
+                    default -> logger.log(Level.SEVERE, "Warning: Unrecognized filter key: {0}", currentKey);
+                }
+            }
+        }
+
+        // If list is empty, return an empty Document (find all), otherwise combine with AND
+        logger.log(Level.INFO, "Filters list : {0}", filtersList);
+        return filtersList.isEmpty() ? new Document() : Filters.and(filtersList);
+    }
+
+
+    private MedicineBean parseMedicine(final Document document) {
+        return new MedicineBean(
+                document.get(("_id")).toString(),
+                document.getString(NAME),
+                document.getString(INGREDIENTS),
+                document.getInteger(AMOUNT),
+                convertToArray(document.getList(PACKAGE, Document.class))
+        );
+    }
 }

@@ -38,7 +38,7 @@
             <h1 class="title">Medicinali</h1>
             <jsp:include page="./static/templates/loggedUserButtons.html"/>
         </div>
-        <form id="search-form" class="form box" action="MedicineServlet" method="post">
+        <form id="search-form" class="form box" action="MedicineServlet" method="get">
             <div class="title-section">
                 <h2 class="title">Ricerca</h2>
             </div>
@@ -68,16 +68,12 @@
             <!-- Si itera fino a quando ci sono risultati-->
             <%
                 ArrayList<MedicineBean> medicines = new ArrayList<MedicineBean>();
-                if (request.getAttribute("medicineResults") == null) {
-                    //nessuna richiesta di ricerca
-                    //si visualizzano tutti i pazienti
-                    Facade facade = new Facade();
-                    medicines = facade.findAllMedicines(user);
-                } else {
-                    medicines = (ArrayList<MedicineBean>) request.getAttribute("medicineResults");
+                medicines = (ArrayList<MedicineBean>) request.getAttribute("medicinesResult");
+                if (medicines == null) {
+                    medicines = new ArrayList<MedicineBean>();
                 }
 
-                if (medicines.size() == 0) {
+                if (medicines.isEmpty()) {
                     //visualizzazione messaggio nessun medicinale trovato
             %>
             <div class="result-box-container">

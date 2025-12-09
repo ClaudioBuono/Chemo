@@ -1,7 +1,7 @@
 package connector;
 
-import medicinemanagement.application.PackageBean;
 import medicinemanagement.application.MedicineBean;
+import medicinemanagement.application.PackageBean;
 import medicinemanagement.storage.MedicineQueryBean;
 import patientmanagement.application.PatientBean;
 import patientmanagement.application.TherapyBean;
@@ -296,6 +296,39 @@ public class Facade {
         }
 
         return null;
+    }
+
+    /**
+     * Single method for searching medicines: manages both the complete list (empty lists)
+     * and filtered searches, always with pagination
+     */
+    public List<MedicineBean> findMedicinesPaginated(final List<String> keys, final List<Object> values, final int page, final int size, final UserBean user) {
+        try {
+            if (isUserAuthorized(user.getUsername(), 1) || isUserAuthorized(user.getUsername(), 2)) {
+                return medicineQueryBean.findMedicinesPaginated(keys, values, page, size);
+            }
+        } catch (final Exception e) {
+            logger.log(Level.SEVERE, "Errore Facade search: {0}", e.getMessage());
+        }
+        return new ArrayList<>();
+    }
+
+    /**
+     * Method for counting the total results of a search (or the entire database if filters are empty).
+     * Used to calculate the number of pages.
+     */
+    public long countMedicinesFiltered(final List<String> keys, final List<Object> values, final UserBean user) {
+        try {
+            if (isUserAuthorized(user.getUsername(), 1) || isUserAuthorized(user.getUsername(), 2)) {
+                return medicineQueryBean.countMedicinesFiltered(keys, values);
+            } else {
+                throw new IllegalAccessException("Utente non autorizzato");
+            }
+
+        } catch (final Exception e) {
+            logger.log(Level.SEVERE, "Errore Facade count: {0}", e.getMessage());
+        }
+        return 0;
     }
 
     /*
