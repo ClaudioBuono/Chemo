@@ -299,3 +299,61 @@ a:visited:hover {
     width: auto;
     border-radius: 10px !important;
 }
+
+/* Contenitore della paginazione */
+.pagination-container {
+    width: 100%; /* o lascia senza width */
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+
+/* Lista dei numeri di pagina */
+.pagination {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+/* Singolo elemento della pagina */
+.pagination .page-item {
+    margin: 0 5px;
+}
+
+/* Link della pagina */
+.pagination .page-link {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #054789;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Hover sui link */
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+    color: #003366;
+}
+
+/* Pagina attiva */
+.pagination .page-item.active .page-link {
+    background-color: #054789;
+    color: #fff;
+    border-color: #054789;
+    cursor: default;
+}
+
+/* Disabilita il click sui link della pagina attiva */
+.pagination .page-item.active .page-link:hover {
+    background-color: #003366;
+    color: #fff;
+}
+
+/* Frecce di navigazione */
+.pagination .page-link span {
+    font-size: 16px;
+}
