@@ -80,7 +80,7 @@ public class MedicineQueryBean {
     }
 
     //Inserimento collezione di documenti nella Collection
-    public void insertDocuments(List<MedicineBean> medicines) {
+    public void insertDocuments(final List<MedicineBean> medicines) {
         //Recupera la Collection
         MongoCollection<Document> collection = getCollection();
 
@@ -127,7 +127,7 @@ public class MedicineQueryBean {
 
     //Ricerca di un documento nella Collection data una coppia (key, value)
 
-    public ArrayList<MedicineBean> findDocument(String key, Object value) {
+    public final ArrayList<MedicineBean> findDocument(final String key, Object value) {
         //Recupera la Collection
         MongoCollection<Document> collection = getCollection();
 
@@ -138,7 +138,7 @@ public class MedicineQueryBean {
         FindIterable<Document> iterDoc = collection.find(filter);
 
         Iterator<Document> it = iterDoc.iterator();
-        ArrayList<MedicineBean> medicines = new ArrayList<>();
+        final ArrayList<MedicineBean> medicines = new ArrayList<>();
 
         while (it.hasNext()) {
             Document document = it.next();
@@ -149,7 +149,7 @@ public class MedicineQueryBean {
         return medicines;
     }
 
-    public ArrayList<MedicineBean> findDocument(List<String> key, List<Object> value) {
+    public final List<MedicineBean> findDocument(final List<String> key, final List<Object> value) {
         //Recupera la Collection
         MongoCollection<Document> collection = getCollection();
 
