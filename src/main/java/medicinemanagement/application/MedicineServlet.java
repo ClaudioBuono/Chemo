@@ -3,7 +3,6 @@ package medicinemanagement.application;
 import connector.Facade;
 import userManagement.application.UserBean;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,72 +24,20 @@ public class MedicineServlet extends HttpServlet {
 
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) {
-        // Check if user is logged in
-        final HttpSession session = request.getSession(false);
-        final UserBean user = (session != null) ? (UserBean) session.getAttribute("currentSessionUser") : null;
+        // Get user session
+        final UserBean user = getSessionUserOrRedirect(request, response);
+        if (user == null) return;
 
-        if (user == null) {
-            try {
-                response.sendRedirect("error401.jsp");
-            } catch (final IOException e) {
-                logger.log(Level.SEVERE, "Redirect failed: ", e);
-            }
-            return;
-        }
-
-        // Check if a single medicine is required
+        // Routing logic
         final String id = request.getParameter("id");
-        if (id != null) {
-            redirectToMedicineDetailsPage(request, response, id, user);
-            return;
-        }
-
-        // =======================
-        // PAGINATED LIST & SEARCH
-        // =======================
-
-        // Pagination parameters
-        int page = 1;
-        if (request.getParameter("page") != null) {
-            try {
-                page = Integer.parseInt(request.getParameter("page"));
-            } catch (final NumberFormatException e) {
-                logger.log(Level.WARNING, "Invalid page number, defaulting to 1", e);
-            }
-        }
-
-        // Filters & Parameters building
-        ArrayList<String> keys = new ArrayList<>();
-        ArrayList<Object> values = new ArrayList<>();
-
-        // Maintain parameters link inside JSP (ex: &medicineName=Paracetamol&page=2)
-        final StringBuilder searchParams = buildParameters(request, keys, values);
-
-        // Retrieve Data
-        final ArrayList<MedicineBean> paginatedResult = (ArrayList<MedicineBean>) facade.findMedicinesPaginated(keys, values, page, PAGE_SIZE, user);
-
-        // ============================
-        // PREPARE JSP RESPONSE
-        // ============================
-
-        // Calculate total pages
-        final long totalRecords = facade.countMedicinesFiltered(keys, values, user);
-        int totalPages = (int) Math.ceil((double) totalRecords / PAGE_SIZE);
-        if (totalPages == 0) totalPages = 1;
-
-        // Send data to JSP
-        request.setAttribute("medicinesResult", paginatedResult); // NOTA: Ho uniformato il nome a 'medicinesResult'
-        request.setAttribute("currentPage", page);
-        request.setAttribute("totalPages", totalPages);
-
-        // Pass parameter string to make "next" and "previous" buttons work during search
-        request.setAttribute("searchParams", searchParams.toString());
-
-        final RequestDispatcher dispatcher = request.getRequestDispatcher("medicinesList.jsp");
         try {
-            dispatcher.forward(request, response);
-        } catch (final ServletException | IOException e) {
-            logger.log(Level.SEVERE, "Forwarding failed: ", e);
+            if (id != null) {
+                redirectToMedicineDetailsPage(request, response, id, user);
+            } else {
+                handleStandardMedicineListView(request, response, user);
+            }
+        } catch (final Exception e) {
+            logger.log(Level.SEVERE, "Error in doGet dispatching", e);
         }
     }
 
@@ -134,24 +81,89 @@ public class MedicineServlet extends HttpServlet {
         }
     }
 
-    // ==============================
-    // doGet HELPER METHODS
-    // ==============================
+    // ==========================================
+    // WORKER METHODS (Business Logic Handlers)
+    // ==========================================
+
+    /**
+     * Handles the standard "Medicine List" view.
+     * Manages pagination, filtering parameters, and view forwarding.
+     */
+    private void handleStandardMedicineListView(final HttpServletRequest request, final HttpServletResponse response, final UserBean user) {
+        // Setup Pagination
+        final int page = parsePageParameter(request);
+
+        // Build filters
+        final ArrayList<String> keys = new ArrayList<>();
+        final ArrayList<Object> values = new ArrayList<>();
+        final StringBuilder searchParams = buildParameters(request, keys, values);
+
+        // Retrieve data
+        final ArrayList<MedicineBean> paginatedResult = (ArrayList<MedicineBean>) facade.findMedicinesPaginated(keys, values, page, PAGE_SIZE, user);
+        final long totalRecords = facade.countMedicinesFiltered(keys, values, user);
+
+        // Setup JSP Attributes
+        setupPaginationAttributes(request, page, totalRecords);
+        request.setAttribute("medicinesResult", paginatedResult);
+        request.setAttribute("searchParams", searchParams.toString());
+
+        // Forward to View
+        try {
+            request.getRequestDispatcher("medicinesList.jsp").forward(request, response);
+        } catch (final ServletException | IOException e) {
+            logger.log(Level.SEVERE, "Forwarding to medicine list failed", e);
+        }
+    }
+
+    // ===============
+    // HELPER METHODS
+    // ===============
+
+    private UserBean getSessionUserOrRedirect(final HttpServletRequest request, final HttpServletResponse response) {
+        final HttpSession session = request.getSession(false);
+        final UserBean user = (session != null) ? (UserBean) session.getAttribute("currentSessionUser") : null;
+        if (user == null) {
+            try {
+                response.sendRedirect("error401.jsp");
+            } catch (final IOException e) {
+                logger.log(Level.SEVERE, "Redirect failed", e);
+            }
+        }
+        return user;
+    }
+
+    private int parsePageParameter(final HttpServletRequest request) {
+        if (request.getParameter("page") != null) {
+            try {
+                return Integer.parseInt(request.getParameter("page"));
+            } catch (final NumberFormatException e) {
+                logger.log(Level.WARNING, "Invalid page format, defaulting to 1", e);
+            }
+        }
+        return 1;
+    }
+
+    private void setupPaginationAttributes(final HttpServletRequest request, final int page, final long totalRecords) {
+        int totalPages = (int) Math.ceil((double) totalRecords / PAGE_SIZE);
+        if (totalPages == 0) totalPages = 1;
+
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+    }
+
     private void redirectToMedicineDetailsPage(final HttpServletRequest request, final HttpServletResponse response, final String id, final UserBean user) {
-        // Find the medicine
-        final ArrayList<MedicineBean> medicines = facade.findMedicines("_id", id, user);
+        final ArrayList<MedicineBean> medicines = (ArrayList<MedicineBean>) facade.findMedicines("_id", id, user);
 
         if (!medicines.isEmpty()) {
             request.setAttribute("medicine", medicines.get(0));
             try {
-                // Redirect alla pagina dettagli
                 getServletContext().getRequestDispatcher(response.encodeURL("/medicineDetails.jsp")).forward(request, response);
             } catch (final ServletException | IOException e) {
                 logger.log(Level.SEVERE, "Redirect to details failed: ", e);
             }
         } else {
             try {
-                response.sendRedirect("error404.jsp"); // O gestisci l'errore come preferisci
+                response.sendRedirect("error404.jsp");
             } catch (final IOException e) {
                 logger.log(Level.SEVERE, "Redirect 404 failed", e);
             }
@@ -193,6 +205,8 @@ public class MedicineServlet extends HttpServlet {
 
         return searchParams;
     }
+
+
 
     //Metodi di supporto
     private Date dateParser(String date) {
