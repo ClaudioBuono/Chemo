@@ -253,7 +253,7 @@ public class Facade {
         }
     };
 
-    public ArrayList<MedicineBean> findMedicines(String key, Object value, UserBean user){
+    public List<MedicineBean> findMedicines(String key, Object value, UserBean user){
         ArrayList<MedicineBean> medicines = new ArrayList<>();
         try{
             if(isUserAuthorized(user.getUsername(), 2) || isUserAuthorized(user.getUsername(), 1)){

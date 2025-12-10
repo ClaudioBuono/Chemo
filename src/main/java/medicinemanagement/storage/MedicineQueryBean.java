@@ -127,7 +127,7 @@ public class MedicineQueryBean {
 
     //Ricerca di un documento nella Collection data una coppia (key, value)
 
-    public final ArrayList<MedicineBean> findDocument(final String key, Object value) {
+    public final List<MedicineBean> findDocument(final String key, final Object value) {
         //Recupera la Collection
         MongoCollection<Document> collection = getCollection();
 
