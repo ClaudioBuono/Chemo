@@ -15,8 +15,12 @@ import userManagement.storage.UserQueryBean;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Facade {
+    final Logger logger = Logger.getLogger(getClass().getName());
     private UserQueryBean userQueryBean = new UserQueryBean();
     private PlannerQueryBean plannerQueryBean = new PlannerQueryBean();
     private MedicineQueryBean medicineQueryBean = new MedicineQueryBean();
@@ -404,33 +408,39 @@ public class Facade {
         }
 
         return patients;
-    };
-
-    public ArrayList<PatientBean> findPatients(ArrayList<String> key, ArrayList<Object> value, UserBean user){
-        ArrayList<PatientBean> patients = new ArrayList<>();
-        try{
-            if(isUserAuthorized(user.getUsername(), 1)) {
-                patients = patientQueryBean.findDocument(key, value);
-            }
-            else
-                throw new Exception("Utente non autorizzato alla visualizzazione dei pazienti");
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-
-        return patients;
     }
 
-    public ArrayList<PatientBean> findAllPatients(UserBean user){
-        try{
-            if(isUserAuthorized(user.getUsername(), 1))
-                return patientQueryBean.findAll();
-            else
-                throw new Exception("Utente non autorizzato alla visualizzazione dei pazienti");
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+    /**
+     * Single method for searching patients: manages both the complete list (empty lists)
+     * and filtered searches, always with pagination
+     */
+    public List<PatientBean> findPatientsPaginated(final List<String> keys, final List<Object> values, final int page, final int size, final UserBean user) {
+        try {
+            if (isUserAuthorized(user.getUsername(), 1)) {
+                // Chiama il metodo del Bean
+                return patientQueryBean.findDocumentsPaginated(keys, values, page, size);
+            } else {
+                throw new IllegalAccessException("Utente non autorizzato");
+            }
+        } catch (final Exception e) {
+            logger.log(Level.SEVERE, "Errore Facade search: {0}", e.getMessage());
+            return new ArrayList<>(); // Ritorna lista vuota per sicurezza
         }
-        return null;
-    };
+    }
+
+    /**
+     * Method for counting the total results of a search (or the entire database if filters are empty).
+     * Used to calculate the number of pages.
+     */
+    public long countPatientsFiltered(final List<String> keys, final List<Object> values, final UserBean user) {
+        try {
+            if (isUserAuthorized(user.getUsername(), 1)) {
+                return patientQueryBean.countPatientsFiltered(keys, values);
+            }
+        } catch (final Exception e) {
+            logger.log(Level.SEVERE,"Errore Facade count: {0}", e.getMessage());
+        }
+        return 0;
+    }
 
 }

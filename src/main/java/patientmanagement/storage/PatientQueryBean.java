@@ -14,9 +14,26 @@ import patientmanagement.application.TherapyBean;
 import patientmanagement.application.TherapyMedicineBean;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class PatientQueryBean {
+    private static final String NOTES = "notes";
+    private static final String CONDITION = "condition";
+    private static final String STATUS = "status";
+    private static final String PHONE_NUMBER = "phoneNumber";
+    private static final String CITY = "city";
+    private static final String BIRTH_DATE = "birthDate";
+    private static final String SURNAME = "surname";
+    private static final String NAME = "name";
+    private static final String TAX_CODE = "taxCode";
+    private static final String SESSIONS = "sessions";
+    private static final String DURATION = "duration";
+    private static final String FREQUENCY = "frequency";
+    private static final String MEDICINES = "medicines";
+    private static final String THERAPY = "therapy";
+    final Logger logger = Logger.getLogger(getClass().getName());
 
     //Inserimento singolo documento nella Collection
     public boolean insertDocument(PatientBean patient) {
@@ -24,31 +41,31 @@ public class PatientQueryBean {
         Date today = calendar.getTime();
         MongoCollection<Document> collection = getCollection();
 
-        if(patient.getName().length() < 1 || patient.getName().length() > 32){
-            System.out.println("ERROR: name lenght incorrect!");
+        if(patient.getName().isEmpty() || patient.getName().length() > 32){
+            logger.severe("ERROR: name lenght incorrect!");
             return false;
-        }else if(patient.getSurname().length() < 1 || patient.getSurname().length() > 32){
-            System.out.println("ERROR: surname lenght incorrect!");
+        }else if(patient.getSurname().isEmpty() || patient.getSurname().length() > 32){
+            logger.severe("ERROR: surname lenght incorrect!");
             return false;
         }else if(patient.getBirthDate().compareTo(today) > 0){
-            System.out.println("ERROR: date format incorrect!");
+            logger.severe("ERROR: date format incorrect!");
             return false;
-        }else if(patient.getCity().length() < 1 || patient.getCity().length() > 50){
-            System.out.println("ERROR: city lenght incorrect!");
+        }else if(patient.getCity().isEmpty() || patient.getCity().length() > 50){
+            logger.severe("ERROR: city lenght incorrect!");
             return false;
         }else if(patient.getTaxCode().length() != 16){
-            System.out.println("ERROR: taxcode lenght incorrect!");
+            logger.severe("ERROR: taxcode lenght incorrect!");
             return false;
         }else if(patient.getPhoneNumber().length() > 18){
-            System.out.println("ERROR: phoneNumber lenght incorrect!");
+            logger.severe("ERROR: phoneNumber lenght incorrect!");
             return false;
         }else if(patient.getNotes().length() > 255){
-            System.out.println("ERROR: notes lenght incorrect!");
+            logger.severe("ERROR: notes lenght incorrect!");
             return false;
         }else{
             Document document = createDocument(patient);
             collection.insertOne(document);
-            System.out.println("Documento inserito con successo nella Collection");
+            logger.severe("Documento inserito con successo nella Collection");
             return true;
         }
     }
@@ -67,25 +84,25 @@ public class PatientQueryBean {
         //Recupera il documento del paziente
         Document patientDoc = collection.find(filter).first();
         if(therapy.getSessions() <= 0){
-            System.out.println("ERROR: session non valid!");
+            logger.severe("ERROR: session non valid!");
             return false;
         }else if(therapy.getMedicines().size() < 0){
-            System.out.println("ERROR: not a single medicines found!");
+            logger.severe("ERROR: not a single medicine found!");
             return false;
         }else if(therapy.getFrequency() <= 0){
-            System.out.println("ERROR: frequency non valid!");
+            logger.severe("ERROR: frequency non valid!");
             return false;
         }else if(therapy.getDuration() <= 0){
-            System.out.println("ERROR: duration non valid!");
+            logger.severe("ERROR: duration non valid!");
             return false;
         }else if(patientDoc == null){
-            System.out.println("ERROR: patient with id " + patientId + " not found!");
+            logger.log(Level.SEVERE, "ERROR: patient with id {0} not found!", patientId);
             return false;
         }
 
         //Inserisci il documento della terapia nel documento del paziente
         collection.updateOne(patientDoc, new Document("$set", therapyDocument));
-        System.out.println("Documento inserito con successo nella Collection");
+        logger.info("Documento inserito con successo nella Collection");
         return true;
     }
 
@@ -103,7 +120,7 @@ public class PatientQueryBean {
 
         //Inserisci i documenti nella collection
         collection.insertMany(docs);
-        System.out.println("Documenti inseriti con successo nella Collection");
+        logger.info("Documenti inseriti con successo nella Collection");
         return true;
     }
 
@@ -118,7 +135,7 @@ public class PatientQueryBean {
         //Cancella il documento
         collection.deleteOne(filter);
 
-        System.out.println("Documento eliminato con successo nella Collection");
+        logger.info("Documento eliminato con successo nella Collection");
     }
 
     //Modifica di un documento
@@ -128,44 +145,44 @@ public class PatientQueryBean {
 
         //Crea il filtro
         Bson filter = Filters.eq(id, new ObjectId(valId));
-        if(key.equalsIgnoreCase("notes") && valKey.toString().length() < 1){
-            System.out.println("ERROR: new length notes too short");
+        if(key.equalsIgnoreCase(NOTES) && valKey.toString().isEmpty()){
+            logger.severe("ERROR: new length notes too short");
             return false;
-        }else if(key.equalsIgnoreCase("condition") && valKey.toString().length() < 1){
-            System.out.println("ERROR: condition too short");
+        }else if(key.equalsIgnoreCase(CONDITION) && valKey.toString().isEmpty()){
+            logger.severe("ERROR: condition too short");
             return false;
-        }else if(key.equalsIgnoreCase("frequency")){
+        }else if(key.equalsIgnoreCase(FREQUENCY)){
             String fr = String.valueOf(valKey);
             int frequency = Integer.parseInt(fr);
             if(frequency <= 0) {
-                System.out.println("ERROR: frequency cant be less than 1");
+                logger.severe("ERROR: frequency cant be less than 1");
                 return false;
             }
-        }else if(key.equalsIgnoreCase("duration")){
+        }else if(key.equalsIgnoreCase(DURATION)){
             String dr = String.valueOf(valKey);
             int duration = Integer.parseInt(dr);
             if(duration <= 0) {
-                System.out.println("ERROR: duration cant be less than 1");
+                logger.severe("ERROR: duration cant be less than 1");
                 return false;
             }
         }else if(key.equalsIgnoreCase("dose")){
             String ds = String.valueOf(valKey);
             int dose = Integer.parseInt(ds);
             if(dose <= 0) {
-                System.out.println("ERROR: dose cant be less than 1");
+                logger.severe("ERROR: dose cant be less than 1");
                 return false;
             }
         }else if(key.equalsIgnoreCase("numbers")){
             String ss = String.valueOf(valKey);
             int session = Integer.parseInt(ss);
             if(session < 0) {
-                System.out.println("ERROR: session cant be less than 1");
+                logger.severe("ERROR: session cant be less than 1");
                 return false;
             }
         }
         //Aggiorna il documento
         collection.updateOne(filter, Updates.set(key, valKey));
-        System.out.println("Documento aggiornato con successo nella Collection");
+        logger.info("Documento aggiornato con successo nella Collection");
         return true;
     }
 
@@ -173,7 +190,7 @@ public class PatientQueryBean {
         MongoCollection<Document> collection = getCollection();
         Bson filter = Filters.eq(id, new ObjectId(valId));
         collection.updateOne(filter, Updates.set(key, therapyBean));
-        System.out.println("Documento aggiornato con successo nella Collection");
+        logger.info("Documento aggiornato con successo nella Collection");
         return true;
     }
 
@@ -195,8 +212,7 @@ public class PatientQueryBean {
         while(it.hasNext()) {
             Document document = it.next();
             //ArrayList<TherapyBean> therapies = convertToArray(document.getList("therapy", TherapyBean.class));
-            PatientBean patient = new PatientBean(document.getString("taxCode"), document.getString("name"), document.getString("surname"), document.getDate("birthDate"),
-                    document.getString("city"), document.getString("phoneNumber"), document.getBoolean("status"), document.getString("condition"), document.getString("notes") ,therapyParser((Document) document.get("therapy")));
+            final PatientBean patient = parsePatient(document);
             patient.setPatientId(document.get("_id").toString());
             patients.add(patient);
         }
@@ -217,7 +233,7 @@ public class PatientQueryBean {
         //Ciclo sull'array di filtri
         do {
             switch (key.get(i)) {
-                case "name", "surname" -> { //Nome e Cognome lavorano con le regex
+                case NAME, SURNAME -> { //Nome e Cognome lavorano con le regex
                     regex = Pattern.compile(Pattern.quote((String) value.get(i)), Pattern.CASE_INSENSITIVE);
                     if (i == 0)
                         finalFilter = Filters.eq(key.get(i), regex);
@@ -225,7 +241,7 @@ public class PatientQueryBean {
                         filter = Filters.eq(key.get(i), regex);
                 }
 
-                case "status" -> { //Stato paziente
+                case STATUS -> { //Stato paziente
                     if (i == 0)
                         finalFilter = Filters.eq(key.get(i), value.get(i));
                     else
@@ -238,6 +254,8 @@ public class PatientQueryBean {
                     else
                         filter = Document.parse("{'therapy.medicines': {$elemMatch: {medicineId: '"+value.get(i)+"'}}}");
                 }
+
+                default -> logger.log(Level.SEVERE, "ERROR: illegal value for key {0}", key.get(i));
             }
 
             if (i > 0)
@@ -255,13 +273,47 @@ public class PatientQueryBean {
         //Itero su ogni documento restituito dalla query
         while(it.hasNext()) {
             Document document = it.next();
-            PatientBean patient = new PatientBean(document.getString("taxCode"), document.getString("name"), document.getString("surname"), document.getDate("birthDate"),
-                    document.getString("city"), document.getString("phoneNumber"), document.getBoolean("status"), document.getString("condition"), document.getString("notes") ,therapyParser((Document) document.get("therapy")));
+            final PatientBean patient = parsePatient(document);
             patient.setPatientId(document.get("_id").toString());
             patients.add(patient);
         }
 
         return patients;
+    }
+
+    // Paginated search, handles both full search and filtered search
+    public List<PatientBean> findDocumentsPaginated(final List<String> keys, final List<Object> values, final int page, final int size) {
+        final MongoCollection<Document> collection = getCollection();
+
+        // Create filters
+        final Bson finalQuery = buildFilter(keys, values);
+
+        // Pagination query
+        final int skipCount = (page - 1) * size;
+        final ArrayList<PatientBean> patients = new ArrayList<>();
+        final FindIterable<Document> result = collection.find(finalQuery)
+                .skip(skipCount)
+                .limit(size);
+
+        // Create patient documents to return
+        for (final Document document : result) {
+            final PatientBean p = parsePatient(document);
+            p.setPatientId(document.get("_id").toString());
+            patients.add(p);
+        }
+
+        return patients;
+    }
+
+    // Count the number of patients, handles both full search and filtered search
+    public long countPatientsFiltered(final List<String> keys, final List<Object> values) {
+        final MongoCollection<Document> collection = getCollection();
+
+        // Create filters
+        final Bson filter = buildFilter(keys, values);
+
+        // Counts documents in the collection (does not make a query)
+        return collection.countDocuments(filter);
     }
 
     public ArrayList<PatientBean> findAll() {
@@ -277,8 +329,7 @@ public class PatientQueryBean {
         //Itero su ogni documento restituito dalla query
         while(it.hasNext()) {
             Document document = it.next();
-            PatientBean patient = new PatientBean(document.getString("taxCode"), document.getString("name"), document.getString("surname"), document.getDate("birthDate"),
-                    document.getString("city"), document.getString("phoneNumber"), document.getBoolean("status"), document.getString("condition"), document.getString("notes") ,therapyParser((Document) document.get("therapy")));
+            final PatientBean patient = parsePatient(document);
             patient.setPatientId(document.get("_id").toString());
             patients.add(patient);
         }
@@ -298,11 +349,14 @@ public class PatientQueryBean {
         Document document = collection.find(filter).first();
 
         //ArrayList<TherapyBean> therapies = convertToArray(document.getList("therapy", TherapyBean.class));
-        PatientBean patient = new PatientBean(document.getString("taxCode"), document.getString("name"), document.getString("surname"), document.getDate("birthDate"),
-                document.getString("city"), document.getString("phoneNumber"), document.getBoolean("status"), document.getString("condition"), document.getString("notes"), therapyParser((Document) document.get("therapy")));
-        patient.setPatientId(value);
+        if(document != null) {
+            final PatientBean patient = parsePatient(document);
+            patient.setPatientId(value);
 
-        return patient;
+            return patient;
+        }
+
+        return null;
     }
 
 
@@ -311,7 +365,7 @@ public class PatientQueryBean {
         MongoDatabase mongoDatabase = DatabaseConnector.getDatabase();
 
         MongoCollection<Document> collection = mongoDatabase.getCollection("patient");
-        System.out.println("Collection 'patient' recuperata con successo");
+        logger.info("Collection 'patient' recuperata con successo");
         return collection;
     }
 
@@ -319,29 +373,29 @@ public class PatientQueryBean {
         ObjectId objectId = new ObjectId();
         patient.setPatientId(objectId.toString());
         return new Document("_id", objectId)
-                .append("taxCode", patient.getTaxCode())
-                .append("name", patient.getName())
-                .append("surname", patient.getSurname())
-                .append("birthDate", patient.getBirthDate())
-                .append("city", patient.getCity())
-                .append("phoneNumber", patient.getPhoneNumber())
-                .append("status", patient.getStatus())
-                .append("notes", patient.getNotes());
+                .append(TAX_CODE, patient.getTaxCode())
+                .append(NAME, patient.getName())
+                .append(SURNAME, patient.getSurname())
+                .append(BIRTH_DATE, patient.getBirthDate())
+                .append(CITY, patient.getCity())
+                .append(PHONE_NUMBER, patient.getPhoneNumber())
+                .append(STATUS, patient.getStatus())
+                .append(NOTES, patient.getNotes());
     }
 
    private Document createDocument(TherapyBean therapyBean) {
         //Creo il documento con le informazioni della terapia
         Document therapyDocument = new Document()
-                .append("sessions", therapyBean.getSessions())
-                .append("duration", therapyBean.getDuration())
-                .append("frequency", therapyBean.getFrequency())
-                .append("medicines", therapyBean.getMedicines());
+                .append(SESSIONS, therapyBean.getSessions())
+                .append(DURATION, therapyBean.getDuration())
+                .append(FREQUENCY, therapyBean.getFrequency())
+                .append(MEDICINES, therapyBean.getMedicines());
 
        //Restituisco il documento della terapia
-        return new Document("therapy", therapyDocument);
+        return new Document(THERAPY, therapyDocument);
     }
 
-    private TherapyBean therapyParser(Document document) {
+    private TherapyBean parseTherapy(final Document document) {
         //Se non c'è una terapia restituisco null
         if(document == null) {
             return null;
@@ -350,7 +404,7 @@ public class PatientQueryBean {
         //Se c'è una terapia
 
         //Recupero i medicinali e li inserisco in un ArrayList
-        List<Document> medicinesDocument = document.getList("medicines", Document.class);
+        final List<Document> medicinesDocument = document.getList(MEDICINES, Document.class);
         ArrayList<TherapyMedicineBean> medicines = new ArrayList<>();
 
         for (Document d : medicinesDocument) {
@@ -359,13 +413,50 @@ public class PatientQueryBean {
 
 
         //Restituisco il documento della terapia
-        return new TherapyBean(document.getInteger("sessions"), medicines,
-                document.getInteger("duration"), document.getInteger("frequency"));
+        return new TherapyBean(document.getInteger(SESSIONS), medicines,
+                document.getInteger(DURATION), document.getInteger(FREQUENCY));
     }
 
-    private ArrayList<TherapyMedicineBean> convertToArray(List<TherapyMedicineBean> list) {
+    // Build filters to use in search
+    private Bson buildFilter(final List<String> keys, final List<Object> values) {
+        final List<Bson> filtersList = new ArrayList<>();
 
-        return new ArrayList<>(list);
+        final int keysSize = keys.size();
+        final int valuesSize = values.size();
+        if (keysSize == valuesSize) {
+            for (int i = 0; i < keysSize; ++i) {
+                final String currentKey = keys.get(i);
+                final Object currentValue = values.get(i);
 
+                switch (currentKey) {
+                    case NAME, SURNAME -> filtersList.add(Filters.regex(currentKey, Pattern.quote(currentValue.toString()), "i"));
+
+                    case STATUS -> filtersList.add(Filters.eq(currentKey, currentValue));
+
+                    case "medicine" -> filtersList.add(Filters.elemMatch("therapy.medicines", Filters.eq("medicineId", currentValue)));
+
+                    default -> logger.log(Level.SEVERE, "Invalid filter: {0}", currentValue);
+                }
+            }
+        }
+
+        // Se non ci sono filtri, ritorna un Documento vuoto (trova tutto)
+        return filtersList.isEmpty() ? new Document() : Filters.and(filtersList);
+    }
+
+    // Parse a PatientBean from a retrieved document
+    private PatientBean parsePatient(final Document document) {
+        return new PatientBean(
+                document.getString(TAX_CODE),
+                document.getString(NAME),
+                document.getString(SURNAME),
+                document.getDate(BIRTH_DATE),
+                document.getString(CITY),
+                document.getString(PHONE_NUMBER),
+                document.getBoolean(STATUS),
+                document.getString(CONDITION),
+                document.getString(NOTES),
+                parseTherapy((Document) document.get(THERAPY))
+        );
     }
 }
