@@ -8,7 +8,6 @@
          import="userManagement.application.UserBean"%>
 <%@ page import="patientmanagement.application.PatientBean" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="connector.Facade" %>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -24,13 +23,48 @@
         //redirect alla pagina di error 401 Unauthorized
         response.sendRedirect("./error401.jsp");
     } else {
-        if (sessione.getAttribute("currentSessionUser") == null) {
-            response.sendRedirect("./error401.jsp");
-        }
         UserBean user = (UserBean) sessione.getAttribute("currentSessionUser");
-        if (user.getType() != 1) {
-            response.sendRedirect("./error403.jsp");
+        if (user == null || user.getType() != 1) {
+            //è presente una sessione senza utente o con utente non autorizzato
+            if (user == null) {
+                response.sendRedirect("./error401.jsp");
+            } else {
+                response.sendRedirect("./error403.jsp");
+            }
         } else {
+%>
+
+<%
+    // Recupera gli attributi impostati dal Servelt/Controller
+
+    ArrayList<PatientBean> patients = (ArrayList<PatientBean>) request.getAttribute("availablePatients");
+
+    // Total Pages (già calcolato nel backend usando totalRecords / PAGE_SIZE)
+    int totalPages = 1; // Default
+    if (request.getAttribute("totalPages") != null) {
+        totalPages = (Integer) request.getAttribute("totalPages");
+    }
+
+    // Current Page (già determinato dal backend)
+    int currentPage = 1; // Default
+    if (request.getAttribute("currentPage") != null) {
+        currentPage = (Integer) request.getAttribute("currentPage");
+    }
+
+
+    // Dimensione fissa del range di pagine da mostrare
+    int rangeSize = 8;
+
+    // Calcola la pagina di inizio e fine del range visibile
+    int startPage = Math.max(1, currentPage - (rangeSize / 2));
+    int endPage = Math.min(totalPages, startPage + rangeSize - 1);
+
+    // Aggiusta startPage se siamo vicini alla fine
+    if (endPage - startPage + 1 < rangeSize) {
+        startPage = Math.max(1, endPage - rangeSize + 1);
+    }
+
+
 %>
 <header>
     <jsp:include page="static/templates/userHeaderLogged.html"/>
@@ -46,14 +80,70 @@
             <div class="title-section">
                 <h2 class="title">Selezione pazienti</h2>
             </div>
+            <div class="pagination-container">
+                <nav aria-label="Patient pagination">
+                    <ul class="pagination">
+
+                        <%-- Bottone per Pagina 1 --%>
+                        <% if(currentPage > rangeSize/2 ) { %>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="PatientServlet?page=1"
+                               aria-label="First">
+                                <span aria-hidden="true">1</span>
+                            </a>
+                        </li>
+                        <% } %>
+
+                        <%-- Bottone per Pagina Precedente --%>
+                        <% if(currentPage > 1) { %>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="PatientServlet?page=<%= currentPage - 1 %>"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <% } %>
+
+                        <%-- Pagine Numeriche (range visibile) --%>
+                        <% for(int i = startPage; i <= endPage; i++) { %>
+                        <li class="page-item <%= (i == currentPage) ? "active disabled" : "" %>">
+                            <a class="page-link"
+                               href="PatientServlet?page=<%= i %>">
+                                <%= i %>
+                            </a>
+                        </li>
+                        <% } %>
+
+                        <%-- Bottone per Pagina Successiva --%>
+                        <% if(currentPage < totalPages) { %>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="PatientServlet?page=<%= currentPage + 1 %>"
+                               aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <% } %>
+
+                        <%-- Bottone per Ultima Pagina --%>
+                        <% if(currentPage < totalPages - rangeSize/2) { %>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="PatientServlet?page=<%= totalPages %>"
+                               aria-label="Last">
+                                <span aria-hidden="true"><%= totalPages %></span>
+                            </a>
+                        </li>
+                        <% } %>
+                    </ul>
+                </nav>
+            </div>
             <div id="patient-list" class="result-box-container">
                 <%
-                    Facade facade = new Facade();
-                    ArrayList<PatientBean> patients = new ArrayList<PatientBean>();
 
-                    patients = facade.findPatients("status", true, user);
-
-                    if (patients.size() == 0) {
+                    if (patients.isEmpty()) {
                         //visualizzazione messaggio nessun paziente trovato
                 %>
                 <div class="result-box-container">
