@@ -8,7 +8,6 @@
          import="userManagement.application.UserBean"%>
 <%@ page import="medicinemanagement.application.MedicineBean" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="connector.Facade" %>
 <html>
 <head>
     <title>Chemo | Medicinali</title>
@@ -38,7 +37,7 @@
             <h1 class="title">Medicinali</h1>
             <jsp:include page="./static/templates/loggedUserButtons.html"/>
         </div>
-        <form id="search-form" class="form box" action="MedicineServlet" method="post">
+        <form id="search-form" class="form box" action="MedicineServlet" method="get">
             <div class="title-section">
                 <h2 class="title">Ricerca</h2>
             </div>
@@ -67,24 +66,118 @@
         <div id="medicines-list">
             <!-- Si itera fino a quando ci sono risultati-->
             <%
-                ArrayList<MedicineBean> medicines = new ArrayList<MedicineBean>();
-                if (request.getAttribute("medicineResults") == null) {
-                    //nessuna richiesta di ricerca
-                    //si visualizzano tutti i pazienti
-                    Facade facade = new Facade();
-                    medicines = facade.findAllMedicines(user);
-                } else {
-                    medicines = (ArrayList<MedicineBean>) request.getAttribute("medicineResults");
+                ArrayList<MedicineBean> medicines = (ArrayList<MedicineBean>) request.getAttribute("medicinesResult");
+
+                if (medicines == null) {
+                    medicines = new ArrayList<>();
                 }
 
-                if (medicines.size() == 0) {
+                // Total Pages (già calcolato nel backend usando totalRecords / PAGE_SIZE)
+                int totalPages = 1; // Default
+                if (request.getAttribute("totalPages") != null) {
+                    totalPages = (Integer) request.getAttribute("totalPages");
+                }
+
+                // Current Page (già determinato dal backend)
+                int currentPage = 1; // Default
+                if (request.getAttribute("currentPage") != null) {
+                    currentPage = (Integer) request.getAttribute("currentPage");
+                }
+
+
+                // Dimensione fissa del range di pagine da mostrare
+                int rangeSize = 8;
+
+                // Calcola la pagina di inizio e fine del range visibile
+                int startPage = Math.max(1, currentPage - (rangeSize / 2));
+                int endPage = Math.min(totalPages, startPage + rangeSize - 1);
+
+                // Aggiusta startPage se siamo vicini alla fine
+                if (endPage - startPage + 1 < rangeSize) {
+                    startPage = Math.max(1, endPage - rangeSize + 1);
+                }
+
+                // Parametri di ricerca
+                String searchParams = ""; // Default
+                if (request.getAttribute("searchParams") != null) {
+                    searchParams = (String) request.getAttribute("searchParams");
+                }
+
+                %>
+
+            <div class="pagination-container">
+                <nav aria-label="pagination">
+                    <ul class="pagination">
+
+                        <%-- Bottone per Pagina 1 --%>
+                        <% if(currentPage > (rangeSize/2 + 1)) { %>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="MedicineServlet?page=1"
+                               aria-label="First">
+                                <span aria-hidden="true">1</span>
+                            </a>
+                        </li>
+                        <% } %>
+
+                        <%-- Bottone per Pagina Precedente --%>
+                        <% if(currentPage > 1) { %>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="MedicineServlet?page=<%= currentPage - 1 %><%= searchParams %>"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <% } %>
+
+                        <%-- Pagine Numeriche (range visibile) --%>
+                        <% for(int i = startPage; i <= endPage; i++) { %>
+                        <li class="page-item <%= (i == currentPage) ? "active disabled" : "" %>">
+                            <a class="page-link"
+                               href="MedicineServlet?page=<%= i %><%= searchParams %>">
+                                <%= i %>
+                            </a>
+                        </li>
+                        <% } %>
+
+                        <%-- Bottone per Pagina Successiva --%>
+                        <% if(currentPage < totalPages) { %>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="MedicineServlet?page=<%= currentPage + 1 %><%= searchParams %>"
+                               aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <% } %>
+
+                        <%-- Bottone per Ultima Pagina --%>
+                        <% if(currentPage < totalPages - (rangeSize/2 - 1)) { %>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="MedicineServlet?page=<%= totalPages %>"
+                               aria-label="Last">
+                                <span aria-hidden="true"><%= totalPages %></span>
+                            </a>
+                        </li>
+                        <% } %>
+                    </ul>
+                </nav>
+            </div>
+
+            <%
+
+                if (medicines.isEmpty()) {
                     //visualizzazione messaggio nessun medicinale trovato
             %>
             <div class="result-box-container">
                 <h2 class="no-result">Nessun medicinale trovato</h2>
             </div>
+
             <%
             } else {
+
                 String patientStatus;
                 for (MedicineBean medicine:medicines) {
                     //visualizzazione box singolo paziente
@@ -93,6 +186,7 @@
                     else
                         patientStatus = "status-unavailable";
             %>
+
             <div class="result-box-container">
                 <button type="submit" id="medicine-box-id" class="box" onclick="redirectToMedicineDetails('<%=medicine.getId()%>')">
                     <div class="first-row">
@@ -101,7 +195,7 @@
                         </div>
                         <div class="column icon <%=patientStatus%> right">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-capsule-pill" viewBox="0 0 16 16">
-                                <path d="M11.02 5.364a3 3 0 0 0-4.242-4.243L1.121 6.778a3 3 0 1 0 4.243 4.243l5.657-5.657Zm-6.413-.657 2.878-2.879a2 2 0 1 1 2.829 2.829L7.435 7.536 4.607 4.707ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm-.5 1.042a3 3 0 0 0 0 5.917V9.042Zm1 5.917a3 3 0 0 0 0-5.917v5.917Z"/>
+                                <path d="M11.02 5.364a3 3 0 0 0-4.242-4.243L1.121 6.778a3 3 0 1 0 4.243 4.243l5.657-5.657Zm-6.413-.657 2.878-2.879a2 2 0 1 1 2.829 2.829L7.435 7.536 4.607 4.707ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm-.5 1.042a3 3 0 0 0 0 5.917V9.042Zm1 5.917a3 3 0 0 0 0-5.917v5.917Z"></path>
                             </svg>
                         </div>
                     </div>

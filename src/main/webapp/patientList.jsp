@@ -4,7 +4,7 @@
   Date: 16/01/2023
   Time: 13:23
 --%>
-<%@ page contentType="text/html;charset=UTF-8"
+<%@ page contentType="text/html;charset=UTF-8" language="java"
          import="connector.Facade"
          import="java.util.ArrayList"
          import="userManagement.application.UserBean"
@@ -19,8 +19,6 @@
 </head>
 <body>
 <%
-    final Facade facade = new Facade();
-
     HttpSession sessione=request.getSession(false);
     if (sessione == null) {
         //redirect alla pagina di error 401 Unauthorized
@@ -56,7 +54,7 @@
 
 
     // Dimensione fissa del range di pagine da mostrare
-    int rangeSize = 8;
+    int rangeSize = 6;
 
     // Calcola la pagina di inizio e fine del range visibile
     int startPage = Math.max(1, currentPage - (rangeSize / 2));
@@ -73,9 +71,8 @@
         searchParams = (String) request.getAttribute("searchParams");
     }
 
+
 %>
-
-
 <header>
     <jsp:include page="./static/templates/userHeaderLogged.html"/>
 </header>
@@ -109,9 +106,9 @@
                         <select id="search-patient-medicine" class="input-field" name="patientMedicine">
                             <option value="null" selected>Seleziona medicinale</option>
                             <%
-
-                                ArrayList<MedicineBean> medicines = facade.findAllMedicines(user);
-
+                                ArrayList<MedicineBean> medicines = new ArrayList<MedicineBean>();
+                                Facade facade = new Facade();
+                                medicines = facade.findAllMedicines(user);
                                 for (MedicineBean medicine: medicines) {
                             %>
                             <option value="<%=medicine.getId()%>"><%=medicine.getName()%></option>
@@ -136,10 +133,10 @@
                 <ul class="pagination">
 
                     <%-- Bottone per Pagina 1 --%>
-                    <% if(currentPage > rangeSize/2 ) { %>
+                    <% if(currentPage > (rangeSize/2 + 1)) { %>
                     <li class="page-item">
                         <a class="page-link"
-                           href="PatientServlet?page=1<%= searchParams %>"
+                           href="PatientServlet?page=1<%=searchParams%>"
                            aria-label="First">
                             <span aria-hidden="true">1</span>
                         </a>
@@ -150,7 +147,7 @@
                     <% if(currentPage > 1) { %>
                     <li class="page-item">
                         <a class="page-link"
-                           href="PatientServlet?page=<%= currentPage - 1 %><%= searchParams %>"
+                           href="PatientServlet?page=<%= currentPage - 1 %><%=searchParams%>"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -161,7 +158,7 @@
                     <% for(int i = startPage; i <= endPage; i++) { %>
                     <li class="page-item <%= (i == currentPage) ? "active disabled" : "" %>">
                         <a class="page-link"
-                           href="PatientServlet?page=<%= i %><%= searchParams %>">
+                           href="PatientServlet?page=<%= i %><%=searchParams%>">
                             <%= i %>
                         </a>
                     </li>
@@ -171,7 +168,7 @@
                     <% if(currentPage < totalPages) { %>
                     <li class="page-item">
                         <a class="page-link"
-                           href="PatientServlet?page=<%= currentPage + 1 %><%= searchParams %>"
+                           href="PatientServlet?page=<%= currentPage + 1 %><%=searchParams%>"
                            aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
@@ -179,10 +176,10 @@
                     <% } %>
 
                     <%-- Bottone per Ultima Pagina --%>
-                    <% if(currentPage < totalPages - rangeSize/2) { %>
+                    <% if(currentPage < totalPages - (rangeSize/2 - 1)) { %>
                     <li class="page-item">
                         <a class="page-link"
-                           href="PatientServlet?page=<%= totalPages %><%= searchParams %>"
+                           href="PatientServlet?page=<%= totalPages %><%=searchParams%>"
                            aria-label="Last">
                             <span aria-hidden="true"><%= totalPages %></span>
                         </a>
@@ -191,10 +188,9 @@
                 </ul>
             </nav>
         </div>
-
-        <div id="patient-list" class="patient-list">
+        <div id="patient-list">
+            <!-- Si itera fino a quando ci sono risultati-->
             <%
-
                 if (patients.isEmpty()) {
                     //visualizzazione messaggio nessun paziente trovato
             %>
@@ -202,27 +198,26 @@
                 <h2 class="no-result">Nessun paziente trovato</h2>
             </div>
             <%
-            } else {
-                String patientStatus;
-
-                for (PatientBean patient:patients) {
-                    //visualizzazione box singolo paziente
-                    if (patient.getStatus())
-                        patientStatus = "status-available";
-                    else
-                        patientStatus = "status-unavailable";
+                    } else {
+                        String patientStatus;
+                        for (PatientBean patient:patients) {
+                            //visualizzazione box singolo paziente
+                            if (patient.getStatus())
+                                patientStatus = "status-available";
+                            else
+                                patientStatus = "status-unavailable";
             %>
             <div class="result-box-container">
                 <button type="submit" id="patient-box-id" class="box" onclick="redirectToPatientDetails('<%=patient.getPatientId()%>')">
                     <div class="first-row">
                         <div class="column left">
-                            <h2 class="result-name"><%=patient.getName()%> <%=patient.getSurname()%></h2 >
+                            <h2 class="result-name"><%=patient.getName()%> <%=patient.getSurname()%></h2>
                             <p><%=patient.getTaxCode()%></p>
                         </div>
                         <div class="column icon <%=patientStatus%> right">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
-                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                             </svg>
                         </div>
                     </div>
