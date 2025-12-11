@@ -34,6 +34,45 @@
             }
         } else {
 %>
+
+<%
+    // Recupera gli attributi impostati dal Servelt/Controller
+
+    ArrayList<PatientBean> patients = (ArrayList<PatientBean>) request.getAttribute("patientsResult");
+
+    // Total Pages (già calcolato nel backend usando totalRecords / PAGE_SIZE)
+    int totalPages = 1; // Default
+    if (request.getAttribute("totalPages") != null) {
+        totalPages = (Integer) request.getAttribute("totalPages");
+    }
+
+    // Current Page (già determinato dal backend)
+    int currentPage = 1; // Default
+    if (request.getAttribute("currentPage") != null) {
+        currentPage = (Integer) request.getAttribute("currentPage");
+    }
+
+
+    // Dimensione fissa del range di pagine da mostrare
+    int rangeSize = 6;
+
+    // Calcola la pagina di inizio e fine del range visibile
+    int startPage = Math.max(1, currentPage - (rangeSize / 2));
+    int endPage = Math.min(totalPages, startPage + rangeSize - 1);
+
+    // Aggiusta startPage se siamo vicini alla fine
+    if (endPage - startPage + 1 < rangeSize) {
+        startPage = Math.max(1, endPage - rangeSize + 1);
+    }
+
+    // Parametri di ricerca
+    String searchParams = ""; // Default
+    if (request.getAttribute("searchParams") != null) {
+        searchParams = (String) request.getAttribute("searchParams");
+    }
+
+
+%>
 <header>
     <jsp:include page="./static/templates/userHeaderLogged.html"/>
 </header>
@@ -89,13 +128,70 @@
                 </div>
             </div>
         </form>
+        <div class="pagination-container">
+            <nav aria-label="Patient pagination">
+                <ul class="pagination">
+
+                    <%-- Bottone per Pagina 1 --%>
+                    <% if(currentPage > (rangeSize/2 + 1)) { %>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="PatientServlet?page=1<%=searchParams%>"
+                           aria-label="First">
+                            <span aria-hidden="true">1</span>
+                        </a>
+                    </li>
+                    <% } %>
+
+                    <%-- Bottone per Pagina Precedente --%>
+                    <% if(currentPage > 1) { %>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="PatientServlet?page=<%= currentPage - 1 %><%=searchParams%>"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <% } %>
+
+                    <%-- Pagine Numeriche (range visibile) --%>
+                    <% for(int i = startPage; i <= endPage; i++) { %>
+                    <li class="page-item <%= (i == currentPage) ? "active disabled" : "" %>">
+                        <a class="page-link"
+                           href="PatientServlet?page=<%= i %><%=searchParams%>">
+                            <%= i %>
+                        </a>
+                    </li>
+                    <% } %>
+
+                    <%-- Bottone per Pagina Successiva --%>
+                    <% if(currentPage < totalPages) { %>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="PatientServlet?page=<%= currentPage + 1 %><%=searchParams%>"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <% } %>
+
+                    <%-- Bottone per Ultima Pagina --%>
+                    <% if(currentPage < totalPages - (rangeSize/2 - 1)) { %>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="PatientServlet?page=<%= totalPages %><%=searchParams%>"
+                           aria-label="Last">
+                            <span aria-hidden="true"><%= totalPages %></span>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+            </nav>
+        </div>
         <div id="patient-list">
             <!-- Si itera fino a quando ci sono risultati-->
             <%
-                // Get patients from servlet
-                ArrayList<PatientBean> patients = (ArrayList<PatientBean>) request.getAttribute("patientsResult");
-
-                if (patients.size() == 0) {
+                if (patients.isEmpty()) {
                     //visualizzazione messaggio nessun paziente trovato
             %>
             <div class="result-box-container">

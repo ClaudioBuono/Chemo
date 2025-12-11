@@ -3,7 +3,6 @@ package patientmanagement.application;
 import connector.Facade;
 import userManagement.application.UserBean;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -56,15 +55,15 @@ public class PatientServlet extends HttpServlet {
             } else {
                 handleStandardPatientListView(request, response, user);
             }
-        } catch (ServletException | IOException e) {
+        } catch (final ServletException | IOException e) {
             logger.log(Level.SEVERE, "Error in doGet dispatching", e);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(final HttpServletRequest request,final HttpServletResponse response) throws ServletException, IOException {
         //Recupero l'action dalla request
-        String action = request.getParameter(ACTION);
+        final String action = request.getParameter(ACTION);
 
         //Recupero l'utente dalla sessione
         UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
@@ -176,7 +175,7 @@ public class PatientServlet extends HttpServlet {
      */
     private void handleAvailablePatientsView(final HttpServletRequest request, final HttpServletResponse response, final UserBean user) throws ServletException, IOException {
         // Setup Pagination
-        int page = parsePageParameter(request);
+        final int page = parsePageParameter(request);
 
         // Fixed Filter: Only "Available" patients
         final ArrayList<String> keys = new ArrayList<>();
@@ -214,7 +213,7 @@ public class PatientServlet extends HttpServlet {
 
         // Retrieve Data
         final ArrayList<PatientBean> paginatedResult = (ArrayList<PatientBean>) facade.findPatientsPaginated(keys, values, page, PAGE_SIZE, user);
-        long totalRecords = facade.countPatientsFiltered(keys, values, user);
+        final long totalRecords = facade.countPatientsFiltered(keys, values, user);
 
         // ETag Check
         // If the browser already has this data, send 304 and stop execution.
@@ -238,13 +237,13 @@ public class PatientServlet extends HttpServlet {
     /**
      * Retrieves the current user from the session or redirects to error401 if invalid.
      */
-    private UserBean getSessionUserOrRedirect(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
-        UserBean user = (session != null) ? (UserBean) session.getAttribute("currentSessionUser") : null;
+    private UserBean getSessionUserOrRedirect(final HttpServletRequest request, final HttpServletResponse response) {
+        final HttpSession session = request.getSession(false);
+        final UserBean user = (session != null) ? (UserBean) session.getAttribute("currentSessionUser") : null;
         if (user == null) {
             try {
                 response.sendRedirect("error401.jsp");
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 logger.log(Level.SEVERE, "Redirect failed", e);
             }
         }
@@ -254,11 +253,11 @@ public class PatientServlet extends HttpServlet {
     /**
      * Safely parses the 'page' parameter from the request. Defaults to 1 on error.
      */
-    private int parsePageParameter(HttpServletRequest request) {
+    private int parsePageParameter(final HttpServletRequest request) {
         if (request.getParameter("page") != null) {
             try {
                 return Integer.parseInt(request.getParameter("page"));
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 logger.log(Level.WARNING, "Invalid page format, defaulting to 1", e);
             }
         }
@@ -268,7 +267,7 @@ public class PatientServlet extends HttpServlet {
     /**
      * Calculates total pages and sets the common pagination attributes.
      */
-    private void setupPaginationAttributes(HttpServletRequest request, int page, long totalRecords) {
+    private void setupPaginationAttributes(final HttpServletRequest request, final int page, final long totalRecords) {
         int totalPages = (int) Math.ceil((double) totalRecords / PAGE_SIZE);
         if (totalPages == 0) totalPages = 1;
 

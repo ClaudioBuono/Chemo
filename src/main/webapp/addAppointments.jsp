@@ -53,7 +53,7 @@
 
 
     // Dimensione fissa del range di pagine da mostrare
-    int rangeSize = 8;
+    int rangeSize = 6;
 
     // Calcola la pagina di inizio e fine del range visibile
     int startPage = Math.max(1, currentPage - (rangeSize / 2));
@@ -62,6 +62,12 @@
     // Aggiusta startPage se siamo vicini alla fine
     if (endPage - startPage + 1 < rangeSize) {
         startPage = Math.max(1, endPage - rangeSize + 1);
+    }
+
+    // Parametri di ricerca
+    String searchParams = ""; // Default
+    if (request.getAttribute("searchParams") != null) {
+        searchParams = (String) request.getAttribute("searchParams");
     }
 
 
@@ -85,10 +91,10 @@
                     <ul class="pagination">
 
                         <%-- Bottone per Pagina 1 --%>
-                        <% if(currentPage > rangeSize/2 ) { %>
+                        <% if(currentPage > (rangeSize/2 + 1)) { %>
                         <li class="page-item">
                             <a class="page-link"
-                               href="PatientServlet?page=1"
+                               href="PatientServlet?page=1<%=searchParams%>"
                                aria-label="First">
                                 <span aria-hidden="true">1</span>
                             </a>
@@ -99,7 +105,7 @@
                         <% if(currentPage > 1) { %>
                         <li class="page-item">
                             <a class="page-link"
-                               href="PatientServlet?page=<%= currentPage - 1 %>"
+                               href="PatientServlet?page=<%= currentPage - 1 %><%=searchParams%>"
                                aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
@@ -110,7 +116,7 @@
                         <% for(int i = startPage; i <= endPage; i++) { %>
                         <li class="page-item <%= (i == currentPage) ? "active disabled" : "" %>">
                             <a class="page-link"
-                               href="PatientServlet?page=<%= i %>">
+                               href="PatientServlet?page=<%= i %><%=searchParams%>">
                                 <%= i %>
                             </a>
                         </li>
@@ -120,7 +126,7 @@
                         <% if(currentPage < totalPages) { %>
                         <li class="page-item">
                             <a class="page-link"
-                               href="PatientServlet?page=<%= currentPage + 1 %>"
+                               href="PatientServlet?page=<%= currentPage + 1 %><%=searchParams%>"
                                aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
@@ -128,10 +134,10 @@
                         <% } %>
 
                         <%-- Bottone per Ultima Pagina --%>
-                        <% if(currentPage < totalPages - rangeSize/2) { %>
+                        <% if(currentPage < totalPages - (rangeSize/2 - 1)) { %>
                         <li class="page-item">
                             <a class="page-link"
-                               href="PatientServlet?page=<%= totalPages %>"
+                               href="PatientServlet?page=<%= totalPages %><%=searchParams%>"
                                aria-label="Last">
                                 <span aria-hidden="true"><%= totalPages %></span>
                             </a>
