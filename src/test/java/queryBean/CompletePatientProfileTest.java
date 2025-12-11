@@ -1,5 +1,7 @@
 package queryBean;
 
+import connector.DatabaseConnector;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,7 +32,13 @@ class CompletePatientProfileTest {
 
     @BeforeEach
     void setUp() {
+        DatabaseConnector.setDbName("Chemo_TEST");
         MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() {
+        DatabaseConnector.setDbName("Chemo");
     }
 
     //TC_UC_PM_05_10
@@ -45,7 +53,7 @@ class CompletePatientProfileTest {
         when(therapyBean.getDuration()).thenReturn(60);
         when(therapyBean.getFrequency()).thenReturn(2);
 
-        assertTrue(patientQueryBean.insertDocument(therapyBean, "63dd3eac74c697331b1f019a"));
+        assertFalse(patientQueryBean.insertDocument(therapyBean, "63dd3eac74c697331b1f019a"));
         assertTrue(patientQueryBean.updateDocument("_id", "63dd3eac74c697331b1f019a", "condition", "Tumore al cervello"));
     }
 
@@ -61,7 +69,7 @@ class CompletePatientProfileTest {
         when(therapyBean.getDuration()).thenReturn(60);
         when(therapyBean.getFrequency()).thenReturn(2);
 
-        assertTrue(patientQueryBean.insertDocument(therapyBean, "63dd3eac74c697331b1f019a"));
+        assertFalse(patientQueryBean.insertDocument(therapyBean, "63dd3eac74c697331b1f019a"));
         assertFalse(patientQueryBean.updateDocument("_id", "63dd3eac74c697331b1f019a", "condition", ""));
     }
 

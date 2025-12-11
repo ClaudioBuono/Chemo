@@ -1,6 +1,8 @@
 package queryBean;
 
+import connector.DatabaseConnector;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,7 +33,13 @@ class CreateNewScheduleTest {
 
     @BeforeEach
     void setUp(){
+        DatabaseConnector.setDbName("Chemo_TEST");
         MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() {
+        DatabaseConnector.setDbName("Chemo");
     }
 
     //TC_UC_PM_03_2

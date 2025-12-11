@@ -3,12 +3,12 @@ package patientmanagement.application;
 import connector.Facade;
 import userManagement.application.UserBean;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,33 +16,54 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet("/PatientServlet")
 public class PatientServlet extends HttpServlet {
+    private static final String SURNAME = "surname";
+    private static final String TAX_CODE = "taxCode";
+    private static final String NAME = "name";
+    private static final String BIRTH_DATE = "birthDate";
+    private static final String CITY = "city";
+    private static final String PHONE_NUMBER = "phoneNumber";
+    private static final String NOTES = "notes";
+    private static final String STATUS = "status";
+    private static final String MEDICINE = "medicine";
+    private static final String ACTION = "action";
+    final Logger logger = Logger.getLogger(getClass().getName());
+
+    static final int PAGE_SIZE = 10;
     static Facade facade = new Facade();
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Recupero l'id dalla request
-        String id = request.getParameter("id");
+    protected void doGet(final HttpServletRequest request, final HttpServletResponse response) {
+        // Get current user
+        final UserBean user = getSessionUserOrRedirect(request, response);
+        if (user == null) return;
 
-        if (id != null) {
-            //Recupero l'utente dalla sessione
-            UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
+        // Routing logic
+        final String action = request.getParameter(ACTION);
+        final String id = request.getParameter("id");
 
-            //Cerco il paziente richiesto
-            ArrayList<PatientBean> patients = facade.findPatients("_id", id, user);
+        try {
+            if ("viewAvailablePatients".equals(action)) {
+                handleAvailablePatientsView(request, response, user);
 
-            //Imposto i dati del paziente come attributo
-            request.setAttribute("patient", patients.get(0));
+            } else if (id != null) {
+                redirectToPatientDetailsPage(request, response, id, user);
 
-            //Reindirizzo alla pagina del paziente
-            getServletContext().getRequestDispatcher(response.encodeURL(response.encodeURL("/patientDetails.jsp"))).forward(request, response);
+            } else {
+                handleStandardPatientListView(request, response, user);
+            }
+        } catch (final ServletException | IOException e) {
+            logger.log(Level.SEVERE, "Error in doGet dispatching", e);
         }
     }
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(final HttpServletRequest request,final HttpServletResponse response) throws ServletException, IOException {
         //Recupero l'action dalla request
-        String action = request.getParameter("action");
+        final String action = request.getParameter(ACTION);
 
         //Recupero l'utente dalla sessione
         UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
@@ -51,14 +72,14 @@ public class PatientServlet extends HttpServlet {
             switch (action) {
                 case "createPatientProfile" -> {  //Creazione profilo paziente
                     PatientBean patient = new PatientBean(
-                            request.getParameter("taxCode"),
-                            request.getParameter("name"),
-                            request.getParameter("surname"),
-                            dateParser(request.getParameter("birthDate")),
-                            request.getParameter("city"),
-                            request.getParameter("phoneNumber"),
+                            request.getParameter(TAX_CODE),
+                            request.getParameter(NAME),
+                            request.getParameter(SURNAME),
+                            dateParser(request.getParameter(BIRTH_DATE)),
+                            request.getParameter(CITY),
+                            request.getParameter(PHONE_NUMBER),
                             false ,
-                            request.getParameter("notes"));
+                            request.getParameter(NOTES));
 
                     if (!patientValidation(patient)) {
                         response.addHeader("OPERATION_RESULT","false");
@@ -120,90 +141,22 @@ public class PatientServlet extends HttpServlet {
 
                     ArrayList<PatientBean> patients = facade.findPatients("_id", patientId, user);
                     //controlla se esiste una condition e una terapia per quel paziente
-                    if (patients.get(0).getTherapy() == null || request.getParameter("status") == null) {
+                    if (patients.get(0).getTherapy() == null || request.getParameter(STATUS) == null) {
                         //se non esiste c'è un errore e l'operazione fallisce
                         operationResult = "false";
                         response.addHeader("ERROR_MESSAGE","Modifica stato fallita.");
                     } else {
-                        boolean patientStatus = Boolean.parseBoolean(request.getParameter("status"));
+                        final boolean patientStatus = Boolean.parseBoolean(request.getParameter(STATUS));
                         //se esiste viene effettuata la modifica
                         operationResult = "true";
                         if (patients.get(0).getStatus() != patientStatus) {
                             //Aggiorno lo stato del paziente
-                            facade.updatePatient("_id", patientId, "status", patientStatus, user);
+                            facade.updatePatient("_id", patientId, STATUS, patientStatus, user);
                         }
                     }
 
                     //Reindirizzo alla pagina del paziente appena creato
                     response.addHeader("OPERATION_RESULT",operationResult);
-                }
-
-                case "searchPatient" -> { //Ricerca paziente
-                    //Recupero i filtri
-                    ArrayList<String> keys = new ArrayList<>();
-                    ArrayList<Object> values = new ArrayList<>();
-                    String parameter;
-                    boolean findAll = true; //booleano che ci serve per capire se non sono stati selezionati parametri nella ricerca, quindi per indicare che serve una findAll
-
-                    //Nome
-                    parameter = request.getParameter("name");
-                    if(parameter != null && !(parameter.equals(""))) {
-                        keys.add("name");
-                        values.add(parameter);
-                        findAll = false;
-                    }
-
-                    //Cognome
-                    parameter = request.getParameter("surname");
-                    if(parameter != null && !(parameter.equals(""))) {
-                        keys.add("surname");
-                        values.add(parameter);
-                        findAll = false;
-                    }
-
-                    //Medicinale
-                    parameter = request.getParameter("patientMedicine");
-                    if(parameter != null && !(parameter.equals("null"))) {
-                        keys.add("medicine");
-                        values.add(parameter);
-                        findAll = false;
-                    }
-
-                    //Stato
-                    parameter = request.getParameter("patientStatus");
-                    if(parameter != null && !(parameter.equals("na"))) {
-                        keys.add("status");
-                        values.add(Boolean.parseBoolean(parameter));
-                        findAll = false;
-                    }
-
-
-                    //Creo l'ArrayList da restituire
-                    ArrayList<PatientBean> patients;
-
-                    //Se non sono stati selezionati parametri, allora dobbiamo effettuare una ricerca di tutti i pazienti
-                    if(findAll)
-                        patients = facade.findAllPatients(user);
-                    //Altrimenti ci serve una ricerca in base ai parametri selezionati
-                    else
-                        patients = facade.findPatients(keys, values, user);
-
-                    //Se ho trovato un solo paziente, allora reindirizzo alla sua pagina paziente
-                    if(patients.size() == 1) {
-                        //Aggiungo il parametro alla request
-                        request.setAttribute("patientsResult", patients.get(0));
-
-                        //Reindirizzo alla pagina paziente
-                        response.sendRedirect("PatientServlet?id=" + patients.get(0).getPatientId());
-                    }
-                    else {
-                        //Aggiungo il parametro alla request
-                        request.setAttribute("patientsResult", patients);
-
-                        //Mando la richiesta con il dispatcher
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("patientList.jsp");
-                        requestDispatcher.forward(request, response);
-                    }
                 }
             }
         }
@@ -212,7 +165,217 @@ public class PatientServlet extends HttpServlet {
         }
     }
 
-    //Metodi di supporto
+    // ==========================================
+    // WORKER METHODS (Business Logic Handlers)
+    // ==========================================
+
+    /**
+     * Handles the "New Appointments" view.
+     * Fetches only patients with status=true (Available) and forwards to addAppointments.jsp.
+     */
+    private void handleAvailablePatientsView(final HttpServletRequest request, final HttpServletResponse response, final UserBean user) throws ServletException, IOException {
+        // Setup Pagination
+        final int page = parsePageParameter(request);
+
+        // Fixed Filter: Only "Available" patients
+        final ArrayList<String> keys = new ArrayList<>();
+        final ArrayList<Object> values = new ArrayList<>();
+        keys.add(STATUS);
+        values.add(true);
+
+        // Retrieve Data
+        final ArrayList<PatientBean> paginatedResult = (ArrayList<PatientBean>) facade.findPatientsPaginated(keys, values, page, PAGE_SIZE, user);
+        final long totalRecords = facade.countPatientsFiltered(keys, values, user);
+
+        // Setup JSP Attributes
+        setupPaginationAttributes(request, page, totalRecords);
+        request.setAttribute("availablePatients", paginatedResult); // Specific attribute name for this view
+
+        // Maintain the action in pagination links
+        request.setAttribute("searchParams", "&action=viewAvailablePatients");
+
+        // Forward
+        request.getRequestDispatcher("addAppointments.jsp").forward(request, response);
+    }
+
+    /**
+     * Handles the standard "Patient List" view.
+     * Supports dynamic search filters, pagination, and Green IT ETag caching.
+     */
+    private void handleStandardPatientListView(final HttpServletRequest request, final HttpServletResponse response, final UserBean user) throws ServletException, IOException {
+        // Setup Pagination
+        final int page = parsePageParameter(request);
+
+        // Build Dynamic Filters
+        final ArrayList<String> keys = new ArrayList<>();
+        final ArrayList<Object> values = new ArrayList<>();
+        final StringBuilder searchParams = buildParameters(request, keys, values);
+
+        // Retrieve Data
+        final ArrayList<PatientBean> paginatedResult = (ArrayList<PatientBean>) facade.findPatientsPaginated(keys, values, page, PAGE_SIZE, user);
+        final long totalRecords = facade.countPatientsFiltered(keys, values, user);
+
+        // ETag Check
+        // If the browser already has this data, send 304 and stop execution.
+//        if (manageETagCache(request, response, paginatedResult, page, totalRecords)) {
+//            return;
+//        }
+
+        // Setup JSP Attributes
+        setupPaginationAttributes(request, page, totalRecords);
+        request.setAttribute("patientsResult", paginatedResult); // Standard attribute name
+        request.setAttribute("searchParams", searchParams.toString());
+
+        // Forward
+        request.getRequestDispatcher("patientList.jsp").forward(request, response);
+    }
+
+    // ===============
+    // HELPER METHODS
+    // ===============
+
+    /**
+     * Retrieves the current user from the session or redirects to error401 if invalid.
+     */
+    private UserBean getSessionUserOrRedirect(final HttpServletRequest request, final HttpServletResponse response) {
+        final HttpSession session = request.getSession(false);
+        final UserBean user = (session != null) ? (UserBean) session.getAttribute("currentSessionUser") : null;
+        if (user == null) {
+            try {
+                response.sendRedirect("error401.jsp");
+            } catch (final IOException e) {
+                logger.log(Level.SEVERE, "Redirect failed", e);
+            }
+        }
+        return user;
+    }
+
+    /**
+     * Safely parses the 'page' parameter from the request. Defaults to 1 on error.
+     */
+    private int parsePageParameter(final HttpServletRequest request) {
+        if (request.getParameter("page") != null) {
+            try {
+                return Integer.parseInt(request.getParameter("page"));
+            } catch (final NumberFormatException e) {
+                logger.log(Level.WARNING, "Invalid page format, defaulting to 1", e);
+            }
+        }
+        return 1;
+    }
+
+    /**
+     * Calculates total pages and sets the common pagination attributes.
+     */
+    private void setupPaginationAttributes(final HttpServletRequest request, final int page, final long totalRecords) {
+        int totalPages = (int) Math.ceil((double) totalRecords / PAGE_SIZE);
+        if (totalPages == 0) totalPages = 1;
+
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+    }
+
+    private void redirectToPatientDetailsPage(final HttpServletRequest request, final HttpServletResponse response, final String id, final UserBean user) {
+        // Find the patient
+        final ArrayList<PatientBean> patients = facade.findPatients("_id", id, user);
+        if (!patients.isEmpty()) {
+            request.setAttribute("patient", patients.get(0));
+            try {
+                // Redirect to patient details page
+                getServletContext().getRequestDispatcher(response.encodeURL("/patientDetails.jsp")).forward(request, response);
+            } catch (final ServletException e) {
+                logger.log(Level.SEVERE, "ServletException: ", e);
+            } catch (final IOException e) {
+                logger.log(Level.SEVERE, "IOException: ", e);
+            }
+        } else {
+            try {
+                response.sendRedirect("error404.jsp");
+            } catch (final IOException e) {
+                logger.log(Level.SEVERE, "IOException: ", e);
+            }
+        }
+    }
+
+
+    private StringBuilder buildParameters(final HttpServletRequest request, final ArrayList<String> keys, final ArrayList<Object> values) {
+        final StringBuilder searchParams = new StringBuilder(128);
+
+        // Check if action requested is a filtered search
+        final String action = request.getParameter(ACTION);
+        if ("searchPatient".equals(action)) {
+            logger.info("Action: searchPatient");
+            searchParams.append("&action=searchPatient");
+
+            // --- Name filter ---
+            final String name = request.getParameter(NAME);
+            if (name != null && !name.trim().isEmpty()) {
+                keys.add(NAME);
+                values.add(name.trim());
+                searchParams.append("&name=").append(name.trim());
+            }
+
+            // --- Surname filter ---
+            final String surname = request.getParameter(SURNAME);
+            if (surname != null && !surname.trim().isEmpty()) {
+                keys.add(SURNAME);
+                values.add(surname.trim());
+                searchParams.append("&surname=").append(surname.trim());
+            }
+
+            // --- Medicine filter ---
+            final String medicine = request.getParameter("patientMedicine");
+            if (medicine != null && !medicine.equals("null") && !medicine.isEmpty()) {
+                keys.add(MEDICINE);
+                values.add(medicine);
+                searchParams.append("&patientMedicine=").append(medicine);
+            }
+
+            // --- Patient status filter ---
+            final String status = request.getParameter("patientStatus");
+            if (status != null && !status.equals("na") && !status.isEmpty()) {
+                keys.add(STATUS);
+                values.add(Boolean.parseBoolean(status));
+                searchParams.append("&patientStatus=").append(status);
+            }
+        }
+
+        return searchParams;
+    }
+
+    /**
+     * Implements the Conditional GET logic (ETag).
+     * Calculates a unique hash for the current data view. If it matches the client's cache,
+     * returns 304 Not Modified to save bandwidth and server CPU (JSP rendering).
+     */
+//    private boolean manageETagCache(final HttpServletRequest request, final HttpServletResponse response,
+//                                    final ArrayList<PatientBean> results, final int page, final long totalRecords) {
+//
+//        // Calculate the unique signature (Hash) of the visible data.
+//        final String contentSignature = results.toString() + page + totalRecords;
+//
+//        // Generate the ETag (W/ indicates a "Weak ETag", sufficient for semantic comparison)
+//        final String eTag = "W/\"" + contentSignature.hashCode() + "\"";
+//
+//        // Check the header sent by the browser
+//        final String incomingETag = request.getHeader("If-None-Match");
+//
+//        // Compare the ETags
+//        if (incomingETag != null && incomingETag.equals(eTag)) {
+//            // MATCH. he client has the latest version.
+//            // Return 304. The server will NOT send the JSP body.
+//            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+//            return true; // Stop execution
+//        }
+//
+//        // No MATCH. Set the ETag for the next visit and proceed.
+//        response.setHeader("ETag", eTag);
+//        return false;
+//    }
+
+    // ==============================
+    // PARSING AND VALIDATION METHODS
+    // ==============================
     private Date dateParser(String date) {
         SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
         try {

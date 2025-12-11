@@ -1,6 +1,8 @@
 package queryBean;
 
+import connector.DatabaseConnector;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,9 +27,15 @@ class CreateNewPatientTest {
     PatientQueryBean patientQueryBean;
     @BeforeEach
      final void setUp() {
+        DatabaseConnector.setDbName("Chemo_TEST");
         patientQueryBean = new PatientQueryBean();
         patientBean = new PatientBean();
         MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() {
+        DatabaseConnector.setDbName("Chemo");
     }
 
     //TC_UC_PM_01_2
