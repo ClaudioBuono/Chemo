@@ -168,47 +168,43 @@ function redirectToMedicineDetails(id) {
 // Variabile globale per il timer del debounce
 let searchTimeout = null;
 
-function fetchMedicineSuggestions(query) {
-    // 1. Pulisce il timer precedente (se l'utente sta ancora scrivendo)
-    if (searchTimeout) {
-        clearTimeout(searchTimeout);
-    }
+/**
+ * Chiama la Servlet e riempie la datalist specifica.
+ * @param query : il testo scritto dall'utente
+ * @param listId : l'ID della <datalist> HTML da riempire
+ */
+function fetchMedicineSuggestions(query, listId) {
+    // 1. Se non passiamo un ID, usiamo un default (sicurezza)
+    if (!listId) listId = 'medicine-suggestions';
 
-    // 2. Ottimizzazione: Se scrivi meno di 2 caratteri, non disturbare il server
+    // 2. Cancelliamo il timer precedente (Debounce)
+    if (searchTimeout) clearTimeout(searchTimeout);
+
+    // 3. Se il testo è corto, svuotiamo la lista e ci fermiamo
     if (!query || query.trim().length < 2) {
-        // Pulisce la lista se cancelli il testo
-        const dataList = document.getElementById('medicine-suggestions');
-        if (dataList) dataList.innerHTML = '';
+        const list = document.getElementById(listId);
+        if (list) list.innerHTML = '';
         return;
     }
 
-    // 3. Imposta un nuovo timer: la chiamata partirà solo se ti fermi per 300ms
+    // 4. Avviamo la chiamata dopo 300ms di pausa
     searchTimeout = setTimeout(() => {
-
-        // Chiamata AJAX asincrona (Micro-fetch)
+        // Chiamata al TUO url funzionante
         fetch('MedicineServlet?action=autocompleteMedicine&q=' + encodeURIComponent(query.trim()))
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
+            .then(res => res.json())
             .then(data => {
-                const dataList = document.getElementById('medicine-suggestions');
+                const list = document.getElementById(listId);
+                if (!list) return; // Se l'elemento non esiste, usciamo
 
-                // Safety check: se l'elemento non esiste nel DOM, fermati
-                if (!dataList) return;
+                list.innerHTML = ''; // Pulizia
 
-                dataList.innerHTML = ''; // Pulisce i vecchi suggerimenti
-
-                // Aggiunge le nuove opzioni ricevute dal server
+                // Creazione opzioni
                 data.forEach(name => {
-                    const option = document.createElement('option');
-                    option.value = name;
-                    dataList.appendChild(option);
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    list.appendChild(opt);
                 });
             })
-            .catch(err => console.error('Errore autocomplete medicinali:', err));
-
-    }, 300); // 300ms di ritardo (Debounce time)
+            .catch(e => console.error("Errore autocomplete", e));
+    }, 300);
 }

@@ -6,7 +6,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8"
          import="patientmanagement.application.PatientBean"
-         import="userManagement.application.UserBean"%>
+         import="userManagement.application.UserBean"
+         import="patientmanagement.application.TherapyMedicineBean"
+%>
 
 
 <!DOCTYPE html>
@@ -176,15 +178,14 @@
                 <div id="new-medicine-item-0" class="input-fields-row">
                     <div class="field left">
                         <label for="medicine-name-item-0">1° Medicinale</label>
-
                         <input type="text"
                                id="search-patient-medicine-new"
                                class="input-field"
                                name="patientMedicine"
-                               list="medicine-suggestions"
+                               list="medicine-suggestions-new"
                                autocomplete="off"
-                               placeholder="Cerca farmaco (es. Aspirina)"
-                               oninput="fetchMedicineSuggestions(this.value)">
+                               placeholder="Cerca farmaco..."
+                               oninput="fetchMedicineSuggestions(this.value, 'medicine-suggestions-new')">
 
                         <datalist id="medicine-suggestions-new"></datalist>
 
@@ -238,20 +239,26 @@
                 </div>
                 <p id="medicines-number" class="hidden">1</p>
                 <div id="saved-medicines">
-                    <% for(int i = 0; i < patient.getTherapy().getMedicines().size(); i++) { %>
+                    <% for(int i = 0; i < patient.getTherapy().getMedicines().size(); i++) {
+                        // Creiamo una variabile comoda
+                        TherapyMedicineBean med = patient.getTherapy().getMedicines().get(i);
+                    %>
                     <div id="medicine-item-<%=i%>" class="input-fields-row">
                         <div class="field left">
                             <label for="medicine-name-item-<%=i%>"><%=i+1%>° Medicinale</label>
-                            <input type="text"
-                                   id="search-patient-medicine"
-                                   class="input-field"
-                                   name="patientMedicine"
-                                   list="medicine-suggestions"
-                                   autocomplete="off"
-                                   placeholder="Cerca farmaco (es. Aspirina)"
-                                   oninput="fetchMedicineSuggestions(this.value)">
 
-                            <datalist id="medicine-suggestions"></datalist>
+                            <input type="text"
+                                   id="medicine-name-item-<%=i%>"
+                                   class="input-field inactive"
+                                   name="patientMedicine"
+                                   list="medicine-suggestions-<%=i%>"
+                                   autocomplete="off"
+                            <%-- ATTENZIONE: Assicurati che nel Bean il metodo si chiami getMedicineName() o getName() --%>
+                                   value="<%= (med.getMedicineName() != null) ? med.getMedicineName() : "" %>"
+                                   oninput="fetchMedicineSuggestions(this.value, 'medicine-suggestions-<%=i%>')">
+
+                            <datalist id="medicine-suggestions-<%=i%>"></datalist>
+
                             <p id="medicine-<%=i%>-validity" class="validity-paragraph status-unavailable"></p>
                         </div>
                         <div class="field right">
