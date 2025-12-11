@@ -1,3 +1,213 @@
+/*====================================================================
+ * FILE: main_scripts.js
+ * DESC: Foglio di script principale consolidato.
+ * Unisce tutti i file statici javascript locali per l'ottimizzazione (riduzione delle richieste HTTP).
+ *====================================================================*/
+
+// alert.js
+bootstrap_alert = function() {}
+bootstrap_alert.warning = function(message) {
+    $('#alert-box').html('<div class="alert alert-warning"><span>' + message + '</span></div>')
+}
+bootstrap_alert.danger = function(message) {
+    $('#alert-box').html('<div class="alert alert-danger"><span>' + message + '</span></div>')
+}
+
+function showAlertWarning(error) {
+    bootstrap_alert.warning(error);
+    window.scrollTo(0, 0);
+}
+function showAlertDanger(error) {
+    bootstrap_alert.danger(error);
+    window.scrollTo(0, 0);
+}
+
+//buttons.js
+function editToSaveButton(newid, parentid, oldbuttonid, funcname) {
+    const newbutton = document.createElement("input");
+    newbutton.setAttribute("type", "button");
+    newbutton.setAttribute("id", newid);
+    newbutton.setAttribute("class", "button-primary-m rounded edit-button");
+    newbutton.setAttribute("value", "Salva");
+    newbutton.setAttribute("onclick", funcname);
+    const parent = document.getElementById(parentid);
+    const oldbutton = document.getElementById(oldbuttonid);
+    parent.replaceChild(newbutton, oldbutton);
+}
+
+function addDeleteButton(text, newid,parentid, nextbuttonid, funcname) {
+    const newbutton = document.createElement("input");
+    newbutton.setAttribute("type", "button");
+    newbutton.setAttribute("id", newid);
+    newbutton.setAttribute("class", "button-tertiary-m rounded edit-button");
+    newbutton.setAttribute("value", text);
+    newbutton.setAttribute("onclick", funcname);
+    const parent = document.getElementById(parentid);
+    const nextbutton = document.getElementById(nextbuttonid);
+    parent.insertBefore(newbutton, nextbutton);
+}
+//medicine.js
+function validateMedicineData(medicine){
+    let validity = true;
+    //validazione del formato
+    if (!medicineNameValidity(medicine.name)) {
+        document.getElementById("name-validity").innerHTML = "Formato errato";
+        validity = false;
+    } else {
+        document.getElementById("name-validity").innerHTML = "";
+    }
+    if (!ingredientsValidity(medicine.ingredients)) {
+        document.getElementById("ingredients-validity").innerHTML = "Formato errato";
+        validity = false;
+    } else {
+        document.getElementById("ingredients-validity").innerHTML = "";
+    }
+    return validity;
+}
+
+function validatePackageData(medicinePackage, id){
+    let validity = true;
+    //validazione del formato
+    if (!capacityValidity(medicinePackage.capacity)) {
+        document.getElementById("package-" + id + "-capacity-validity").innerHTML = "Formato errato";
+        validity = false;
+    } else {
+        document.getElementById("package-" + id + "-capacity-validity").innerHTML = "";
+    }
+    if (!dateValidity(medicinePackage.expiryDate)) {
+        document.getElementById("package-" + id + "-expiry-date-validity").innerHTML = "Formato errato";
+        validity = false;
+    } else {
+        document.getElementById("package-" + id + "-expiry-date-validity").innerHTML = "";
+    }
+    return validity;
+}
+
+
+
+function findAllMedicines(select) {
+    var request = new XMLHttpRequest();
+    request.open('POST', "MedicineServlet", false);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.setRequestHeader('Authorization', 'Basic ');
+    request.setRequestHeader('Accept', 'application/json');
+    var body = "action=findAllMedicines";
+    request.send(body);
+    if (request.status === 200) {
+        if (request.getResponseHeader('OPERATION_RESULT')) {
+            const medicineNumber = request.getResponseHeader('medicineNumber');
+            var medicineId = [];
+            var medicineName = [];
+            for (let i = 0; i < medicineNumber; i++) {
+                medicineId[i] = request.getResponseHeader('medicineId' + i);
+                medicineName[i] = request.getResponseHeader('medicineName' + i);
+            }
+
+            const option0 = document.createElement("option");
+            option0.setAttribute("value", "null");
+            option0.innerHTML = "Seleziona medicinale";
+            select.appendChild(option0);
+
+            for (let i = 0; i < medicineNumber; i++){
+                const option = document.createElement("option");
+                option.setAttribute("value", medicineId[i]);
+                option.innerHTML = medicineName[i];
+                select.appendChild(option);
+            }
+            return select;
+        } else {
+            //errore modifica select
+            return null;
+        }
+    }
+}
+
+function addPackageForm() {
+    document.getElementById("new-package-button").className = "hidden";
+    document.getElementById("new-package-form").className = "box";
+}
+
+function editMedicineButton(id) {
+    editToSaveButton("save-medicine-button", "medicine-data-buttons", "edit-medicine-data-button", "submitUpdatedMedicine('" + id + " ')");
+    document.getElementById("name").className = "input-field";
+    document.getElementById("ingredients").className = "input-field";
+}
+
+function editPackageButton(id) {
+    editToSaveButton("save-package-button", "package-data-buttons", "edit-package-data-button", "submitUpdatedPackage('" + id + " ')");
+    document.getElementById(id + "-package-capacity").className = "input-field";
+    document.getElementById(id + "-package-expiry-date").className = "input-field";
+    document.getElementById(id + "-package-status").className = "input-field";
+}
+
+function addMedicine() {
+    const name = document.getElementById("name").value;
+    const ingredients = document.getElementById("ingredients").value;
+
+    const medicine = {
+        name: name,
+        ingredients: ingredients
+    };
+
+    if (validateMedicineData(medicine)) {
+        var request = new XMLHttpRequest();
+        request.open('POST', "MedicineServlet", true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.setRequestHeader('Authorization', 'Basic ');
+        request.setRequestHeader('Accept', 'application/json');
+        var body = "action=insertMedicine&name=" + medicine.name + "&ingredients=" + medicine.ingredients;
+        request.send(body);
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
+                if (request.getResponseHeader('OPERATION_RESULT')) {
+                    const medicineID = request.getResponseHeader('MEDICINE_ID');
+                    //recupero id dalla risposta
+                    redirectToMedicineDetails(medicineID);
+                } else {
+                    //errore creazione paziente
+                    showAlertDanger(request.getResponseHeader('ERROR_MESSAGE'));
+                }
+            }
+        };
+    }
+}
+
+function addPackage(id) {
+    const capacity = document.getElementById("package-new-capacity").value;
+    const expiryDate = document.getElementById("package-new-expiry-date").value;
+
+    const medicinePackage = {
+        capacity: capacity,
+        expiryDate: expiryDate
+    };
+
+    if (validatePackageData(medicinePackage, "new")) {
+        var request = new XMLHttpRequest();
+        request.open('POST', "MedicineServlet", true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.setRequestHeader('Authorization', 'Basic ');
+        request.setRequestHeader('Accept', 'application/json');
+        var body = "action=insertPackage&medicineId=" + id + "&capacity=" + medicinePackage.capacity + "&expiryDate=" + medicinePackage.expiryDate;
+        request.send(body);
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
+                if (request.getResponseHeader('OPERATION_RESULT')) {
+                    //recupero id dalla risposta
+                    redirectToMedicineDetails(id);
+                } else {
+                    //errore creazione paziente
+                    showAlertDanger(request.getResponseHeader('ERROR_MESSAGE'));
+                }
+            }
+        };
+    }
+}
+
+function redirectToMedicineDetails(id) {
+    //crea una richiesta alla servlet paziente per reindirizzare
+    window.location.replace("MedicineServlet?id=" + id);
+}
+//patients.js
 function validatePatientData(patient){
     let validity = true;
     //validazione del formato
@@ -375,4 +585,78 @@ function submitUpdatedStatus(id){
             }
         };
     }
+}
+//planner.js
+function addAppointments() {
+    var checkedPatients = $('input[name="patient-id"]:checked');
+    //var checkedPatients = getCheckedBoxes("patient-id");
+
+    if (!(checkedPatients.length > 0)) {
+        // errore: deve essere selezionato almeno un paziente
+        showAlertWarning("Seleziona almeno un paziente");
+
+    } else {
+        var request = new XMLHttpRequest();
+        request.open('POST', "PlannerServlet", true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.setRequestHeader('Authorization', 'Basic ');
+        request.setRequestHeader('Accept', 'application/json');
+        var body = "action=addAppointments&patientsNumber=" + checkedPatients.length;
+        for (let i=0; i < checkedPatients.length; i++) {
+            // vengono aggiunti i pazienti al body
+            body += "&patient" + i + "=" + checkedPatients[i].value;
+        }
+        request.send(body);
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
+                if (request.getResponseHeader('OPERATION_RESULT')) {
+                    // redirect al calendario
+                    redirectToPlanner();
+                } else {
+                    // errore creazione agenda
+                    showAlertDanger("Creazione nuova agenda fallita.");
+                }
+            }
+        };
+    }
+}
+
+function redirectToPlanner(id, buttonPressed) {
+    if (id == null) {
+        window.location.replace("PlannerServlet");
+    } else {
+        window.location.replace("PlannerServlet?id="+id+"&buttonPressed="+buttonPressed);
+    }
+    // genera un redirect alla servlet paziente creando una richiesta get
+}
+
+function getCheckedBoxes(checkboxName) {
+    const checkboxes = document.getElementsByName(checkboxName);
+    var checkboxesChecked = [];
+    // ciclo per scorrere tutti i checkbox
+    for (let i=0; i < checkboxes.length; i++) {
+        // vengono aggiunti al nuovo array quelli selezionati
+        if (checkboxes[i].checked) {
+            checkboxesChecked.push(checkboxes[i]);
+        }
+    }
+    // restituisce array di valori selezionati o null se non ci sono valori
+    return checkboxesChecked.length > 0 ? checkboxesChecked : null;
+}
+//search.js
+function expandSearchFilters() {
+    document.getElementById("search-filters").className = "";
+    document.getElementById("search-filters-button").setAttribute( "value", "Riduci filtri");
+    document.getElementById("search-filters-button").onclick = reduceSearchFilters;
+}
+function reduceSearchFilters() {
+    document.getElementById("search-filters").className = "hidden";
+    document.getElementById("search-filters-button").setAttribute( "value", "Espandi filtri");
+    document.getElementById("search-filters-button").onclick = expandSearchFilters;
+}
+//user.js
+function editUserCredentials(id) {
+    editToSaveButton("save-user-credentials-button", "user-credentials-button", "edit-user-credentials-button", "submitUpdatedCredentials('" + id + " ')");
+    document.getElementById("username").className = "input-field";
+    document.getElementById("password").className = "input-field";
 }
