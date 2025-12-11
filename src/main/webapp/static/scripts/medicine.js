@@ -158,3 +158,57 @@ function redirectToMedicineDetails(id) {
     //crea una richiesta alla servlet paziente per reindirizzare
     window.location.replace("MedicineServlet?id=" + id);
 }
+
+/**
+ * Gestione Autocomplete Medicinali (Green IT Optimization)
+ * Utilizza un meccanismo di "Debounce" per evitare di inondare il server
+ * di richieste ad ogni singolo tasto premuto.
+ */
+
+// Variabile globale per il timer del debounce
+let searchTimeout = null;
+
+function fetchMedicineSuggestions(query) {
+    // 1. Pulisce il timer precedente (se l'utente sta ancora scrivendo)
+    if (searchTimeout) {
+        clearTimeout(searchTimeout);
+    }
+
+    // 2. Ottimizzazione: Se scrivi meno di 2 caratteri, non disturbare il server
+    if (!query || query.trim().length < 2) {
+        // Pulisce la lista se cancelli il testo
+        const dataList = document.getElementById('medicine-suggestions');
+        if (dataList) dataList.innerHTML = '';
+        return;
+    }
+
+    // 3. Imposta un nuovo timer: la chiamata partirà solo se ti fermi per 300ms
+    searchTimeout = setTimeout(() => {
+
+        // Chiamata AJAX asincrona (Micro-fetch)
+        fetch('MedicineServlet?action=autocompleteMedicine&q=' + encodeURIComponent(query.trim()))
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const dataList = document.getElementById('medicine-suggestions');
+
+                // Safety check: se l'elemento non esiste nel DOM, fermati
+                if (!dataList) return;
+
+                dataList.innerHTML = ''; // Pulisce i vecchi suggerimenti
+
+                // Aggiunge le nuove opzioni ricevute dal server
+                data.forEach(name => {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    dataList.appendChild(option);
+                });
+            })
+            .catch(err => console.error('Errore autocomplete medicinali:', err));
+
+    }, 300); // 300ms di ritardo (Debounce time)
+}
