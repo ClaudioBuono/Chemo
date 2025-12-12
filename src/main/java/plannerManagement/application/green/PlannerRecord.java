@@ -1,11 +1,11 @@
 package plannerManagement.application.green;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.List;
 
 public record PlannerRecord(
         String id,
         LocalDateTime startDate,
         LocalDateTime endDate,
-        ArrayList<AppointmentRecord>appointments
+        List<AppointmentRecord> appointments
 ) {}
