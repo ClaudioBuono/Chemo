@@ -1,11 +1,11 @@
 package userManagement.application;
 
-import java.text.DateFormat;
+import java.io.Serializable;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class UserBean {
+public class UserBean implements Serializable {
     private String id;
     private String name;
     private String surname;
