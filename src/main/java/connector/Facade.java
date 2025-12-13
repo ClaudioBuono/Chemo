@@ -296,7 +296,11 @@ public class Facade {
         }
 
         return medicines;
-    };
+    }
+
+    public MedicineBean findMedicineByName(final String name) {
+        return medicineQueryBean.findMedicineByName(name);
+    }
 
     public List<MedicineBean> findMedicines(ArrayList<String> key, ArrayList<Object> value, UserBean user){
         ArrayList<MedicineBean> medicines = new ArrayList<>();
@@ -356,6 +360,10 @@ public class Facade {
             logger.log(Level.SEVERE, "Errore Facade count: {0}", e.getMessage());
         }
         return 0;
+    }
+
+    public List<String> findMedicineNamesLike(final String query) {
+        return medicineQueryBean.findMedicineNamesLike(query);
     }
 
     /*

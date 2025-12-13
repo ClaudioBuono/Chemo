@@ -4,6 +4,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Updates;
 import connector.DatabaseConnector;
 import medicinemanagement.application.MedicineBean;
@@ -203,6 +204,46 @@ public class MedicineQueryBean {
         }
 
         return medicines;
+    }
+
+    /**
+     * Green IT Optimization: Fetches only the names of medicines matching the query.
+     * Uses Projection to minimize data transfer and Limit to avoid overloading the client.
+     */
+    public List<String> findMedicineNamesLike(final String query) {
+        final MongoCollection<Document> collection = getCollection();
+        final ArrayList<String> names = new ArrayList<>();
+
+        // Build filters
+        final List<String> keys = new ArrayList<>();
+        final List<Object> values = new ArrayList<>();
+        keys.add(NAME);
+        values.add(query);
+        final Bson filter = buildFilter(keys, values);
+
+        //Cerca il documento
+        final FindIterable<Document> iterDoc = collection.find(filter)
+                .projection(Projections.include("name"))
+                .limit(10);
+
+        for (final Document document : iterDoc) {
+            final String medicine = document.getString("name");
+            names.add(medicine);
+        }
+
+        return names;
+    }
+
+    public MedicineBean findMedicineByName(final String name) {
+        // Cerca il nome esatto (case insensitive per sicurezza)
+        // ^ e $ servono a dire "inizia e finisce esattamente così"
+        final Bson filter = Filters.regex("name", "^" + Pattern.quote(name) + "$", "i");
+        final Document doc = getCollection().find(filter).first();
+
+        if (doc != null) {
+            return parseMedicine(doc);
+        }
+        return null;
     }
 
     /**

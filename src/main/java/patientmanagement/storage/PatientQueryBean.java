@@ -433,7 +433,7 @@ public class PatientQueryBean {
 
                     case STATUS -> filtersList.add(Filters.eq(currentKey, currentValue));
 
-                    case "medicine" -> filtersList.add(Filters.elemMatch("therapy.medicines", Filters.eq("medicineId", currentValue)));
+                    case "medicine" -> filtersList.add(Filters.eq("therapy.medicines.medicineId", currentValue));
 
                     default -> logger.log(Level.SEVERE, "Invalid filter: {0}", currentValue);
                 }

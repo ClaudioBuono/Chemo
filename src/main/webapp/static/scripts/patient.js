@@ -48,7 +48,8 @@ function validatePatientData(patient){
 
 function validateTherapyData(therapy){
     var validity = true;
-    //validazione del formato
+
+    // --- Validazione campi generali (Invariata) ---
     if (!conditionValidity(therapy.condition)) {
         document.getElementById("condition-validity").innerHTML = "Formato errato";
         validity = false;
@@ -73,15 +74,22 @@ function validateTherapyData(therapy){
     } else {
         document.getElementById("duration-validity").innerHTML = "";
     }
+
+    // --- Validazione Medicinali (MODIFICATA) ---
     for (let i = 0; i < therapy.medicinesNumber; i++) {
-        console.log("Id medicinale selezionato: " + therapy.medicines[i].id);
-        if (!idValidity(therapy.medicines[i].id)) {
-            document.getElementById("medicine-" + i + "-validity").innerHTML = "Formato errato";
+        // Nota: therapy.medicines[i].id ora contiene il NOME del farmaco, non l'ID.
+        console.log("Medicinale inserito: " + therapy.medicines[i].id);
+
+        // MODIFICA: Controllo solo che non sia vuoto o nullo
+        if (!therapy.medicines[i].id || therapy.medicines[i].id.trim().length === 0) {
+            document.getElementById("medicine-" + i + "-validity").innerHTML = "Inserire un medicinale";
             validity = false;
         } else {
+            // Se c'è scritto qualcosa, lo accettiamo (la validazione vera la farà il backend se il nome non esiste)
             document.getElementById("medicine-" + i + "-validity").innerHTML = "";
         }
-        console.log("Dose medicinale selezionato: " + therapy.medicines[i].dose);
+
+        console.log("Dose medicinale: " + therapy.medicines[i].dose);
         if (!doseValidity(therapy.medicines[i].dose)) {
             document.getElementById("dose-" + i + "-validity").innerHTML = "Formato errato";
             validity = false;
@@ -100,31 +108,55 @@ function addTherapyForm() {
     document.getElementById("new-therapy-form").className = "box form";
 }
 
-async function addMedicineField(id, number) {
+async function addMedicineField(prefixId, number) {
+    // prefixId è 'new' o 'saved'
+    // number è l'indice progressivo (es. 1, 2, 3...)
+
     const newmedicine = document.createElement("div");
-    newmedicine.setAttribute("id", id + "-medicine-item-" + number);
+    newmedicine.setAttribute("id", prefixId + "-medicine-item-" + number);
     newmedicine.setAttribute("class", "input-fields-row");
 
+    // --- COLONNA SINISTRA (Input Medicinale) ---
     const firstfield = document.createElement("div");
     firstfield.setAttribute("class", "field left");
+
     const label1 = document.createElement("label");
     label1.setAttribute("for", "medicine-name-item-" + number);
     let nextNumber = number + 1;
     label1.innerHTML = nextNumber + "° Medicinale";
-    var select1 = document.createElement("select");
-    select1.setAttribute("id", "medicine-name-item-" + number);
-    select1.setAttribute("class", "input-field");
-    select1.setAttribute("name", "medicineName" + number);
-    //chiamata servlet per ottenere i medicinali
-    select1 = findAllMedicines(select1);
-    console.log("Valore della select: " + select1);
+
+    // CAMBIAMENTO QUI: Creiamo un INPUT invece di una SELECT
+    var inputAutocomplete = document.createElement("input");
+    inputAutocomplete.setAttribute("type", "text");
+    inputAutocomplete.setAttribute("id", "search-patient-medicine-" + prefixId + "-" + number); // ID univoco
+    inputAutocomplete.setAttribute("class", "input-field");
+    inputAutocomplete.setAttribute("name", "medicineName" + number); // IMPORTANTE per il recupero dati
+    inputAutocomplete.setAttribute("placeholder", "Cerca farmaco...");
+    inputAutocomplete.setAttribute("autocomplete", "off");
+
+    // Colleghiamo la Datalist
+    var datalistId = "medicine-suggestions-" + prefixId + "-" + number;
+    inputAutocomplete.setAttribute("list", datalistId);
+
+    // Colleghiamo la funzione JS per l'autocomplete
+    // Nota: escape dei caratteri per la stringa oninput
+    inputAutocomplete.setAttribute("oninput", "fetchMedicineSuggestions(this.value, '" + datalistId + "')");
+
+    // Creiamo la Datalist vuota
+    var datalist = document.createElement("datalist");
+    datalist.setAttribute("id", datalistId);
+
     const validity1 = document.createElement("p");
     validity1.setAttribute("id", "medicine-" + number + "-validity");
     validity1.setAttribute("class", "validity-paragraph status-unavailable");
+
+    // Appendiamo tutto
     firstfield.appendChild(label1);
-    firstfield.appendChild(select1);
+    firstfield.appendChild(inputAutocomplete);
+    firstfield.appendChild(datalist); // Aggiungiamo la datalist al DOM
     firstfield.appendChild(validity1);
 
+    // --- COLONNA DESTRA (Dose - Rimane invariata) ---
     const secondfield = document.createElement("div");
     secondfield.setAttribute("class", "field right");
     const label2 = document.createElement("label");
@@ -142,12 +174,25 @@ async function addMedicineField(id, number) {
     secondfield.appendChild(input2);
     secondfield.appendChild(validity2);
 
+    // --- CHIUSURA ---
     newmedicine.appendChild(firstfield);
     newmedicine.appendChild(secondfield);
-    document.getElementById(id + "-medicines").appendChild(newmedicine);
+
+    // Aggiungiamo la riga al contenitore corretto (new-medicines o saved-medicines)
+    // Nota: nel tuo HTML gli ID dei contenitori sono un po' diversi ('new-medicines' vs 'saved-medicines' probabilmente)
+    // Assicurati che l'ID passato alla funzione matchi l'ID del div contenitore nel DOM.
+    // Dallo script vedo: document.getElementById(id + "-medicines")
+    document.getElementById(prefixId + "-medicines").appendChild(newmedicine);
 
     document.getElementById("medicines-number").innerHTML = nextNumber;
-    document.getElementById("add-medicine-" + id).setAttribute("onclick", "addMedicineField('" + id + "'," + nextNumber + ")");
+
+    // Aggiorniamo il bottone "Aggiungi" per puntare al prossimo numero
+    // Nota: 'add-medicine-new' o 'add-medicine-saved'
+    var btnId = "add-medicine-" + prefixId;
+    var btn = document.getElementById(btnId);
+    if(btn) {
+        btn.setAttribute("onclick", "addMedicineField('" + prefixId + "'," + nextNumber + ")");
+    }
 }
 
 function editStatusButton(id) {
