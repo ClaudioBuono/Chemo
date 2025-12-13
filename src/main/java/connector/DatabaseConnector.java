@@ -23,7 +23,7 @@ public class DatabaseConnector {
             mongoClient = new MongoClient("localhost", 27017);
         }
 
-        CodecRegistry pojoCodecRegistry = org.bson.codecs.configuration.CodecRegistries.fromRegistries(
+        final CodecRegistry pojoCodecRegistry = org.bson.codecs.configuration.CodecRegistries.fromRegistries(
                 MongoClientSettings.getDefaultCodecRegistry(),
                 org.bson.codecs.configuration.CodecRegistries.fromProviders(
                         PojoCodecProvider.builder().automatic(true).build()));

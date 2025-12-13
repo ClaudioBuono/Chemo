@@ -1,6 +1,7 @@
 package patientmanagement.application;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class TherapyBean {
@@ -17,9 +18,9 @@ public class TherapyBean {
     public TherapyBean() {
     }
 
-    public TherapyBean(int sessions, ArrayList<TherapyMedicineBean> medicines, int duration, int frequency) {
+    public TherapyBean(final int sessions, final List<TherapyMedicineBean> medicines, final int duration, final int frequency) {
         this.sessions = sessions;
-        this.medicines = medicines;
+        this.medicines = (ArrayList<TherapyMedicineBean>) medicines;
         this.duration = duration;
         this.frequency = frequency;
     }

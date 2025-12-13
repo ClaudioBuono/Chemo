@@ -30,7 +30,7 @@ public class UserServlet extends HttpServlet {
                     //Effettuo il check se l'utente è presente nel db o meno
                     if(usernameCheck(username) && passwordCheck(username, password)){
                         System.out.println("Utente registrato");
-                        ArrayList<UserBean> users = facade.findUsers("username", username);
+                        ArrayList<UserBean> users = (ArrayList<UserBean>) facade.findUsers("username", username);
                         UserBean user = users.get(0);
                         if (user != null) {
                             HttpSession session = request.getSession(true);
@@ -81,7 +81,7 @@ public class UserServlet extends HttpServlet {
     private boolean usernameCheck(String username) throws Exception{
         Facade facade = new Facade();
         System.out.println("Chiamata db");
-        ArrayList<UserBean> users = facade.findUsers("username", username);
+        ArrayList<UserBean> users = (ArrayList<UserBean>) facade.findUsers("username", username);
         System.out.println("Controllo utente effettuato");
         boolean valid = false;
         for(UserBean us : users){
@@ -94,7 +94,7 @@ public class UserServlet extends HttpServlet {
     private boolean passwordCheck(String username, String password) throws Exception{
         Facade facade = new Facade();
         System.out.println("Chiamata db");
-        ArrayList<UserBean> users = facade.findUsers("username", username);
+        ArrayList<UserBean> users = (ArrayList<UserBean>) facade.findUsers("username", username);
         System.out.println("Controllo utente effettuato");
         boolean result = false;
         for(UserBean us : users){

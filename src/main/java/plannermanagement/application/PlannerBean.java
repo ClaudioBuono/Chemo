@@ -4,6 +4,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class PlannerBean {
     private String id;
@@ -22,10 +23,10 @@ public class PlannerBean {
 
     //Prevede l'inserimento diretto degli appuntamenti, instanziando e popolando l'agenda
 
-    public PlannerBean(Date startDate, Date endDate, ArrayList<AppointmentBean> appointments) {
+    public PlannerBean(final Date startDate, final Date endDate, final List<AppointmentBean> appointments) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.appointments = appointments;
+        this.appointments = (ArrayList<AppointmentBean>) appointments;
     }
 
     public PlannerBean(String id, Date startDate, Date endDate, ArrayList<AppointmentBean> appointments) {

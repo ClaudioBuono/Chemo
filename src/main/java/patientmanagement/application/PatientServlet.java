@@ -258,7 +258,7 @@ public class PatientServlet extends HttpServlet {
      */
     private void handleEditPatientStatus(final HttpServletRequest request, final HttpServletResponse response, final UserBean user) {
         final String patientId = request.getParameter("id");
-        final ArrayList<PatientBean> patients = facade.findPatients("_id", patientId, user);
+        final ArrayList<PatientBean> patients = (ArrayList<PatientBean>) facade.findPatients("_id", patientId, user);
         final String statusParam = request.getParameter(STATUS);
 
         // Validation check
@@ -322,7 +322,7 @@ public class PatientServlet extends HttpServlet {
 
     private void redirectToPatientDetailsPage(final HttpServletRequest request, final HttpServletResponse response, final String id, final UserBean user) {
         // Find the patient
-        final ArrayList<PatientBean> patients = facade.findPatients("_id", id, user);
+        final ArrayList<PatientBean> patients = (ArrayList<PatientBean>) facade.findPatients("_id", id, user);
         if (!patients.isEmpty()) {
             enrichPatientsWithMedicineNames(patients, user);
             request.setAttribute("patient", patients.get(0));

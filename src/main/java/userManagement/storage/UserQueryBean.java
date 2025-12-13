@@ -11,6 +11,7 @@ import userManagement.application.UserBean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class UserQueryBean {
     //Inserimento singolo documento nella collection
@@ -23,7 +24,7 @@ public class UserQueryBean {
     }
 
     //Inserimento collezione di documenti nella collection
-    public void insertDocuments(ArrayList<UserBean> utenti){
+    public void insertDocuments(final List<UserBean> utenti){
         ArrayList<Document> documenti = new ArrayList<>();
         for(UserBean ut : utenti){
             Document doc = createDocument(ut);

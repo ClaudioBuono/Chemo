@@ -364,7 +364,7 @@ public class PlannerServlet extends HttpServlet {
         for (final AppointmentRecord app : allAppointments) {
             // Fetch Patient only if not already in cache
             if (!patientCache.containsKey(app.idPatient())) {
-                final ArrayList<PatientBean> res = facade.findPatients("_id", app.idPatient(), user);
+                final ArrayList<PatientBean> res = (ArrayList<PatientBean>) facade.findPatients("_id", app.idPatient(), user);
                 if (res != null && !res.isEmpty()) {
                     patientCache.put(app.idPatient(), res.get(0));
                 }

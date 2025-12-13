@@ -107,7 +107,7 @@ public class PatientQueryBean {
     }
 
     //Inserimento collezione di documenti nella Collection
-    public boolean insertDocuments(final ArrayList<PatientBean> patients) {
+    public boolean insertDocuments(final List<PatientBean> patients) {
         //Recupera la Collection
         final MongoCollection<Document> collection = getCollection();
 

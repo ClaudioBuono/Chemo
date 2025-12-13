@@ -51,7 +51,7 @@ public class PlannerQueryBean {
     }
 
     //Inserimento collezione di documenti nella collection
-    public void insertDocuments(ArrayList<PlannerBean> agende){
+    public void insertDocuments(List<PlannerBean> agende){
         ArrayList<Document> documenti = new ArrayList<>();
         for(PlannerBean ag : agende){
             Document doc = createDocument(ag);
