@@ -9,6 +9,7 @@ import patientmanagement.application.TherapyMedicineBean;
 import patientmanagement.storage.PatientQueryBean;
 import plannerManagement.application.AppointmentBean;
 import plannerManagement.application.PlannerBean;
+import plannerManagement.application.green.PlannerSummary;
 import plannerManagement.storage.PlannerQueryBean;
 import userManagement.application.UserBean;
 import userManagement.storage.UserQueryBean;
@@ -103,6 +104,32 @@ public class Facade {
         try {
             if(isUserAuthorized(user.getUsername(), 1) || isUserAuthorized(user.getUsername(), 2))
                 return plannerQueryBean.findAll();
+            else
+                throw new Exception("Utente non autorizzato alla modifica dei planner");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<PlannerSummary> findAllPlannerSummaries(UserBean user) {
+        try {
+            if(isUserAuthorized(user.getUsername(), 1) || isUserAuthorized(user.getUsername(), 2))
+                return plannerQueryBean.findAllSummaries();
+            else
+                throw new Exception("Utente non autorizzato alla modifica dei planner");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public PlannerBean findPlannerById(String id, UserBean user) {
+        try {
+            if(isUserAuthorized(user.getUsername(), 1) || isUserAuthorized(user.getUsername(), 2))
+                return plannerQueryBean.findById(id);
             else
                 throw new Exception("Utente non autorizzato alla modifica dei planner");
         } catch (Exception e) {

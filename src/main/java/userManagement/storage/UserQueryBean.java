@@ -68,8 +68,7 @@ public class UserQueryBean {
 
     //Effettuo la connessione con il db, recupero la collection dal db e la restituisco
     private MongoCollection<Document> getCollection(){
-        DatabaseConnector conn = new DatabaseConnector();
-        MongoDatabase db = conn.getDatabase();
+        MongoDatabase db = DatabaseConnector.getDatabase();
 
         MongoCollection<Document> coll = db.getCollection("user");
         System.out.println("Collection \'utente\' recuperata con successo");
@@ -77,7 +76,7 @@ public class UserQueryBean {
     }
 
     private Document createDocument(UserBean userBean){
-        Document doc = new Document("id", userBean.getId())
+        return new Document("id", userBean.getId())
                 .append("name", userBean.getName())
                 .append("surname", userBean.getSurname())
                 .append("city", userBean.getBirthplace())
@@ -86,8 +85,6 @@ public class UserQueryBean {
                 .append("password", userBean.getPassword())
                 .append("specialization", userBean.getSpecialization())
                 .append("type", userBean.getType());
-
-        return doc;
     }
 }
 
