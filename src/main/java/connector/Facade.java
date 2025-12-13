@@ -11,8 +11,8 @@ import plannermanagement.application.AppointmentBean;
 import plannermanagement.application.PlannerBean;
 import plannermanagement.application.green.PlannerSummary;
 import plannermanagement.storage.PlannerQueryBean;
-import userManagement.application.UserBean;
-import userManagement.storage.UserQueryBean;
+import usermanagement.application.UserBean;
+import usermanagement.storage.UserQueryBean;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -141,7 +141,7 @@ public class Facade {
     public void insertPlanner(final Date startDate, final Date endDate, final List<AppointmentBean> appointments, final UserBean user){
         try{
             if(isUserAuthorized(user.getUsername(), 1)) {
-                PlannerBean planner = new PlannerBean(startDate, endDate, appointments);
+                final PlannerBean planner = new PlannerBean(startDate, endDate, appointments);
                 plannerQueryBean.insertDocument(planner);
             }else
                 throw new IllegalAccessException("Utente non autorizzato all'inserimento di un planner");
@@ -167,7 +167,7 @@ public class Facade {
     public MedicineBean insertMedicine(final String name, final String ingredients, final UserBean user){
         try{
             if(isUserAuthorized(user.getUsername(), 2)){
-                MedicineBean medicineBean = new MedicineBean(name, ingredients);
+                final MedicineBean medicineBean = new MedicineBean(name, ingredients);
                 medicineQueryBean.insertDocument(medicineBean);
                 return medicineBean;
             }else
@@ -204,11 +204,11 @@ public class Facade {
     public void insertMedicinePackage(final String medicineId, final String boxId, final boolean status, final Date expiryDate, final int capacity, final UserBean user) {
         try{
             if(isUserAuthorized(user.getUsername(), 2)){
-                PackageBean newPackage = new PackageBean(status, expiryDate, capacity, boxId);
+                final PackageBean newPackage = new PackageBean(status, expiryDate, capacity, boxId);
                 medicineQueryBean.insertDocument(newPackage, medicineId);
             }else
                 throw new IllegalAccessException("Utente non autorizzato all'inserimento di medicinali");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
@@ -220,7 +220,7 @@ public class Facade {
                 medicineQueryBean.deleteDocument("boxId", boxId);
             }else
                 throw new IllegalAccessException("Utente non autorizzato all'inserimento di medicinali");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
@@ -233,7 +233,7 @@ public class Facade {
                 medicineQueryBean.deleteDocument(key, value);
             }else
                 throw new IllegalAccessException("Utente non autorizzato all'eliminazione di medicinali");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
@@ -244,13 +244,13 @@ public class Facade {
                 medicineQueryBean.updateDocument(id, valId, key, valKey);
             }else
                 throw new IllegalAccessException("Utente non autorizzato alla modifica di medicinali");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
     public List<MedicineBean> findMedicines(final String key, final Object value, final UserBean user){
-        ArrayList<MedicineBean> medicines = new ArrayList<>();
+        final ArrayList<MedicineBean> medicines = new ArrayList<>();
         try{
             if(isUserAuthorized(user.getUsername(), 2) || isUserAuthorized(user.getUsername(), 1)){
                 if(key.equals("_id"))  {
@@ -260,7 +260,7 @@ public class Facade {
                 return medicineQueryBean.findDocument(key, value);
             }else
                 throw new IllegalAccessException("Utente non autorizzato alla modifica di medicinali");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
 
@@ -272,13 +272,13 @@ public class Facade {
     }
 
     public List<MedicineBean> findMedicines(final List<String> key, final List<Object> value, final UserBean user){
-        ArrayList<MedicineBean> medicines = new ArrayList<>();
+        final ArrayList<MedicineBean> medicines = new ArrayList<>();
         try{
             if(isUserAuthorized(user.getUsername(), 2) || isUserAuthorized(user.getUsername(), 1)){
                 return medicineQueryBean.findDocument(key, value);
             }else
                 throw new IllegalAccessException("Utente non autorizzato alla modifica di medicinali");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
 
@@ -291,7 +291,7 @@ public class Facade {
                 return medicineQueryBean.findAll();
             else
                 throw new IllegalAccessException("Utente non autorizzato alla modifica di medicinali");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
 
@@ -339,7 +339,7 @@ public class Facade {
     OPERAZIONI CRUD PER ENTITA' PATIENT
      */
 
-    public PatientBean insertPatient(PatientBean patient, UserBean user){
+    public PatientBean insertPatient(final PatientBean patient, final UserBean user){
         try{
             if(isUserAuthorized(user.getUsername(), 1)){
                 patientQueryBean.insertDocument(patient);
@@ -347,7 +347,7 @@ public class Facade {
             }
             else
                 throw new IllegalAccessException("Utente non autorizzato all'inserimento dei pazienti");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
         return null;
@@ -360,20 +360,20 @@ public class Facade {
             }
             else
                 throw new IllegalAccessException("Utente non autorizzato all'inserimento dei pazienti");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
     public void insertTherapy(final int sessions, final List<TherapyMedicineBean> medicines, final int duration, final int frequency, final String patientId, final UserBean user) {
         try{
-            TherapyBean therapy = new TherapyBean(sessions, medicines, duration, frequency);
+            final TherapyBean therapy = new TherapyBean(sessions, medicines, duration, frequency);
             if(isUserAuthorized(user.getUsername(), 1)) {
                 patientQueryBean.insertDocument(therapy, patientId);
             }
             else
                 throw new IllegalAccessException("Utente non autorizzato all'inserimento dei pazienti");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
@@ -384,7 +384,7 @@ public class Facade {
                 patientQueryBean.insertDocuments(patients);
             else
                 throw new IllegalAccessException("Utente non autorizzato all'inserimento dei pazienti");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
@@ -395,7 +395,7 @@ public class Facade {
                 patientQueryBean.deleteDocument(key, value);
             else
                 throw new IllegalAccessException("Utente non autorizzato all'eliminazione dei pazienti");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
@@ -406,14 +406,14 @@ public class Facade {
                 patientQueryBean.updateDocument(id, valId, key, valKey);
             else
                 throw new IllegalAccessException("Utente non autorizzato alla modifica dei pazienti");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
     //modificare il metodo in patientQueryBean in modo che restituisca ArrayList<PatientBean>
     public List<PatientBean> findPatients(final String key, final Object value, final UserBean user){
-        ArrayList<PatientBean> patients = new ArrayList<>();
+        final ArrayList<PatientBean> patients = new ArrayList<>();
         try{
             if(isUserAuthorized(user.getUsername(), 1)) {
                 if (key.equals("_id")) {
@@ -424,7 +424,7 @@ public class Facade {
             }
             else
                 throw new IllegalAccessException("Utente non autorizzato alla visualizzazione dei pazienti");
-        }catch(Exception e){
+        }catch(final Exception e){
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
 

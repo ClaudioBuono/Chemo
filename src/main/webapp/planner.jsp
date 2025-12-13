@@ -6,7 +6,7 @@
   REFACTORED: Green Coding Implementation (Map-based lookup)
 --%>
 <%@ page contentType="text/html;charset=UTF-8"
-         import="userManagement.application.UserBean"
+         import="usermanagement.application.UserBean"
          import="plannermanagement.application.PlannerBean"
          import="plannermanagement.application.green.AppointmentRecord"
          import="java.util.Date"

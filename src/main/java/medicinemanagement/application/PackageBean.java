@@ -47,19 +47,19 @@ public class PackageBean {
 
 
     //Setters
-    public void setStatus(boolean status) {
+    public void setStatus(final boolean status) {
         this.status = status;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(final Date expiryDate) {
         this.expiryDate = expiryDate;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(final int capacity) {
         this.capacity = capacity;
     }
 
-    public void setPackageId(String packageId) {
+    public void setPackageId(final String packageId) {
         this.packageId = packageId;
     }
 

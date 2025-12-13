@@ -1,7 +1,7 @@
 package medicinemanagement.application;
 
 import connector.Facade;
-import userManagement.application.UserBean;
+import usermanagement.application.UserBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 public class MedicineServlet extends HttpServlet {
     private static final Facade facade = new Facade();
     private static final String ACTION = "action";
+    private static final String OPERATION_RESULT = "OPERATION_RESULT";
+    public static final String EXPIRY_DATE = "expiryDate";
     private final Logger logger = Logger.getLogger(MedicineServlet.class.getName());
     private static final int PAGE_SIZE = 10;
 
@@ -64,26 +66,26 @@ public class MedicineServlet extends HttpServlet {
 
                 // Validazione
                 if (!medicineValidation(medicine)) {
-                    response.addHeader("OPERATION_RESULT", "false");
+                    response.addHeader(OPERATION_RESULT, "false");
                     response.addHeader("ERROR_MESSAGE", "Aggiunta medicinale fallita: i dati inseriti non sono validi.");
                 } else {
                     facade.insertMedicine(medicine, user);
-                    response.addHeader("OPERATION_RESULT", "true");
+                    response.addHeader(OPERATION_RESULT, "true");
                     response.addHeader("MEDICINE_ID", medicine.getId());
                 }
             } else if (action.equals("insertPackage")) {// Inserimento confezione
                 final String medicineId = request.getParameter("medicineId");
                 final int capacity = Integer.parseInt(request.getParameter("capacity"));
-                final Date expiryDate = dateParser(request.getParameter("expiryDate"));
+                final Date expiryDate = dateParser(request.getParameter(EXPIRY_DATE));
 
                 final PackageBean medicinePackage = new PackageBean(true, expiryDate, capacity, "");
 
                 if (!packageValidation(medicinePackage)) {
-                    response.addHeader("OPERATION_RESULT", "false");
+                    response.addHeader(OPERATION_RESULT, "false");
                     response.addHeader("ERROR_MESSAGE", "Aggiunta confezione fallita: i dati inseriti non sono validi.");
                 } else {
                     facade.insertMedicinePackage(medicineId, medicinePackage, user);
-                    response.addHeader("OPERATION_RESULT", "true");
+                    response.addHeader(OPERATION_RESULT, "true");
                 }
             }
         } catch (final Exception e) {
@@ -228,9 +230,9 @@ public class MedicineServlet extends HttpServlet {
             }
 
             // --- Expiry Date Filter ---
-            final String expiryDate = request.getParameter("expiryDate");
+            final String expiryDate = request.getParameter(EXPIRY_DATE);
             if (expiryDate != null && !expiryDate.trim().isEmpty()) {
-                keys.add("expiryDate");
+                keys.add(EXPIRY_DATE);
                 values.add(dateParser(expiryDate.trim()));
                 searchParams.append("&expiryDate=").append(expiryDate.trim());
             }

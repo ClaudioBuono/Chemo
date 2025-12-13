@@ -5,7 +5,7 @@
   Time: 20:32
 --%>
 <%@ page contentType="text/html;charset=UTF-8"
-         import="userManagement.application.UserBean" %>
+         import="usermanagement.application.UserBean" %>
 <!DOCTYPE html>
 <html lang="it">
 <head>

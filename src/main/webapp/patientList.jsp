@@ -7,7 +7,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          import="connector.Facade"
          import="java.util.ArrayList"
-         import="userManagement.application.UserBean"
+         import="usermanagement.application.UserBean"
          import="patientmanagement.application.PatientBean"%>
 <%@ page import="medicinemanagement.application.MedicineBean" %>
 <html>

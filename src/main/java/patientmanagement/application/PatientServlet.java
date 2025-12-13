@@ -2,7 +2,7 @@ package patientmanagement.application;
 
 import connector.Facade;
 import medicinemanagement.application.MedicineBean;
-import userManagement.application.UserBean;
+import usermanagement.application.UserBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,7 +34,7 @@ public class PatientServlet extends HttpServlet {
     private static final String ACTION = "action";
     private static final String ERROR_MESSAGE = "ERROR_MESSAGE";
     private static final String OPERATION_RESULT = "OPERATION_RESULT";
-    public static final String FALSE = "false";
+    private static final String FALSE = "false";
     final Logger logger = Logger.getLogger(getClass().getName());
 
     static final int PAGE_SIZE = 10;

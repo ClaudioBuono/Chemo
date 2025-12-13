@@ -40,23 +40,23 @@ public class AppointmentBean {
         return idMedicine;
     }
 
-    public void setIdPatient(String idPatient) {
+    public void setIdPatient(final String idPatient) {
         this.idPatient = idPatient;
     }
 
-    public void setDate(Date date) {
+    public void setDate(final Date date) {
         this.date = date;
     }
 
-    public void setChair(String chair) {
+    public void setChair(final String chair) {
         this.chair = chair;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(final int duration) {
         this.duration = duration;
     }
 
-    public void setIdMedicine(String idMedicine) {
+    public void setIdMedicine(final String idMedicine) {
         this.idMedicine = idMedicine;
     }
 

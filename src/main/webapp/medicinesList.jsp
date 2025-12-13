@@ -5,7 +5,7 @@
   Time: 17:50
 --%>
 <%@ page contentType="text/html;charset=UTF-8"
-         import="userManagement.application.UserBean"%>
+         import="usermanagement.application.UserBean"%>
 <%@ page import="medicinemanagement.application.MedicineBean" %>
 <%@ page import="java.util.ArrayList" %>
 <html>

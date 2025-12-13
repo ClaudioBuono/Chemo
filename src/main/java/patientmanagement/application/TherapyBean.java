@@ -45,19 +45,19 @@ public class TherapyBean {
 
     //Setters
 
-    public void setSessions(int sessions) {
+    public void setSessions(final int sessions) {
         this.sessions = sessions;
     }
 
-    public void setMedicines(ArrayList<TherapyMedicineBean> medicines) {
-        this.medicines = medicines;
+    public void setMedicines(final List<TherapyMedicineBean> medicines) {
+        this.medicines = (ArrayList<TherapyMedicineBean>) medicines;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(final int duration) {
         this.duration = duration;
     }
 
-    public void setFrequency(int frequency) {
+    public void setFrequency(final int frequency) {
         this.frequency = frequency;
     }
 

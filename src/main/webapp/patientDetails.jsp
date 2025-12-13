@@ -6,7 +6,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8"
          import="patientmanagement.application.PatientBean"
-         import="userManagement.application.UserBean"
+         import="usermanagement.application.UserBean"
          import="patientmanagement.application.TherapyMedicineBean"
 %>
 
