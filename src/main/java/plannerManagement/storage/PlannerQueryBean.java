@@ -4,6 +4,8 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
 import connector.DatabaseConnector;
 import org.bson.Document;
@@ -11,11 +13,11 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import plannerManagement.application.AppointmentBean;
 import plannerManagement.application.PlannerBean;
+import plannerManagement.application.green.PlannerSummary;
 
-import javax.print.Doc;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -109,9 +111,59 @@ public class PlannerQueryBean {
         return p;
     }
 
+    public List<PlannerSummary> findAllSummaries() {
+        final MongoCollection<Document> collection = getCollection();
+
+        // 1. PROJECTION: Chiediamo SOLO id, start, end.
+        final var projection = Projections.fields(
+                Projections.include("_id", "start", "end")
+        );
+
+        // 2. QUERY LEGGERA
+        final var iterDoc = collection.find()
+                .projection(projection)
+                .sort(Sorts.ascending("start"));
+
+        final List<PlannerSummary> summaries = new ArrayList<>();
+
+        for (final Document doc : iterDoc) {
+            // Conversione al volo: Mongo Date -> Java LocalDate
+            final LocalDateTime start = doc.getDate("start").toInstant()
+                    .atZone(ZoneId.systemDefault()).toLocalDateTime();
+            final LocalDateTime end = doc.getDate("end").toInstant()
+                    .atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+            summaries.add(new PlannerSummary(
+                    doc.get("_id").toString(),
+                    start,
+                    end
+            ));
+        }
+        return summaries;
+    }
+
+    public PlannerBean findById(final String id) {
+        final MongoCollection<Document> collection = getCollection();
+
+        // Qui NON usiamo proiezioni, perché ci servono gli appuntamenti!
+        final Document doc = collection.find(Filters.eq("_id", new ObjectId(id))).first();
+
+        if (doc == null) return null;
+
+        // Qui scatta la conversione pesante, MA LO FAI SOLO PER 1 RECORD!
+        final ArrayList<AppointmentBean> appointments = convertToArray(doc.getList("appointments", Document.class));
+
+        return new PlannerBean(
+                doc.get("_id").toString(),
+                doc.getDate("start"),
+                doc.getDate("end"),
+                appointments
+        );
+    }
+
     public PlannerBean findDocumentById(String id) {
         //Recupera la Collection
-        MongoCollection<Document> collection = getCollection();
+        final MongoCollection<Document> collection = getCollection();
 
         //Crea il filtro
         Bson filter = Filters.eq("_id", new ObjectId(id));
@@ -135,8 +187,7 @@ public class PlannerQueryBean {
     }
 
     private MongoCollection<Document> getCollection(){
-        DatabaseConnector conn = new DatabaseConnector();
-        MongoDatabase db = conn.getDatabase();
+        final MongoDatabase db = DatabaseConnector.getDatabase();
 
         MongoCollection<Document> coll = db.getCollection("planner");
         System.out.println("Collection \'agenda\' recuperata con successo");
