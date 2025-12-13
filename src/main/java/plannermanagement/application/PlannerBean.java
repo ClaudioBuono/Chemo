@@ -1,11 +1,10 @@
-package plannerManagement.application;
-
-import plannerManagement.application.AppointmentBean;
+package plannermanagement.application;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class PlannerBean {
     private String id;
@@ -24,17 +23,17 @@ public class PlannerBean {
 
     //Prevede l'inserimento diretto degli appuntamenti, instanziando e popolando l'agenda
 
-    public PlannerBean(Date startDate, Date endDate, ArrayList<AppointmentBean> appointments) {
+    public PlannerBean(final Date startDate, final Date endDate, final List<AppointmentBean> appointments) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.appointments = appointments;
+        this.appointments = (ArrayList<AppointmentBean>) appointments;
     }
 
-    public PlannerBean(String id, Date startDate, Date endDate, ArrayList<AppointmentBean> appointments) {
+    public PlannerBean(final String id, final Date startDate, final Date endDate, final List<AppointmentBean> appointments) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.appointments = appointments;
+        this.appointments = (ArrayList<AppointmentBean>) appointments;
     }
 
     public String getId() {
@@ -57,24 +56,24 @@ public class PlannerBean {
         return dateParser(endDate);
     }
 
-    public ArrayList<AppointmentBean> getAppointments() {
+    public List<AppointmentBean> getAppointments() {
         return appointments;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(final Date startDate) {
         this.startDate = startDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(final Date endDate) {
         this.endDate = endDate;
     }
 
-    public void setAppointments(ArrayList<AppointmentBean> appointments) {
-        this.appointments = appointments;
+    public void setAppointments(final List<AppointmentBean> appointments) {
+        this.appointments = (ArrayList<AppointmentBean>) appointments;
     }
 
     @Override
@@ -88,7 +87,7 @@ public class PlannerBean {
     }
 
     private String dateParser(Date date) {
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+        final Format formatter = new SimpleDateFormat("yyyy-MM-dd");
         return formatter.format(date);
     }
 }

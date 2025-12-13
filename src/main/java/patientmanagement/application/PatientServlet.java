@@ -2,7 +2,7 @@ package patientmanagement.application;
 
 import connector.Facade;
 import medicinemanagement.application.MedicineBean;
-import userManagement.application.UserBean;
+import usermanagement.application.UserBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,7 +34,7 @@ public class PatientServlet extends HttpServlet {
     private static final String ACTION = "action";
     private static final String ERROR_MESSAGE = "ERROR_MESSAGE";
     private static final String OPERATION_RESULT = "OPERATION_RESULT";
-    public static final String FALSE = "false";
+    private static final String FALSE = "false";
     final Logger logger = Logger.getLogger(getClass().getName());
 
     static final int PAGE_SIZE = 10;
@@ -68,7 +68,7 @@ public class PatientServlet extends HttpServlet {
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         // Recupero action e user
         final String action = request.getParameter(ACTION);
-        UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
+        final UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
 
         try {
             if (action == null) return;
@@ -226,7 +226,7 @@ public class PatientServlet extends HttpServlet {
     private ArrayList<TherapyMedicineBean> extractMedicinesFromRequest(final HttpServletRequest request, final int medicinesNumber) {
         final ArrayList<TherapyMedicineBean> medicines = new ArrayList<>();
 
-        for (int i = 0; i < medicinesNumber; i++) {
+        for (int i = 0; i < medicinesNumber; ++i) {
             final String inputVal = request.getParameter("medicineId" + i); // Qui arriva il NOME
             final int doseVal = Integer.parseInt(request.getParameter("medicineDose" + i));
             String realIdToSave = null;
@@ -258,7 +258,7 @@ public class PatientServlet extends HttpServlet {
      */
     private void handleEditPatientStatus(final HttpServletRequest request, final HttpServletResponse response, final UserBean user) {
         final String patientId = request.getParameter("id");
-        final ArrayList<PatientBean> patients = facade.findPatients("_id", patientId, user);
+        final ArrayList<PatientBean> patients = (ArrayList<PatientBean>) facade.findPatients("_id", patientId, user);
         final String statusParam = request.getParameter(STATUS);
 
         // Validation check
@@ -322,7 +322,7 @@ public class PatientServlet extends HttpServlet {
 
     private void redirectToPatientDetailsPage(final HttpServletRequest request, final HttpServletResponse response, final String id, final UserBean user) {
         // Find the patient
-        final ArrayList<PatientBean> patients = facade.findPatients("_id", id, user);
+        final ArrayList<PatientBean> patients = (ArrayList<PatientBean>) facade.findPatients("_id", id, user);
         if (!patients.isEmpty()) {
             enrichPatientsWithMedicineNames(patients, user);
             request.setAttribute("patient", patients.get(0));
@@ -517,50 +517,61 @@ public class PatientServlet extends HttpServlet {
     // ==============================
     // PARSING AND VALIDATION METHODS
     // ==============================
-    private Date dateParser(String date) {
-        SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
+    private Date dateParser(final String date) {
+        final SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
         try {
             return pattern.parse(date);
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             return null;
         }
     }
-    private String dateReverseParser(Date date) {
-        DateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
+    private String dateReverseParser(final Date date) {
+        final DateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
         try {
             return pattern.format(date);
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             return null;
         }
     }
 
-    private boolean patientValidation(PatientBean patient){
+    private boolean patientValidation(final PatientBean patient){
+        // Validazione Nome
         if (!namesValidity(patient.getName())) {
             return false;
         }
+        // Validazione Cognome
         if (!namesValidity(patient.getSurname())) {
             return false;
         }
-        if (!dateValidity(dateReverseParser(patient.getBirthDate()))) {
+
+        // Validazione Data
+        final String processedBirthDate = dateReverseParser(patient.getBirthDate());
+
+        if (processedBirthDate == null || !dateValidity(processedBirthDate)) {
             return false;
         }
+        // Validazione Città
         if (!cityValidity(patient.getCity())) {
             return false;
         }
+        // Validazione Codice Fiscale
         if (!taxCodeValidity(patient.getTaxCode())) {
             return false;
         }
+        // Validazione Numero di Telefono
         if (!phoneNumberValidity(patient.getPhoneNumber())) {
             return false;
         }
+        // Validazione Note
         if (!notesValidity(patient.getNotes())) {
             return false;
         }
+
         return true;
     }
-    private boolean therapyValidation(String condition, TherapyBean therapy){
+    private boolean therapyValidation(final String condition, final TherapyBean therapy){
         if (!conditionValidity(condition)) {
             return false;
         }
@@ -573,7 +584,7 @@ public class PatientServlet extends HttpServlet {
         if (!durationValidity(therapy.getDuration())) {
             return false;
         }
-        for (TherapyMedicineBean medicine: therapy.getMedicines()) {
+        for (final TherapyMedicineBean medicine: therapy.getMedicines()) {
             if (!idValidity(medicine.getMedicineId())) {
                 return false;
             }
@@ -584,64 +595,64 @@ public class PatientServlet extends HttpServlet {
 
         return true;
     }
-    private boolean idValidity(String id) {
-        String format = "^[a-f\\d]{24}$";
+    private boolean idValidity(final String id) {
+        final String format = "^[a-f\\d]{24}$";
         return id.matches(format);
     }
-    private boolean numberValidity(String notes) {
-        String format = "^[0-9]+$";
+    private boolean numberValidity(final String notes) {
+        final String format = "^\\d+$";
         return notes.matches(format);
     }
-    private boolean dateValidity(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate newDate = LocalDate.parse(date, formatter );
-        LocalDate currentDate = LocalDate.now();
+    private boolean dateValidity(final String date) {
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        final LocalDate newDate = LocalDate.parse(date, formatter );
+        final LocalDate currentDate = LocalDate.now();
         if (newDate.isAfter(currentDate))
             return false;
-        String format = "^(19|20)[0-9]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$";
+        final String format = "^(19|20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12]\\d|3[01])$";
         return date.matches(format);
     }
-    private boolean nameValidity(String name) {
-        String format = "^[A-Za-z][A-Za-z'-]+([ A-Za-z][A-Za-z'-]+)*$";
+    private boolean nameValidity(final String name) {
+        final String format = "^[A-Za-z][A-Za-z'-]++([ A-Za-z][A-Za-z'-]++)*+$";
         return name.matches(format);
     }
-    private boolean namesValidity(String name) {
+    private boolean namesValidity(final String name) {
         if (name.length() > 32)
             return false;
         return nameValidity(name);
     }
-    private boolean cityValidity(String city) {
+    private boolean cityValidity(final String city) {
         if (city.length() > 32)
             return false;
         return nameValidity(city);
     }
-    private boolean taxCodeValidity(String taxCode) {
-        String format = "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$";
+    private boolean taxCodeValidity(final String taxCode) {
+        final String format = "^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$";
         return taxCode.matches(format);
     }
-    private boolean phoneNumberValidity(String phoneNumber) {
-        String format = "^[+]?[(]?[0-9]{2,3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,7}$";
+    private boolean phoneNumberValidity(final String phoneNumber) {
+        final String format = "^[+]?[(]?\\d{2,3}\\)?[-\\s.]?\\d{3}[-\\s.]?\\d{4,7}$";
         return phoneNumber.matches(format);
     }
-    private boolean notesValidity(String notes) {
+    private boolean notesValidity(final String notes) {
         if (notes.length() > 255)
             return false;
-        String format = "^[A-Za-z0-9][A-Za-z0-9'.,\\n-]+([ A-Za-z0-9][A-Za-z0-9'.,\\n-]+)*$";
+        final String format = "^[A-Za-z0-9][A-Za-z0-9'.,\\n-]++([ A-Za-z0-9][A-Za-z0-9'.,\\n-]++)*+$";
         return notes.matches(format);
     }
-    private boolean conditionValidity(String condition) {
+    private boolean conditionValidity(final String condition) {
         return nameValidity(condition);
     }
-    private boolean sessionsValidity(Integer sessions) {
+    private boolean sessionsValidity(final Integer sessions) {
         return numberValidity(String.valueOf(sessions));
     }
-    private boolean frequencyValidity(Integer frequency) {
+    private boolean frequencyValidity(final Integer frequency) {
         return numberValidity(String.valueOf(frequency));
     }
-    private boolean durationValidity(Integer duration) {
+    private boolean durationValidity(final Integer duration) {
         return numberValidity(String.valueOf(duration));
     }
-    private boolean doseValidity(Integer dose) {
+    private boolean doseValidity(final Integer dose) {
         return numberValidity(String.valueOf(dose));
     }
 }

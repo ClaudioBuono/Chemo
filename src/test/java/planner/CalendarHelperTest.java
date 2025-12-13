@@ -1,9 +1,9 @@
 package planner;
 
 import org.junit.jupiter.api.Test;
-import plannerManagement.application.green.AppointmentRecord;
-import plannerManagement.application.green.CalendarGridHelper;
-import plannerManagement.application.green.PlannerRecord;
+import plannermanagement.application.green.AppointmentRecord;
+import plannermanagement.application.green.CalendarGridHelper;
+import plannermanagement.application.green.PlannerRecord;
 
 import java.time.LocalDateTime;
 import java.util.List;

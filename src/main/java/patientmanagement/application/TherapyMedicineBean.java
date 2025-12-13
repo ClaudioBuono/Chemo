@@ -35,7 +35,7 @@ public class TherapyMedicineBean {
         this.medicineId = medicineId;
     }
 
-    public void setDose(int dose) {
+    public void setDose(final int dose) {
         this.dose = dose;
     }
 

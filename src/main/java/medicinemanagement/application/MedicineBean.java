@@ -1,6 +1,7 @@
 package medicinemanagement.application;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MedicineBean {
 
@@ -49,33 +50,33 @@ public class MedicineBean {
         return amount;
     }
 
-    public PackageBean getPackage(int index) {
+    public PackageBean getPackage(final int index) {
         return packages.get(index);
     }
 
-    public ArrayList<PackageBean> getPackages() {
+    public List<PackageBean> getPackages() {
         return packages;
     }
 
     //Setters
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public void setIngredients(String ingredients) {
+    public void setIngredients(final String ingredients) {
         this.ingredients = ingredients;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(final int amount) {
         this.amount = amount;
     }
 
-    public void setPackages(ArrayList<PackageBean> packages) {
-        this.packages = packages;
+    public void setPackages(final List<PackageBean> packages) {
+        this.packages = (ArrayList<PackageBean>) packages;
     }
 
     //Metodi ereditati da Object
@@ -91,7 +92,7 @@ public class MedicineBean {
     }
 
     //Altri metodi
-    public void addPackage(PackageBean newPackage) {
+    public void addPackage(final PackageBean newPackage) {
         this.packages.add(newPackage);
     }
 }

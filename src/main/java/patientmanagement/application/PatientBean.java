@@ -103,43 +103,43 @@ public class PatientBean {
     }
     //Setters
 
-    public void setPatientId(String patientId) {
+    public void setPatientId(final String patientId) {
         this.patientId = patientId;
     }
 
-    public void setTaxCode(String taxCode) {
+    public void setTaxCode(final String taxCode) {
         this.taxCode = taxCode;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public void setSurname(String surname) {
+    public void setSurname(final String surname) {
         this.surname = surname;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(final Date birthDate) {
         this.birthDate = birthDate;
     }
 
-    public void setCity(String city) {
+    public void setCity(final String city) {
         this.city = city;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(final boolean status) {
         this.status = status;
     }
 
-    public void setCondition(String condition) {
+    public void setCondition(final String condition) {
         this.condition = condition;
     }
 
-    public void setTherapy(TherapyBean therapy) {
+    public void setTherapy(final TherapyBean therapy) {
         this.therapy = therapy;
     }
 
@@ -162,8 +162,8 @@ public class PatientBean {
                 '}';
     }
 
-    private String dateParser(Date date) {
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private String dateParser(final Date date) {
+        final Format formatter = new SimpleDateFormat("yyyy-MM-dd");
         return formatter.format(date);
     }
 

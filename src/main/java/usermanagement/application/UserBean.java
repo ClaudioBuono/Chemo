@@ -1,11 +1,11 @@
-package userManagement.application;
+package usermanagement.application;
 
-import java.text.DateFormat;
+import java.io.Serializable;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class UserBean {
+public class UserBean implements Serializable {
     private String id;
     private String name;
     private String surname;
@@ -70,39 +70,39 @@ public class UserBean {
         return type;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public void setSurname(String surname) {
+    public void setSurname(final String surname) {
         this.surname = surname;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(final Date birthDate) {
         this.birthDate = birthDate;
     }
 
-    public void setBirthplace(String birthplace) {
+    public void setBirthplace(final String birthplace) {
         this.birthplace = birthplace;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
-    public void setSpecialization(String specialization) {
+    public void setSpecialization(final String specialization) {
         this.specialization = specialization;
     }
 
-    public void setType(int type) {
+    public void setType(final int type) {
         this.type = type;
     }
 
@@ -121,8 +121,8 @@ public class UserBean {
                 '}';
     }
 
-    private String dateParser(Date date) {
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private String dateParser(final Date date) {
+        final Format formatter = new SimpleDateFormat("yyyy-MM-dd");
         return formatter.format(date);
     }
 }

@@ -1,4 +1,4 @@
-package plannerManagement.application;
+package plannermanagement.application;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -7,11 +7,11 @@ import connector.Facade;
 import medicinemanagement.application.MedicineBean;
 import medicinemanagement.application.PackageBean;
 import patientmanagement.application.PatientBean;
-import plannerManagement.application.green.AppointmentRecord;
-import plannerManagement.application.green.CalendarGridHelper;
-import plannerManagement.application.green.PlannerRecord;
-import plannerManagement.application.green.PlannerSummary;
-import userManagement.application.UserBean;
+import plannermanagement.application.green.AppointmentRecord;
+import plannermanagement.application.green.CalendarGridHelper;
+import plannermanagement.application.green.PlannerRecord;
+import plannermanagement.application.green.PlannerSummary;
+import usermanagement.application.UserBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -101,173 +101,29 @@ public class PlannerServlet extends HttpServlet {
         }
 
     }
-
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Recupero l'action dalla request
-        String action = request.getParameter("action");
-
-        //Recupero l'utente dalla sessione
-        UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
+    protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        final String action = request.getParameter("action");
+        final UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
 
         try {
             if ("addAppointments".equals(action)) {
-                //Recupero il numero di pazienti dalla request
-                int patientNumber = Integer.parseInt(request.getParameter("patientsNumber"));
-
-                //Inserisco ogni paziente nell'array di PatientJSON
-                List<PatientJSON> patientsJson = new ArrayList<>();
-                for (int i = 0; i < patientNumber; i++) {
-                    //Recupero l'id paziente
-                    String patientId = request.getParameter("patient" + i);
-
-                    //Recupero il paziente corrispondente
-                    PatientBean patient = facade.findPatients("_id", patientId, user).get(0);
-
-                    //Inserisco i dati del paziente in PatientJSON
-                    patientId = patient.getPatientId();
-                    String medicineId = patient.getTherapy().getMedicines().get(0).getMedicineId(); //Assumiamo 1 medicinale per seduta, prendo il primo a scopo di esempio
-                    int dose = patient.getTherapy().getMedicines().get(0).getDose();
-                    PatientJSON patientJSON = new PatientJSON(patientId, medicineId, dose);
-
-                    //Aggiungo il paziente all'array di pazientiJSON
-                    patientsJson.add(patientJSON);
-                }
-
-                //Inizializzo GSON
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-                //Recupero il file di input
-                File inputFile = new File(PY_DIR, INPUT_FILE);
-
-                String json = gson.toJson(patientsJson, new TypeToken<List<PatientJSON>>() {}.getType());
-
-                //Scrivo nel file JSON
-                try (FileWriter writer = new FileWriter(inputFile)) {
-                    writer.append(json);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-                //Recupero tutti i medicinali con le relative quantità disponibili
-                List<MedicinesJSON> medicinesJSONList = new ArrayList<>();
-                for (MedicineBean medicine : facade.findAllMedicines(user)) {
-                    String medicineId = medicine.getId();
-                    int quantity = 0;
-                    for (PackageBean packageBean : medicine.getPackages()) {
-                        quantity += packageBean.getCapacity();
-                    }
-                    medicinesJSONList.add(new MedicinesJSON(medicineId, quantity));
-                }
-
-                //Recupero il file dei medicinali
-                File medicinesFile = new File(PY_DIR, MEDICINES_FILE);
-
-                json = gson.toJson(medicinesJSONList, new TypeToken<List<PatientJSON>>() {}.getType());
-
-                //Scrivo nel file JSON
-                try (FileWriter writer = new FileWriter(medicinesFile)) {
-                    writer.append(json);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-                //Inizializzo la lista dei pazienti di output
-                List<String> patientIds = null;
-
-                while (patientIds == null) {
-                    //Faccio eseguire il processo del modulo di IA
-                    Process pythonProcess = Runtime.getRuntime().exec(new String[]{"py", PYTHON_FILE_PATH});
-
-                    //Attendo che il processo di python abbia finito
-                    pythonProcess.waitFor();
-
-                    //Recupero il file di output
-                    File outputFile = new File(PY_DIR, OUTPUT_FILE);
-
-                    //Apro il file JSON contenente i risultati del modulo di IA
-                    try (FileReader reader = new FileReader(outputFile)) {
-
-                        //Converto l'array di JSON in una lista di String
-                        patientIds = gson.fromJson(reader, new TypeToken<List<String>>() {}.getType());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                //Recupero la data in cui è stata fatta la richiesta
-                LocalDate now = LocalDate.now(TIMEZONE);
-
-                //Calcolo primo e ultimo giorno della settimana corrente
-                LocalDate firstDayOfWeek = now.with(previousOrSame(DayOfWeek.MONDAY));
-                LocalDate lastDayOfWeek = now.with(nextOrSame(DayOfWeek.FRIDAY));
-
-                //Recupero l'ultimo planner presente nel db
-                PlannerBean latestPlanner = facade.findLatestPlanner(user);
-
-                //Se siamo al venerdì, è necessario schedulare per la settimana successiva
-                ZonedDateTime latestPlannerEndDate = latestPlanner.getEndDate().toInstant().atZone(TIMEZONE);
-                if(now.atTime(LocalTime.now()).atZone(TIMEZONE).isAfter(latestPlannerEndDate)) {
-                    firstDayOfWeek = firstDayOfWeek.plusWeeks(1);
-                    lastDayOfWeek = lastDayOfWeek.plusWeeks(1);
-                }
-
-
-                //Popolo la lista di appuntamenti
-                int i = 0;
-                ArrayList<AppointmentBean> appointments = new ArrayList<>();
-                ZonedDateTime appointmentDateTime = firstDayOfWeek.atTime(9, 0).atZone(TIMEZONE);
-                for (String patientId : patientIds) {
-                    int seat = (i % 5)+1;
-                    String medicineId = facade.findPatients("_id", patientId, user).get(0).getTherapy().getMedicines().get(0).getMedicineId();
-
-                    //Si considerano 5 sedute per ora
-                    i++;
-                    if ((i % 5) == 0)
-                        appointmentDateTime = appointmentDateTime.plusHours(1);
-
-
-                    Date appointmentDate = Date.from(appointmentDateTime.toInstant());
-                    int duration = facade.findPatients("_id", patientId, user).get(0).getTherapy().getDuration();
-                    appointments.add(new AppointmentBean(patientId, medicineId, appointmentDate, String.valueOf(seat), duration));
-                }
-
-                //Converto primo e ultimo giorno della settimana in Date
-                Date firstDay = Date.from(firstDayOfWeek.atTime(9, 0).atZone(TIMEZONE).toInstant());
-                Date lastDay = Date.from(lastDayOfWeek.atTime(15, 0).atZone(TIMEZONE).toInstant());
-
-                //Creo il planner da inserire nel database
-                PlannerBean planner = new PlannerBean(firstDay, lastDay, appointments);
-
-                //Se è già presente un planner per la settimana corrente allora va sovrascritto, altrimenti va inserito normalmente
-                if(firstDay.equals(latestPlanner.getStartDate())) {
-                    facade.updatePlanner("_id", planner.getId(), "start", planner.getStartDate(), user);
-                    facade.updatePlanner("_id", planner.getId(), "end", planner.getEndDate(), user);
-                    facade.updatePlanner("_id", planner.getId(), "appointments", planner.getAppointments(), user);
-                }
-                else
-                    facade.insertPlanner(planner, user);
-
-                //Aggiungo l'operation result all'header
-                response.addHeader("OPERATION_RESULT", "true");
-
-                //Svuoto il contenuto dei file
-                FileWriter pw = new FileWriter(inputFile);
-                pw.close();
-
-                pw = new FileWriter(medicinesFile);
-                pw.close();
-
-                pw = new FileWriter(new File(PY_DIR, OUTPUT_FILE));
-                pw.close();
+                handleAppointmentScheduling(request, response, user);
             }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        } catch (final InterruptedException e) {
+            logger.log(Level.WARNING, "Process interrupted", e);
+            Thread.currentThread().interrupt();
+        } catch (final Exception e) {
+            logger.log(Level.SEVERE, "Error during scheduling", e);
+            try {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Scheduling failed");
+            } catch (final IOException e1) {
+                logger.log(Level.WARNING, e1.getMessage(), e1);
+            }
 
+        }
     }
+
 
     // ==========================================
     // WORKER METHODS (Business Logic Handlers)
@@ -282,8 +138,8 @@ public class PlannerServlet extends HttpServlet {
      * @return The index of the planner to display
      */
     private int resolvePlannerIndex(final HttpServletRequest request, final List<PlannerSummary> planners) {
-        String id = request.getParameter("id");
-        String buttonPressed = request.getParameter("buttonPressed");
+        final String id = request.getParameter("id");
+        final String buttonPressed = request.getParameter("buttonPressed");
 
         // Default: Show the latest available planner
         final int lastIndex = planners.size() - 1;
@@ -364,7 +220,7 @@ public class PlannerServlet extends HttpServlet {
         for (final AppointmentRecord app : allAppointments) {
             // Fetch Patient only if not already in cache
             if (!patientCache.containsKey(app.idPatient())) {
-                final ArrayList<PatientBean> res = facade.findPatients("_id", app.idPatient(), user);
+                final ArrayList<PatientBean> res = (ArrayList<PatientBean>) facade.findPatients("_id", app.idPatient(), user);
                 if (res != null && !res.isEmpty()) {
                     patientCache.put(app.idPatient(), res.get(0));
                 }
@@ -428,6 +284,190 @@ public class PlannerServlet extends HttpServlet {
 
         // 5. Restituiamo la stringa formattata: "12 - 16 Gennaio 2026"
         return monthName + " " + startDate.getYear();
+    }
+
+    /**
+     * Main orchestration method for the scheduling logic.
+     */
+    private void handleAppointmentScheduling(final HttpServletRequest request, final HttpServletResponse response, final UserBean user) throws IOException, InterruptedException {
+        // 1. Prepare Data for the AI Module
+        final List<PatientJSON> patientsList = extractPatientsFromRequest(request, user);
+        final List<MedicinesJSON> medicinesList = extractMedicinesFromDB(user);
+
+        // 2. Run the External Python Logic
+        final List<String> sortedPatientIds = runOptimizationScript(patientsList, medicinesList);
+
+        if (sortedPatientIds == null || sortedPatientIds.isEmpty()) {
+            throw new IllegalStateException("AI Module returned no results.");
+        }
+
+        // 3. Calculate Dates and Create Appointments
+        final PlannerBean newPlanner = generatePlanner(sortedPatientIds, user);
+
+        // 4. Save to Database
+        persistPlanner(newPlanner, user);
+
+        response.addHeader("OPERATION_RESULT", "true");
+    }
+
+    // ===================================================================================
+    //                               HELPER METHODS
+    // ===================================================================================
+
+    private List<PatientJSON> extractPatientsFromRequest(final HttpServletRequest request, final UserBean user) {
+        final int patientNumber = Integer.parseInt(request.getParameter("patientsNumber"));
+        final List<PatientJSON> patientsJson = new ArrayList<>();
+
+        for (int i = 0; i < patientNumber; ++i) {
+            final String patientIdParam = request.getParameter("patient" + i);
+            // Assuming findPatients returns a list and we need the first one
+            final PatientBean patient = facade.findPatients("_id", patientIdParam, user).get(0);
+
+            final String patientId = patient.getPatientId();
+            final String medicineId = patient.getTherapy().getMedicines().get(0).getMedicineId();
+            final int dose = patient.getTherapy().getMedicines().get(0).getDose();
+
+            patientsJson.add(new PatientJSON(patientId, medicineId, dose));
+        }
+        return patientsJson;
+    }
+
+    private List<MedicinesJSON> extractMedicinesFromDB(final UserBean user) {
+        final List<MedicinesJSON> medicinesJSONList = new ArrayList<>();
+        for (final MedicineBean medicine : facade.findAllMedicines(user)) {
+            int quantity = 0;
+            for (final PackageBean packageBean : medicine.getPackages()) {
+                quantity += packageBean.getCapacity();
+            }
+            medicinesJSONList.add(new MedicinesJSON(medicine.getId(), quantity));
+        }
+        return medicinesJSONList;
+    }
+
+    /**
+     * Writes JSON inputs, executes the Python script, and reads the output.
+     */
+    private List<String> runOptimizationScript(final List<PatientJSON> patients, final List<MedicinesJSON> medicines) throws IOException, InterruptedException {
+        final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        // Write Input Files
+        writeJsonToFile(new File(PY_DIR, INPUT_FILE), gson.toJson(patients));
+        writeJsonToFile(new File(PY_DIR, MEDICINES_FILE), gson.toJson(medicines));
+
+        // Execute Python Process
+        // Use ProcessBuilder for better control than Runtime.exec
+        final ProcessBuilder pb = new ProcessBuilder("py", PYTHON_FILE_PATH);
+        pb.directory(new File(PY_DIR.toURI())); // Set working directory if needed
+        final Process process = pb.start();
+
+        final int exitCode = process.waitFor();
+        if (exitCode != 0) {
+            logger.log(Level.WARNING, "Python script exited with error code: {0}", exitCode);
+            // Optional: Read process.getErrorStream() here for debugging
+        }
+
+        // Read Output
+        final File outputFile = new File(PY_DIR, OUTPUT_FILE);
+        if (!outputFile.exists() || outputFile.length() == 0) {
+            return Collections.emptyList();
+        }
+
+        try (final FileReader reader = new FileReader(outputFile)) {
+            final List<String> result = gson.fromJson(reader, new TypeToken<List<String>>() {}.getType());
+
+            // Clean up files after reading
+            cleanUpFiles(new File(PY_DIR, INPUT_FILE), new File(PY_DIR, MEDICINES_FILE), outputFile);
+
+            return result;
+        }
+    }
+
+    private PlannerBean generatePlanner(final List<String> patientIds, final UserBean user) {
+        final LocalDate now = LocalDate.now(TIMEZONE);
+
+        // Determine the target week (current or next)
+        final LocalDate[] weekBounds = determinePlanningWeek(now, user);
+        final LocalDate firstDayOfWeek = weekBounds[0];
+        final LocalDate lastDayOfWeek = weekBounds[1];
+
+        // Generate Appointments
+        final List<AppointmentBean> appointments = new ArrayList<>();
+        ZonedDateTime appointmentDateTime = firstDayOfWeek.atTime(9, 0).atZone(TIMEZONE);
+
+        int counter = 0;
+        for (final String patientId : patientIds) {
+            final int seat = (counter % 5) + 1;
+
+            // Retrieve patient data for the appointment
+            final PatientBean p = facade.findPatients("_id", patientId, user).get(0);
+            final String medicineId = p.getTherapy().getMedicines().get(0).getMedicineId();
+            final int duration = p.getTherapy().getDuration();
+
+            // Increment hour every 5 patients
+            ++counter;
+            if (counter > 0 && (counter % 5) == 0) {
+                appointmentDateTime = appointmentDateTime.plusHours(1);
+            }
+
+            final Date appDate = Date.from(appointmentDateTime.toInstant());
+            appointments.add(new AppointmentBean(patientId, medicineId, appDate, String.valueOf(seat), duration));
+        }
+
+        final Date start = Date.from(firstDayOfWeek.atTime(9, 0).atZone(TIMEZONE).toInstant());
+        final Date end = Date.from(lastDayOfWeek.atTime(15, 0).atZone(TIMEZONE).toInstant());
+
+        return new PlannerBean(start, end, appointments);
+    }
+
+    private LocalDate[] determinePlanningWeek(final LocalDate now, final UserBean user) {
+        LocalDate firstDay = now.with(previousOrSame(DayOfWeek.MONDAY));
+        LocalDate lastDay = now.with(nextOrSame(DayOfWeek.FRIDAY));
+
+        final PlannerBean latestPlanner = facade.findLatestPlanner(user);
+
+        if (latestPlanner != null) {
+            final ZonedDateTime latestPlannerEndDate = latestPlanner.getEndDate().toInstant().atZone(TIMEZONE);
+            // If current time is after the latest planner, move to next week
+            if (now.atTime(LocalTime.now()).atZone(TIMEZONE).isAfter(latestPlannerEndDate)) {
+                firstDay = firstDay.plusWeeks(1);
+                lastDay = lastDay.plusWeeks(1);
+            }
+        }
+        return new LocalDate[]{firstDay, lastDay};
+    }
+
+    private void persistPlanner(final PlannerBean planner, final UserBean user) {
+        final PlannerBean existingPlanner = facade.findLatestPlanner(user); // Check if we are updating or inserting
+
+        // Logic: if the start date matches the existing planner, we update. Otherwise, insert.
+        // Note: You might want a better check than just Start Date equality (e.g., Planner ID)
+        if (existingPlanner != null && planner.getStartDate().equals(existingPlanner.getStartDate())) {
+            facade.updatePlanner("_id", planner.getId(), "start", planner.getStartDate(), user);
+            facade.updatePlanner("_id", planner.getId(), "end", planner.getEndDate(), user);
+            facade.updatePlanner("_id", planner.getId(), "appointments", planner.getAppointments(), user);
+        } else {
+            facade.insertPlanner(planner, user);
+        }
+    }
+
+    // ===================================================================================
+    //                               UTILITIES
+    // ===================================================================================
+
+    private void writeJsonToFile(final File file, final String jsonContent) throws IOException {
+        try (final FileWriter writer = new FileWriter(file)) {
+            writer.write(jsonContent);
+        }
+    }
+
+    private void cleanUpFiles(final File... files) {
+        for (final File f : files) {
+            try (final FileWriter pw = new FileWriter(f)) {
+                // Empties the file
+            } catch (final IOException e) {
+                logger.warning("Could not clear file: " + f.getName());
+            }
+        }
     }
 
 

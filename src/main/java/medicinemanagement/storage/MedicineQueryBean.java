@@ -32,12 +32,12 @@ public class MedicineQueryBean {
     private static final String INGREDIENTS = "ingredients";
 
     //Inserimento singolo documento nella Collection
-    public boolean insertDocument(MedicineBean medicine) {
+    public boolean insertDocument(final MedicineBean medicine) {
         //Recupera la Collection
-        MongoCollection<Document> collection = getCollection();
+        final MongoCollection<Document> collection = getCollection();
 
         //Crea il documento da inserire nella Collection
-        Document document = createDocument(medicine);
+        final Document document = createDocument(medicine);
         if(medicine.getName().length() > 32){
             logger.severe("ERROR: name length incorrect!");
             return false;
@@ -52,12 +52,12 @@ public class MedicineQueryBean {
     }
 
     //Inserimento una confezione in un medicinale
-    public void insertDocument(PackageBean newPackage, String medicineId) {
+    public void insertDocument(final PackageBean newPackage, final String medicineId) {
         //Recupera la Collection
-        MongoCollection<Document> collection = getCollection();
+        final MongoCollection<Document> collection = getCollection();
 
         //Crea il filtro
-        Bson filter = Filters.eq("_id", new ObjectId(medicineId));
+        final Bson filter = Filters.eq("_id", new ObjectId(medicineId));
 
         //Recupera il documento del medicinale
         Document medicineDocument = collection.find(filter).first();
@@ -70,7 +70,7 @@ public class MedicineQueryBean {
         newPackage.setPackageId(String.valueOf(amount));
 
         //Crea il documento da inserire nella Collection
-        Document packageDocument = createDocument(newPackage);
+        final Document packageDocument = createDocument(newPackage);
 
         medicineDocument = collection.find(filter).first();
 
@@ -83,12 +83,12 @@ public class MedicineQueryBean {
     //Inserimento collezione di documenti nella Collection
     public void insertDocuments(final List<MedicineBean> medicines) {
         //Recupera la Collection
-        MongoCollection<Document> collection = getCollection();
+        final MongoCollection<Document> collection = getCollection();
 
         //Crea un documento per ogni medicinale in medicines
-        ArrayList<Document> docs = new ArrayList<>();
-        for(MedicineBean medicine : medicines) {
-            Document doc = createDocument(medicine);
+        final ArrayList<Document> docs = new ArrayList<>();
+        for(final MedicineBean medicine : medicines) {
+            final Document doc = createDocument(medicine);
             docs.add(doc);
         }
 
@@ -99,12 +99,12 @@ public class MedicineQueryBean {
     }
 
     //Elimina documento dalla Collection
-    public void deleteDocument(String key, String value) {
+    public void deleteDocument(final String key, final String value) {
         //Recupera la Collection
-        MongoCollection<Document> collection = getCollection();
+        final MongoCollection<Document> collection = getCollection();
 
         //Crea il filtro
-        Bson filter = Filters.eq(key, value);
+        final Bson filter = Filters.eq(key, value);
 
         //Cancella il documento
         collection.deleteOne(filter);
@@ -113,12 +113,12 @@ public class MedicineQueryBean {
     }
 
     //Modifica di un documento
-    public void updateDocument(String id, String valId, String key, Object valKey) {
+    public void updateDocument(final String id, final String valId, final String key, final Object valKey) {
         //Recupera la Collection
-        MongoCollection<Document> collection = getCollection();
+        final MongoCollection<Document> collection = getCollection();
 
         //Crea il filtro
-        Bson filter = Filters.eq(id, valId);
+        final Bson filter = Filters.eq(id, valId);
 
         //Aggiorna il documento
         collection.updateOne(filter, Updates.set(key, valKey));
@@ -130,19 +130,19 @@ public class MedicineQueryBean {
 
     public final List<MedicineBean> findDocument(final String key, final Object value) {
         //Recupera la Collection
-        MongoCollection<Document> collection = getCollection();
+        final MongoCollection<Document> collection = getCollection();
 
         //Crea il filtro
-        Bson filter = Filters.eq(key, value);
+        final Bson filter = Filters.eq(key, value);
 
         //Cerca il documento
-        FindIterable<Document> iterDoc = collection.find(filter);
+        final FindIterable<Document> iterDoc = collection.find(filter);
 
-        Iterator<Document> it = iterDoc.iterator();
+        final Iterator<Document> it = iterDoc.iterator();
         final ArrayList<MedicineBean> medicines = new ArrayList<>();
 
         while (it.hasNext()) {
-            Document document = it.next();
+            final Document document = it.next();
             final MedicineBean medicine = parseMedicine(document);
             medicines.add(medicine);
         }
@@ -152,7 +152,7 @@ public class MedicineQueryBean {
 
     public final List<MedicineBean> findDocument(final List<String> key, final List<Object> value) {
         //Recupera la Collection
-        MongoCollection<Document> collection = getCollection();
+        final MongoCollection<Document> collection = getCollection();
 
         //Crea il filtro
         final Bson filter = buildFilter(key, value);
@@ -161,10 +161,10 @@ public class MedicineQueryBean {
         final FindIterable<Document> iterDoc = collection.find(filter);
 
         final Iterator<Document> it = iterDoc.iterator();
-        ArrayList<MedicineBean> medicines = new ArrayList<>();
+        final ArrayList<MedicineBean> medicines = new ArrayList<>();
 
         while (it.hasNext()) {
-            Document document = it.next();
+            final Document document = it.next();
             final MedicineBean medicine = parseMedicine(document);
             medicines.add(medicine);
         }
@@ -172,15 +172,15 @@ public class MedicineQueryBean {
         return medicines;
     }
 
-    public MedicineBean findDocumentById(String value) {
+    public MedicineBean findDocumentById(final String value) {
         //Recupera la Collection
-        MongoCollection<Document> collection = getCollection();
+        final MongoCollection<Document> collection = getCollection();
 
         //Crea il filtro
-        Bson filter = Filters.eq("_id", new ObjectId(value));
+        final Bson filter = Filters.eq("_id", new ObjectId(value));
 
         //Cerca il documento
-        Document document = collection.find(filter).first();
+        final Document document = collection.find(filter).first();
 
         //Restituisce il medicinale
         if (document == null) return null;
@@ -189,16 +189,16 @@ public class MedicineQueryBean {
 
     public ArrayList<MedicineBean> findAll() {
         //Recupera la Collection
-        MongoCollection<Document> collection = getCollection();
+        final MongoCollection<Document> collection = getCollection();
 
         //Cerca il documento
-        FindIterable<Document> iterDoc = collection.find();
+        final FindIterable<Document> iterDoc = collection.find();
 
-        Iterator<Document> it = iterDoc.iterator();
-        ArrayList<MedicineBean> medicines = new ArrayList<>();
+        final Iterator<Document> it = iterDoc.iterator();
+        final ArrayList<MedicineBean> medicines = new ArrayList<>();
 
         while (it.hasNext()) {
-            Document document = it.next();
+            final Document document = it.next();
             final MedicineBean medicine = parseMedicine(document);
             medicines.add(medicine);
         }
@@ -282,15 +282,15 @@ public class MedicineQueryBean {
 
     //Metodi ausiliari
     private MongoCollection<Document> getCollection() {
-        MongoDatabase mongoDatabase = DatabaseConnector.getDatabase();
+        final MongoDatabase mongoDatabase = DatabaseConnector.getDatabase();
 
-        MongoCollection<Document> collection = mongoDatabase.getCollection("medicine");
+        final MongoCollection<Document> collection = mongoDatabase.getCollection("medicine");
         logger.info("Collection 'medicinale' recuperata con successo");
         return collection;
     }
 
-    private Document createDocument(MedicineBean medicine) {
-        ObjectId objectId = new ObjectId();
+    private Document createDocument(final MedicineBean medicine) {
+        final ObjectId objectId = new ObjectId();
         medicine.setId(objectId.toString());
         return new Document("_id", objectId)
                 .append(NAME, medicine.getName())
@@ -299,8 +299,8 @@ public class MedicineQueryBean {
                 .append(PACKAGE, medicine.getPackages());
     }
 
-    private Document createDocument(PackageBean box) {
-        Document document = new Document("packageId", box.getPackageId())
+    private Document createDocument(final PackageBean box) {
+        final Document document = new Document("packageId", box.getPackageId())
                 .append(STATUS, box.getStatus())
                 .append("capacity", box.getCapacity())
                 .append(EXPIRY_DATE, box.getExpiryDate());
@@ -308,7 +308,7 @@ public class MedicineQueryBean {
         return new Document(PACKAGE, document);
     }
 
-    private ArrayList<PackageBean> convertToArray(List<Document> packages) {
+    private ArrayList<PackageBean> convertToArray(final List<Document> packages) {
         //Se non ci sono package restituisco null
         if (packages == null)
             return new ArrayList<>();
@@ -316,9 +316,9 @@ public class MedicineQueryBean {
         //Se ci sono package
 
         //Inserisco i package in un ArrayList
-        ArrayList<PackageBean> packageArrayList = new ArrayList<>();
+        final ArrayList<PackageBean> packageArrayList = new ArrayList<>();
 
-        for(Document d : packages)
+        for(final Document d : packages)
             packageArrayList.add(new PackageBean(d.getBoolean(STATUS), d.getDate(EXPIRY_DATE), d.getInteger("capacity"), d.getString("packageId")));
 
         //Restituisco l'ArrayList

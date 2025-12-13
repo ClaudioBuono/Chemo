@@ -1,7 +1,7 @@
-package plannerManagement.application.green;
+package plannermanagement.application.green;
 
-import plannerManagement.application.AppointmentBean;
-import plannerManagement.application.PlannerBean;
+import plannermanagement.application.AppointmentBean;
+import plannermanagement.application.PlannerBean;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
