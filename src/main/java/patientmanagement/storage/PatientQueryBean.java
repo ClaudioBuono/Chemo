@@ -195,7 +195,7 @@ public class PatientQueryBean {
     }
 
     //Ricerca di un documento nella Collection data una coppia (key, value)
-    public ArrayList<PatientBean> findDocument(final String key, final Object value) {
+    public List<PatientBean> findDocument(final String key, final Object value) {
         //Recupera la Collection
         final MongoCollection<Document> collection = getCollection();
 
@@ -220,7 +220,7 @@ public class PatientQueryBean {
         return patients;
     }
 
-    public ArrayList<PatientBean> findDocument(final ArrayList<String> key, final ArrayList<Object> value) {
+    public List<PatientBean> findDocument(final List<String> key, final List<Object> value) {
         //Recupera la Collection
         final MongoCollection<Document> collection = getCollection();
 

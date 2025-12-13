@@ -600,7 +600,7 @@ public class PatientServlet extends HttpServlet {
         return id.matches(format);
     }
     private boolean numberValidity(final String notes) {
-        final String format = "^[0-9]+$";
+        final String format = "^\\d+$";
         return notes.matches(format);
     }
     private boolean dateValidity(final String date) {
@@ -609,7 +609,7 @@ public class PatientServlet extends HttpServlet {
         final LocalDate currentDate = LocalDate.now();
         if (newDate.isAfter(currentDate))
             return false;
-        final String format = "^(19|20)[0-9]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$";
+        final String format = "^(19|20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12]\\d|3[01])$";
         return date.matches(format);
     }
     private boolean nameValidity(final String name) {
@@ -627,11 +627,11 @@ public class PatientServlet extends HttpServlet {
         return nameValidity(city);
     }
     private boolean taxCodeValidity(final String taxCode) {
-        final String format = "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$";
+        final String format = "^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$";
         return taxCode.matches(format);
     }
     private boolean phoneNumberValidity(final String phoneNumber) {
-        final String format = "^[+]?[(]?[0-9]{2,3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,7}$";
+        final String format = "^[+]?[(]?\\d{2,3}\\)?[-\\s.]?\\d{3}[-\\s.]?\\d{4,7}$";
         return phoneNumber.matches(format);
     }
     private boolean notesValidity(final String notes) {
