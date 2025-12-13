@@ -46,8 +46,7 @@
             PlannerBean planner = (PlannerBean) request.getAttribute("plannerToVisualize");
             String weekDate = (String) request.getAttribute("weekDate");
 
-            // --- GREEN CODING: Recupero la Mappa Ottimizzata ---
-            // Questa mappa sostituisce i cicli for annidati legacy.
+            // Recupero la Mappa Ottimizzata
             Map<String, List<AppointmentRecord>> gridMap = (Map<String, List<AppointmentRecord>>) request.getAttribute("gridMap");
 
             Facade facade = new Facade();
@@ -135,7 +134,6 @@
                                 // CICLO COLONNE (GIORNI)
                                 for (int j = 0; j < 5; j++) {
 
-                                    // GREEN ALGORITHM: Calcolo chiave O(1) invece di scorrere liste O(N)
                                     // Generiamo la chiave: "yyyy-MM-dd_HH:00"
                                     LocalDate currentSlotDate = LocalDate.of(year, month, day + j);
                                     String keyHour = (hours < 10 ? "0" + hours : String.valueOf(hours));
@@ -178,10 +176,8 @@
                                                 <% if (user.getType() == 1) { %>
                                                 <h3>Pazienti</h3>
                                                 <%
-                                                    // Qui iteriamo SOLO sugli appuntamenti di questo slot (max 4-5), non su tutti!
+                                                    // Qui iteriamo SOLO sugli appuntamenti di questo slot non su tutti!
                                                     for (AppointmentRecord appRec : slotApps) {
-                                                        // Nota: Qui usiamo ancora facade per i nomi perché il refactoring DB è fuori scope,
-                                                        // ma lo facciamo solo per i record necessari.
                                                         PatientBean p = facade.findPatients("_id", appRec.idPatient(), user).get(0);
                                                         LocalTime start = appRec.date().toLocalTime();
                                                         LocalTime end = start.plusMinutes(appRec.duration());

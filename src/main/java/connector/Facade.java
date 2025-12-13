@@ -15,6 +15,7 @@ import userManagement.application.UserBean;
 import userManagement.storage.UserQueryBean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -113,41 +114,41 @@ public class Facade {
         return null;
     }
 
-    public List<PlannerSummary> findAllPlannerSummaries(UserBean user) {
+    public List<PlannerSummary> findAllPlannerSummaries(final UserBean user) {
         try {
             if(isUserAuthorized(user.getUsername(), 1) || isUserAuthorized(user.getUsername(), 2))
                 return plannerQueryBean.findAllSummaries();
             else
-                throw new Exception("Utente non autorizzato alla modifica dei planner");
-        } catch (Exception e) {
-            e.printStackTrace();
+                throw new IllegalAccessException("Utente non autorizzato alla modifica dei planner");
+        } catch (final Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
 
-        return null;
+        return Collections.emptyList();
     }
 
-    public PlannerBean findPlannerById(String id, UserBean user) {
+    public PlannerBean findPlannerById(final String id, final UserBean user) {
         try {
             if(isUserAuthorized(user.getUsername(), 1) || isUserAuthorized(user.getUsername(), 2))
                 return plannerQueryBean.findById(id);
             else
-                throw new Exception("Utente non autorizzato alla modifica dei planner");
-        } catch (Exception e) {
-            e.printStackTrace();
+                throw new IllegalAccessException("Utente non autorizzato alla modifica dei planner");
+        } catch (final Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
 
         return null;
     }
 
 
-    public void updatePlanner(String id, String valId, String chiave, Object valoreChiave, UserBean user){
+    public void updatePlanner(final String id, final String valId, final String chiave, final Object valoreChiave, final UserBean user){
         try {
             if(isUserAuthorized(user.getUsername(), 1))
                 plannerQueryBean.updateDocument(id, valId, chiave, valoreChiave);
             else
-                throw new Exception("Utente non autorizzato alla modifica di medicinali");
+                throw new IllegalAccessException("Utente non autorizzato alla modifica di medicinali");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -228,7 +229,7 @@ public class Facade {
                 medicineQueryBean.insertDocument(medicinePackage, medicineId);
             }else
                 throw new Exception("Utente non autorizzato all'inserimento di medicinali");
-        }catch(Exception e){
+        }catch(final Exception e){
             e.printStackTrace();
         }
     }
@@ -267,7 +268,7 @@ public class Facade {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-    };
+    }
 
     public void updateMedicine(String id, String valId, String key, Object valKey, UserBean user){
         try{
@@ -278,7 +279,7 @@ public class Facade {
         }catch(Exception e){
             e.printStackTrace();
         }
-    };
+    }
 
     public List<MedicineBean> findMedicines(String key, Object value, UserBean user){
         ArrayList<MedicineBean> medicines = new ArrayList<>();
@@ -314,7 +315,7 @@ public class Facade {
         }
 
         return medicines;
-    };
+    }
 
     public ArrayList<MedicineBean> findAllMedicines(UserBean user) {
         try {
@@ -382,7 +383,7 @@ public class Facade {
             System.out.println(e.getMessage());
         }
         return null;
-    };
+    }
 
     public PatientBean insertPatient(String taxCode, String name, String surname, Date birthDate, String city, String phoneNumber, String notes, UserBean user){
         System.out.println("Nome "+ name + " con taxcode " + taxCode + "city " + city);
@@ -398,7 +399,7 @@ public class Facade {
             System.out.println(e.getMessage());
         }
         return null;
-    };
+    }
 
     public void insertTherapy(String patientId, TherapyBean therapy, UserBean user) {
         try{
@@ -434,7 +435,7 @@ public class Facade {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-    };
+    }
 
     public void deletePatient(String key, String value, UserBean user){
         try{
@@ -445,7 +446,7 @@ public class Facade {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-    };
+    }
 
     public void updatePatient(String id, String valId, String key, Object valKey, UserBean user){
         try{
@@ -456,7 +457,7 @@ public class Facade {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-    };
+    }
 
     //modificare il metodo in patientQueryBean in modo che restituisca ArrayList<PatientBean>
     public ArrayList<PatientBean> findPatients(String key, Object value, UserBean user){

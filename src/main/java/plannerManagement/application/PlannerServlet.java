@@ -18,13 +18,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.text.Format;
-import java.text.SimpleDateFormat;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.time.temporal.TemporalAdjusters.nextOrSame;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
@@ -33,6 +35,7 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
 public class PlannerServlet extends HttpServlet {
 
     private static final Facade facade = new Facade();
+    final Logger logger = Logger.getLogger(getClass().getName());
 
     //Modificare il valore di questo campo secondo quanto riportato nel manuale di installazione
     private static final String PY_DIR_PATH = "C:\\Users\\anton\\IdeaProjects\\Chemo\\py\\"; //Path assoluto della directory "py"
@@ -50,23 +53,28 @@ public class PlannerServlet extends HttpServlet {
     private static final ZoneId TIMEZONE = ZoneId.systemDefault(); //Fuso orario relativo al sistema
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         // 1. SESSION & USER RETRIEVAL
-        UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
+        final UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
 
         // 2. DATA RETRIEVAL
         // We fetch all planners to calculate navigation indexes
-        List<PlannerSummary> summaries = facade.findAllPlannerSummaries(user);
+        final List<PlannerSummary> summaries = facade.findAllPlannerSummaries(user);
         if (summaries == null || summaries.isEmpty()) {
-            response.sendRedirect("error.jsp");
+            try {
+                response.sendRedirect("error.jsp");
+            } catch (final IOException e) {
+                logger.log(Level.WARNING, e.getMessage(), e);
+            }
+
             return;
         }
 
         // 3. NAVIGATION LOGIC
         // We resolve the correct index based on user action (prev/next/latest)
         // using a thread-safe local variable logic.
-        int currentIndex = resolvePlannerIndex(request, summaries);
-        PlannerSummary currentPlannerSummary = summaries.get(currentIndex);
+        final int currentIndex = resolvePlannerIndex(request, summaries);
+        final PlannerSummary currentPlannerSummary = summaries.get(currentIndex);
 
         // Calculate and set IDs for navigation buttons (Previous/Next arrows)
         setupNavigationAttributes(request, summaries, currentIndex);
@@ -78,15 +86,20 @@ public class PlannerServlet extends HttpServlet {
         // B. Algorithm Optimization (O(N^2) -> O(N))
         // C. Database Access Optimization (Deduplication & Caching)
         // -----------------------------------------------------------
-        PlannerBean plannerToVisualize = facade.findPlannerById(currentPlannerSummary.id(), user);
-        prepareGreenData(request, plannerToVisualize, user, facade);
+        final PlannerBean plannerToVisualize = facade.findPlannerById(currentPlannerSummary.id(), user);
+        prepareGreenData(request, plannerToVisualize, user);
 
         // 5. VIEW RENDERING
         // Set standard attributes for the JSP header/title
         request.setAttribute("plannerToVisualize", plannerToVisualize);
-        request.setAttribute("weekDate", getWeekDate(plannerToVisualize.getStartDate(), plannerToVisualize.getEndDate()));
+        request.setAttribute("weekDate", getWeekDate(plannerToVisualize.getStartDate()));
 
-        getServletContext().getRequestDispatcher(response.encodeURL("/planner.jsp")).forward(request, response);
+        try {
+            getServletContext().getRequestDispatcher(response.encodeURL("/planner.jsp")).forward(request, response);
+        } catch (final ServletException | IOException e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
+        }
+
     }
 
     @Override
@@ -268,12 +281,12 @@ public class PlannerServlet extends HttpServlet {
      * @param planners The list of all available planners
      * @return The index of the planner to display
      */
-    private int resolvePlannerIndex(HttpServletRequest request, List<PlannerSummary> planners) {
+    private int resolvePlannerIndex(final HttpServletRequest request, final List<PlannerSummary> planners) {
         String id = request.getParameter("id");
         String buttonPressed = request.getParameter("buttonPressed");
 
         // Default: Show the latest available planner
-        int lastIndex = planners.size() - 1;
+        final int lastIndex = planners.size() - 1;
 
         // If it's the first load, return the latest
         if (id == null) {
@@ -282,7 +295,8 @@ public class PlannerServlet extends HttpServlet {
 
         // Find the index of the planner currently being viewed (before navigation)
         int currentDisplayedIndex = 0;
-        for(int i=0; i < planners.size(); ++i) {
+        final int plannersCount = planners.size();
+        for(int i = 0; i < plannersCount; ++i) {
             if(planners.get(i).id().equals(id)) {
                 currentDisplayedIndex = i;
                 break;
@@ -303,10 +317,10 @@ public class PlannerServlet extends HttpServlet {
     /**
      * Sets the request attributes required by the frontend to render navigation arrows.
      */
-    private void setupNavigationAttributes(HttpServletRequest request, List<PlannerSummary> planners, int currentIndex) {
+    private void setupNavigationAttributes(final HttpServletRequest request, final List<PlannerSummary> planners, final int currentIndex) {
         String beforeId = "";
         String afterId = "";
-        String latestId = planners.get(planners.size() - 1).id();
+        final String latestId = planners.get(planners.size() - 1).id();
 
         if (currentIndex > 0) {
             beforeId = planners.get(currentIndex - 1).id();
@@ -325,13 +339,13 @@ public class PlannerServlet extends HttpServlet {
      * It transforms legacy data into optimized structures and pre-fetches database entities
      * to avoid the "N+1 Select Problem" in the view layer.
      */
-    private void prepareGreenData(HttpServletRequest request, PlannerBean plannerToVisualize, UserBean user, Facade facade) {
+    private void prepareGreenData(final HttpServletRequest request, final PlannerBean plannerToVisualize, final UserBean user) {
         // A. ADAPTER PATTERN: Convert Mutable Bean to Immutable Record
-        PlannerRecord greenPlanner = convertToRecord(plannerToVisualize);
+        final PlannerRecord greenPlanner = convertToRecord(plannerToVisualize);
 
         // B. ALGORITHMIC OPTIMIZATION: Use the O(N) approach to calculate the grid
-        CalendarGridHelper gridHelper = new CalendarGridHelper();
-        Map<String, List<AppointmentRecord>> optimizedGrid = gridHelper.preCalculateGrid(greenPlanner);
+        final CalendarGridHelper gridHelper = new CalendarGridHelper();
+        final Map<String, List<AppointmentRecord>> optimizedGrid = gridHelper.preCalculateGrid(greenPlanner);
         request.setAttribute("gridMap", optimizedGrid);
 
         // C. DATABASE OPTIMIZATION (Batch Fetching / Caching)
@@ -339,25 +353,25 @@ public class PlannerServlet extends HttpServlet {
         // we extract unique IDs and fetch them once.
 
         // Flatten the map to get all appointments in the current view
-        List<AppointmentRecord> allAppointments = optimizedGrid.values().stream()
+        final List<AppointmentRecord> allAppointments = optimizedGrid.values().stream()
                 .flatMap(List::stream)
-                .collect(Collectors.toList());
+                .toList();
 
-        Map<String, PatientBean> patientCache = new HashMap<>();
-        Map<String, MedicineBean> medicineCache = new HashMap<>();
+        final Map<String, PatientBean> patientCache = new HashMap<>();
+        final Map<String, MedicineBean> medicineCache = new HashMap<>();
 
         // Loop through appointments and populate caches (Data Deduplication)
-        for (AppointmentRecord app : allAppointments) {
+        for (final AppointmentRecord app : allAppointments) {
             // Fetch Patient only if not already in cache
             if (!patientCache.containsKey(app.idPatient())) {
-                ArrayList<PatientBean> res = facade.findPatients("_id", app.idPatient(), user);
+                final ArrayList<PatientBean> res = facade.findPatients("_id", app.idPatient(), user);
                 if (res != null && !res.isEmpty()) {
                     patientCache.put(app.idPatient(), res.get(0));
                 }
             }
             // Fetch Medicine only if not already in cache
             if (!medicineCache.containsKey(app.idMedicine())) {
-                ArrayList<MedicineBean> res = (ArrayList<MedicineBean>) facade.findMedicines("_id", app.idMedicine(), user);
+                final ArrayList<MedicineBean> res = (ArrayList<MedicineBean>) facade.findMedicines("_id", app.idMedicine(), user);
                 if (res != null && !res.isEmpty()) {
                     medicineCache.put(app.idMedicine(), res.get(0));
                 }
@@ -373,9 +387,9 @@ public class PlannerServlet extends HttpServlet {
      * Helper to convert Legacy Beans to Java Records.
      * Uses LocalDateTime for better time manipulation performance.
      */
-    private PlannerRecord convertToRecord(PlannerBean bean) {
+    private PlannerRecord convertToRecord(final PlannerBean bean) {
         if (bean == null) return null;
-        List<AppointmentRecord> greenApps = bean.getAppointments().stream()
+        final List<AppointmentRecord> greenApps = bean.getAppointments().stream()
                 .map(app -> new AppointmentRecord(
                         app.getIdPatient(),
                         app.getIdMedicine(),
@@ -383,7 +397,7 @@ public class PlannerServlet extends HttpServlet {
                         app.getChair(),
                         app.getDuration()
                 ))
-                .collect(Collectors.toList());
+                .toList();
 
         return new PlannerRecord(
                 bean.getId(),
@@ -396,14 +410,13 @@ public class PlannerServlet extends HttpServlet {
     /**
      * Formats the date range string
      */
-    private String getWeekDate(Date start, Date end) {
+    private String getWeekDate(final Date start) {
         // 1. Conversione da Date a LocalDate
-        LocalDate startDate = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate endDate = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        final LocalDate startDate = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         // 2. Impostiamo il Formatter in ITALIANO
         // "MMMM" indica il nome completo del mese (es. "gennaio")
-        DateTimeFormatter italianFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.ITALIAN);
+        final DateTimeFormatter italianFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.ITALIAN);
 
         // 3. Otteniamo il nome del mese dalla data (uso startDate come facevi tu)
         String monthName = startDate.format(italianFormatter);
@@ -415,48 +428,6 @@ public class PlannerServlet extends HttpServlet {
 
         // 5. Restituiamo la stringa formattata: "12 - 16 Gennaio 2026"
         return monthName + " " + startDate.getYear();
-    }
-
-    private String convertMonth(String month){
-        switch (month) {
-            case "01" -> {
-                return "Gennaio ";
-            }
-            case "02" -> {
-                return "Febbraio ";
-            }
-            case "03" -> {
-                return "Marzo ";
-            }
-            case "04" -> {
-                return "Aprile ";
-            }
-            case "05" -> {
-                return "Maggio ";
-            }
-            case "06" -> {
-                return "Giugno ";
-            }
-            case "07" -> {
-                return "Luglio ";
-            }
-            case "08" -> {
-                return "Agosto ";
-            }
-            case "09" -> {
-                return "Settembre ";
-            }
-            case "10" -> {
-                return "Ottobre ";
-            }
-            case "11" -> {
-                return "Novembre ";
-            }
-            case "12" -> {
-                return "Dicembre ";
-            }
-        }
-        return null;
     }
 
 
