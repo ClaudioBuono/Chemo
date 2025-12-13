@@ -75,8 +75,8 @@ public class PackageBean {
                 '}';
     }
 
-    private String dateParser(Date date) {
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private String dateParser(final Date date) {
+        final Format formatter = new SimpleDateFormat("yyyy-MM-dd");
         return formatter.format(date);
     }
 }

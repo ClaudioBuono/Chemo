@@ -1,11 +1,11 @@
-package plannerManagement.benchmark;
+package plannermanagement.benchmark;
 
 import org.openjdk.jmh.annotations.*;
-import plannerManagement.application.AppointmentBean;
-import plannerManagement.application.PlannerBean;
-import plannerManagement.application.green.AppointmentRecord;
-import plannerManagement.application.green.CalendarGridHelper;
-import plannerManagement.application.green.PlannerRecord;
+import plannermanagement.application.AppointmentBean;
+import plannermanagement.application.PlannerBean;
+import plannermanagement.application.green.AppointmentRecord;
+import plannermanagement.application.green.CalendarGridHelper;
+import plannermanagement.application.green.PlannerRecord;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -31,15 +31,15 @@ public class CalendarBenchmark {
 
         // --- 1. SETUP LEGACY (Bean Mutabili + Date) ---
         legacyPlanner = new PlannerBean();
-        ArrayList<AppointmentBean> legacyApps = new ArrayList<>();
+        final ArrayList<AppointmentBean> legacyApps = new ArrayList<>();
 
         for(int i = 0; i < 100; ++i) {
             // Generiamo date fittizie sparse nella settimana
-            LocalDateTime now = LocalDateTime.now().plusHours(i % 20);
-            Date legacyDate = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+            final LocalDateTime now = LocalDateTime.now().plusHours(i % 20);
+            final Date legacyDate = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
 
             // Uso i Setter come nel tuo Bean originale
-            AppointmentBean bean = new AppointmentBean();
+            final AppointmentBean bean = new AppointmentBean();
             bean.setIdPatient("pat_" + i);
             bean.setIdMedicine("med_" + i);
             bean.setDate(legacyDate);
@@ -51,10 +51,10 @@ public class CalendarBenchmark {
         legacyPlanner.setAppointments(legacyApps);
 
         // --- 2. SETUP GREEN (Record Immutabili + LocalDateTime) ---
-        List<AppointmentRecord> greenApps = new ArrayList<>();
+        final List<AppointmentRecord> greenApps = new ArrayList<>();
 
-        for(int i=0; i<100; i++) {
-            LocalDateTime now = LocalDateTime.now().plusHours(i % 20);
+        for(int i=0; i<100; ++i) {
+            final LocalDateTime now = LocalDateTime.now().plusHours(i % 20);
 
             // Costruttore canonico del Record
             greenApps.add(new AppointmentRecord(

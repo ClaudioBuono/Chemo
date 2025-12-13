@@ -1,4 +1,4 @@
-package plannerManagement.application;
+package plannermanagement.application;
 
 import java.util.Date;
 

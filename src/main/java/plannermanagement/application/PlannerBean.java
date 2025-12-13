@@ -1,6 +1,4 @@
-package plannerManagement.application;
-
-import plannerManagement.application.AppointmentBean;
+package plannermanagement.application;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;

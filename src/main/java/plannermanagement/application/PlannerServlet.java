@@ -1,4 +1,4 @@
-package plannerManagement.application;
+package plannermanagement.application;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -7,10 +7,10 @@ import connector.Facade;
 import medicinemanagement.application.MedicineBean;
 import medicinemanagement.application.PackageBean;
 import patientmanagement.application.PatientBean;
-import plannerManagement.application.green.AppointmentRecord;
-import plannerManagement.application.green.CalendarGridHelper;
-import plannerManagement.application.green.PlannerRecord;
-import plannerManagement.application.green.PlannerSummary;
+import plannermanagement.application.green.AppointmentRecord;
+import plannermanagement.application.green.CalendarGridHelper;
+import plannermanagement.application.green.PlannerRecord;
+import plannermanagement.application.green.PlannerSummary;
 import userManagement.application.UserBean;
 
 import javax.servlet.ServletException;

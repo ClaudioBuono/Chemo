@@ -7,10 +7,10 @@ import patientmanagement.application.PatientBean;
 import patientmanagement.application.TherapyBean;
 import patientmanagement.application.TherapyMedicineBean;
 import patientmanagement.storage.PatientQueryBean;
-import plannerManagement.application.AppointmentBean;
-import plannerManagement.application.PlannerBean;
-import plannerManagement.application.green.PlannerSummary;
-import plannerManagement.storage.PlannerQueryBean;
+import plannermanagement.application.AppointmentBean;
+import plannermanagement.application.PlannerBean;
+import plannermanagement.application.green.PlannerSummary;
+import plannermanagement.storage.PlannerQueryBean;
 import userManagement.application.UserBean;
 import userManagement.storage.UserQueryBean;
 

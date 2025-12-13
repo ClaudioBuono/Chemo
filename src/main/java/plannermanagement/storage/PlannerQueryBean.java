@@ -1,4 +1,4 @@
-package plannerManagement.storage;
+package plannermanagement.storage;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -11,9 +11,9 @@ import connector.DatabaseConnector;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-import plannerManagement.application.AppointmentBean;
-import plannerManagement.application.PlannerBean;
-import plannerManagement.application.green.PlannerSummary;
+import plannermanagement.application.AppointmentBean;
+import plannermanagement.application.PlannerBean;
+import plannermanagement.application.green.PlannerSummary;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

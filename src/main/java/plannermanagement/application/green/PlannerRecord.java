@@ -1,4 +1,4 @@
-package plannerManagement.application.green;
+package plannermanagement.application.green;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -49,7 +49,7 @@ public class MedicineBean {
         return amount;
     }
 
-    public PackageBean getPackage(int index) {
+    public PackageBean getPackage(final int index) {
         return packages.get(index);
     }
 
@@ -91,7 +91,7 @@ public class MedicineBean {
     }
 
     //Altri metodi
-    public void addPackage(PackageBean newPackage) {
+    public void addPackage(final PackageBean newPackage) {
         this.packages.add(newPackage);
     }
 }

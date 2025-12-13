@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import plannerManagement.application.AppointmentBean;
-import plannerManagement.application.PlannerBean;
-import plannerManagement.storage.PlannerQueryBean;
+import plannermanagement.application.AppointmentBean;
+import plannermanagement.application.PlannerBean;
+import plannermanagement.storage.PlannerQueryBean;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
