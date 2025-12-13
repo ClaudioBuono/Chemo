@@ -264,7 +264,8 @@ public class PlannerServlet extends HttpServlet {
                 pw.close();
             }
         } catch (Throwable e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Interrupted!", e);
+            Thread.currentThread().interrupt();
         }
 
     }

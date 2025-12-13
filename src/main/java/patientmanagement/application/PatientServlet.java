@@ -537,27 +537,38 @@ public class PatientServlet extends HttpServlet {
     }
 
     private boolean patientValidation(final PatientBean patient){
+        // Validazione Nome
         if (!namesValidity(patient.getName())) {
             return false;
         }
+        // Validazione Cognome
         if (!namesValidity(patient.getSurname())) {
             return false;
         }
-        if (!dateValidity(dateReverseParser(patient.getBirthDate()))) {
+
+        // Validazione Data
+        final String processedBirthDate = dateReverseParser(patient.getBirthDate());
+
+        if (processedBirthDate == null || !dateValidity(processedBirthDate)) {
             return false;
         }
+        // Validazione Città
         if (!cityValidity(patient.getCity())) {
             return false;
         }
+        // Validazione Codice Fiscale
         if (!taxCodeValidity(patient.getTaxCode())) {
             return false;
         }
+        // Validazione Numero di Telefono
         if (!phoneNumberValidity(patient.getPhoneNumber())) {
             return false;
         }
+        // Validazione Note
         if (!notesValidity(patient.getNotes())) {
             return false;
         }
+
         return true;
     }
     private boolean therapyValidation(final String condition, final TherapyBean therapy){
@@ -602,7 +613,7 @@ public class PatientServlet extends HttpServlet {
         return date.matches(format);
     }
     private boolean nameValidity(final String name) {
-        final String format = "^[A-Za-z][A-Za-z'-]+([ A-Za-z][A-Za-z'-]+)*$";
+        final String format = "^[A-Za-z][A-Za-z'-]++([ A-Za-z][A-Za-z'-]++)*+$";
         return name.matches(format);
     }
     private boolean namesValidity(final String name) {
@@ -626,7 +637,7 @@ public class PatientServlet extends HttpServlet {
     private boolean notesValidity(final String notes) {
         if (notes.length() > 255)
             return false;
-        final String format = "^[A-Za-z0-9][A-Za-z0-9'.,\\n-]+([ A-Za-z0-9][A-Za-z0-9'.,\\n-]+)*$";
+        final String format = "^[A-Za-z0-9][A-Za-z0-9'.,\\n-]++([ A-Za-z0-9][A-Za-z0-9'.,\\n-]++)*+$";
         return notes.matches(format);
     }
     private boolean conditionValidity(final String condition) {

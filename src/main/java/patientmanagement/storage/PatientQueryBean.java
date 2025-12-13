@@ -86,7 +86,7 @@ public class PatientQueryBean {
         if(therapy.getSessions() <= 0){
             logger.severe("ERROR: session non valid!");
             return false;
-        }else if(therapy.getMedicines().size() < 0){
+        }else if(therapy.getMedicines().isEmpty()){
             logger.severe("ERROR: not a single medicine found!");
             return false;
         }else if(therapy.getFrequency() <= 0){
