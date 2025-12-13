@@ -28,20 +28,24 @@ public class CacheControlFilter implements Filter {
     private static final long ONE_YEAR_IN_MILLIS = TimeUnit.DAYS.toMillis(365);
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
 
         if (response instanceof HttpServletResponse) {
-            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            final HttpServletResponse httpResponse = (HttpServletResponse) response;
 
             httpResponse.setHeader("Cache-Control", "public, max-age=" + ONE_YEAR_IN_SECONDS);
-            long expiresTime = System.currentTimeMillis() + ONE_YEAR_IN_MILLIS;
+            final long expiresTime = System.currentTimeMillis() + ONE_YEAR_IN_MILLIS;
             httpResponse.setDateHeader("Expires", expiresTime);
 
         }
         chain.doFilter(request, response);
     }
 
-    @Override public void init(FilterConfig filterConfig) throws ServletException {}
-    @Override public void destroy() {}
+    @Override public void init(final FilterConfig filterConfig) throws ServletException {
+        // Empty method
+    }
+    @Override public void destroy() {
+        // Empty method
+    }
 }

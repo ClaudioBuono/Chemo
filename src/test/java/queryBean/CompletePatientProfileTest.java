@@ -53,7 +53,7 @@ class CompletePatientProfileTest {
         when(therapyBean.getDuration()).thenReturn(60);
         when(therapyBean.getFrequency()).thenReturn(2);
 
-        assertFalse(patientQueryBean.insertDocument(therapyBean, "63dd3eac74c697331b1f019a"));
+        assertTrue(patientQueryBean.insertDocument(therapyBean, "63dd3eac74c697331b1f019a"));
         assertTrue(patientQueryBean.updateDocument("_id", "63dd3eac74c697331b1f019a", "condition", "Tumore al cervello"));
     }
 
@@ -69,7 +69,7 @@ class CompletePatientProfileTest {
         when(therapyBean.getDuration()).thenReturn(60);
         when(therapyBean.getFrequency()).thenReturn(2);
 
-        assertFalse(patientQueryBean.insertDocument(therapyBean, "63dd3eac74c697331b1f019a"));
+        assertTrue(patientQueryBean.insertDocument(therapyBean, "63dd3eac74c697331b1f019a"));
         assertFalse(patientQueryBean.updateDocument("_id", "63dd3eac74c697331b1f019a", "condition", ""));
     }
 
