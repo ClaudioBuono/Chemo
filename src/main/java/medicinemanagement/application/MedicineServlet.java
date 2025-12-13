@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 @WebServlet("/MedicineServlet")
 public class MedicineServlet extends HttpServlet {
     private static final Facade facade = new Facade();
+    private static final String ACTION = "action";
     private final Logger logger = Logger.getLogger(MedicineServlet.class.getName());
     private static final int PAGE_SIZE = 10;
 
@@ -29,8 +30,17 @@ public class MedicineServlet extends HttpServlet {
         if (user == null) return;
 
         // Routing logic
+        final String action = request.getParameter(ACTION);
         final String id = request.getParameter("id");
+
         try {
+            // --- AJAX ENDPOINT: Autocomplete ---
+            if ("autocompleteMedicine".equals(action)) {
+                handleAutocomplete(request, response);
+                return;
+            }
+
+            // --- STANDARD VIEWS ---
             if (id != null) {
                 redirectToMedicineDetailsPage(request, response, id, user);
             } else {
@@ -43,7 +53,7 @@ public class MedicineServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+        final String action = request.getParameter(ACTION);
         UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
 
         try {
@@ -170,11 +180,42 @@ public class MedicineServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Handle AJAX autocomplete logic
+     */
+    private void handleAutocomplete(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        final String query = request.getParameter("q");
+
+        // If query is too short, don't do it
+        if (query == null || query.trim().length() < 2) {
+            return;
+        }
+
+        // Get suggestions
+        final ArrayList<String> suggestions = (ArrayList<String>) facade.findMedicineNamesLike(query.trim());
+
+        // 3. Costruzione manuale del JSON (per evitare dipendenze esterne come GSON)
+        final StringBuilder json = new StringBuilder("[");
+        final int suggestionsSize = suggestions.size();
+        for (int i = 0; i < suggestionsSize; ++i) {
+            json.append("\"").append(suggestions.get(i)).append("\""); // Aggiunge virgolette: "Nome"
+            if (i < suggestions.size() - 1) {
+                json.append(","); // Virgola separatrice
+            }
+        }
+        json.append("]");
+
+        // 4. Invio Risposta
+        response.setContentType("application/json"); // Diciamo al browser che è JSON
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json.toString());
+    }
+
     private StringBuilder buildParameters(final HttpServletRequest request, final ArrayList<String> keys, final ArrayList<Object> values) {
         final StringBuilder searchParams = new StringBuilder(128);
 
         // Check if action requested is a filtered search
-        final String action = request.getParameter("action");
+        final String action = request.getParameter(ACTION);
         if ("searchMedicine".equals(action)) {
             searchParams.append("&action=searchMedicine");
 

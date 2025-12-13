@@ -15,6 +15,7 @@
     <title>Chemo | Storico pazienti</title>
     <script src="./static/scripts/search.js"></script>
     <script src="./static/scripts/patient.js"></script>
+    <script src="./static/scripts/medicine.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
@@ -103,19 +104,16 @@
                 <div class="input-fields-row">
                     <div class="field left">
                         <label for="search-patient-medicine">Medicinale</label>
-                        <select id="search-patient-medicine" class="input-field" name="patientMedicine">
-                            <option value="null" selected>Seleziona medicinale</option>
-                            <%
-                                ArrayList<MedicineBean> medicines = new ArrayList<MedicineBean>();
-                                Facade facade = new Facade();
-                                medicines = facade.findAllMedicines(user);
-                                for (MedicineBean medicine: medicines) {
-                            %>
-                            <option value="<%=medicine.getId()%>"><%=medicine.getName()%></option>
-                            <%
-                                }
-                            %>
-                        </select>
+                        <input type="text"
+                               id="search-patient-medicine"
+                               class="input-field"
+                               name="patientMedicine"
+                               list="medicine-suggestions-search"
+                               autocomplete="off"
+                               placeholder="Cerca medicinale..."
+                               oninput="fetchMedicineSuggestions(this.value, 'medicine-suggestions-search')">
+
+                        <datalist id="medicine-suggestions-search"></datalist>
                     </div>
                     <div class="field right">
                         <label for="search-patient-status">Stato</label>

@@ -158,3 +158,53 @@ function redirectToMedicineDetails(id) {
     //crea una richiesta alla servlet paziente per reindirizzare
     window.location.replace("MedicineServlet?id=" + id);
 }
+
+/**
+ * Gestione Autocomplete Medicinali (Green IT Optimization)
+ * Utilizza un meccanismo di "Debounce" per evitare di inondare il server
+ * di richieste ad ogni singolo tasto premuto.
+ */
+
+// Variabile globale per il timer del debounce
+let searchTimeout = null;
+
+/**
+ * Chiama la Servlet e riempie la datalist specifica.
+ * @param query : il testo scritto dall'utente
+ * @param listId : l'ID della <datalist> HTML da riempire
+ */
+function fetchMedicineSuggestions(query, listId) {
+    // 1. Se non passiamo un ID, usiamo un default (sicurezza)
+    if (!listId) listId = 'medicine-suggestions';
+
+    // 2. Cancelliamo il timer precedente (Debounce)
+    if (searchTimeout) clearTimeout(searchTimeout);
+
+    // 3. Se il testo è corto, svuotiamo la lista e ci fermiamo
+    if (!query || query.trim().length < 2) {
+        const list = document.getElementById(listId);
+        if (list) list.innerHTML = '';
+        return;
+    }
+
+    // 4. Avviamo la chiamata dopo 300ms di pausa
+    searchTimeout = setTimeout(() => {
+        // Chiamata al TUO url funzionante
+        fetch('MedicineServlet?action=autocompleteMedicine&q=' + encodeURIComponent(query.trim()))
+            .then(res => res.json())
+            .then(data => {
+                const list = document.getElementById(listId);
+                if (!list) return; // Se l'elemento non esiste, usciamo
+
+                list.innerHTML = ''; // Pulizia
+
+                // Creazione opzioni
+                data.forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    list.appendChild(opt);
+                });
+            })
+            .catch(e => console.error("Errore autocomplete", e));
+    }, 300);
+}

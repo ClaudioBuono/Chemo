@@ -4,6 +4,7 @@ public class TherapyMedicineBean {
 
     //Parametri
     private String medicineId;
+    private String medicineName;
     private int dose;
 
     //Costruttori
@@ -26,15 +27,19 @@ public class TherapyMedicineBean {
         return dose;
     }
 
+    public String getMedicineName() {return medicineName;}
+
     //Setters
 
-    public void setMedicineId(String medicineId) {
+    public void setMedicineId(final String medicineId) {
         this.medicineId = medicineId;
     }
 
     public void setDose(int dose) {
         this.dose = dose;
     }
+
+    public void setMedicineName(final String medicineName) {this.medicineName = medicineName;}
 
     //Metodi ereditati da Object
 
@@ -43,6 +48,7 @@ public class TherapyMedicineBean {
         return "Medicines{" +
                 "medicineId='" + medicineId + '\'' +
                 ", dose=" + dose +
+                ", medicineName='" + medicineName + '\'' +
                 '}';
     }
 }
