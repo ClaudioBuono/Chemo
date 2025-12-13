@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="325.4375mm"
+   height="145.52083mm"
+   viewBox="0 0 325.4375 145.52083"
+   version="1.1"
+   id="svg6474"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="chemo_logo_and_name-horizontal-one-color-white.svg"
+   inkscape:export-filename="chemo_logo_and_name-horizontal-one-color-white.png"
+   inkscape:export-xdpi="200"
+   inkscape:export-ydpi="200"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview6476"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.72515432"
+     inkscape:cx="552.29623"
+     inkscape:cy="382.67717"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs6471">
+    <rect
+       x="190"
+       y="210"
+       width="715"
+       height="262"
+       id="rect6194" />
+  </defs>
+  <g
+     inkscape:label="Livello 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(40.525166,-47.644997)">
+    <rect
+       style="display:inline;fill:none;fill-opacity:1;stroke:none;stroke-width:0.25907"
+       id="rect6274"
+       width="325.4375"
+       height="145.52083"
+       x="-40.525166"
+       y="47.644997"
+       inkscape:export-filename="chemo-logo\logo_lockup\chemo_logo_and_name_horizzontal.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       inkscape:label="logo-transparent-container" />
+    <text
+       xml:space="preserve"
+       id="text6192"
+       style="font-size:218.667px;line-height:1;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:center;white-space:pre;shape-inside:url(#rect6194);display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.00157;stroke-linecap:square"
+       transform="matrix(0.26458333,0,0,0.26458333,48.82685,39.460538)"
+       inkscape:label="logo-name"><tspan
+         x="222.01424"
+         y="374.00026"
+         id="tspan2340"><tspan
+           style="font-weight:bold;font-family:'Titillium Web';-inkscape-font-specification:'Titillium Web Bold'"
+           id="tspan2338">Chemo</tspan></tspan></text>
+    <circle
+       style="display:none;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.263964;stroke-linecap:square"
+       id="circle3303"
+       cx="36.203999"
+       cy="120.4054"
+       inkscape:export-filename="circle1426.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       r="67.46875"
+       inkscape:label="circle-background" />
+    <path
+       id="circle3230"
+       style="display:none;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.263449;stroke-linecap:square"
+       d="m 39.84858,53.039538 c -53.27661,52.454772 -53.04756,82.000592 0.185078,134.725692 3.320563,-0.18392 6.545593,-0.6235 9.791758,-1.29226 0.597215,-0.12145 1.285296,-0.27542 1.878994,-0.41303 2.246683,-0.52682 4.359072,-1.13856 6.543141,-1.89446 1.152882,-0.39475 2.36688,-0.85557 3.496643,-1.31229 0.0036,-0.002 0.0073,-0.003 0.01085,-0.004 -71.889633,-50.25317 -72.104846,-74.8463 0.0024,-124.887332 -4.925491,-2.02499 -10.12549,-3.44198 -15.388724,-4.25401 -0.006,-10e-4 -0.01204,-0.002 -0.0181,-0.003 -0.153067,-0.0246 -0.320138,-0.0455 -0.473353,-0.0687 l -0.0062,-10e-4 c -0.154077,-0.0224 -0.112199,-0.014 -0.270269,-0.0374 -1.706761,-0.25215 -3.857622,-0.46335 -5.745903,-0.56313 z"
+       sodipodi:nodetypes="cccccsccssccscc"
+       inkscape:label="c-shaped-curve" />
+    <path
+       id="circle6466"
+       style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.263964;stroke-linecap:square"
+       d="M 36.204,52.936658 A 67.468749,67.468749 0 0 0 -31.264749,120.40541 67.468749,67.468749 0 0 0 36.204,187.87416 67.468749,67.468749 0 0 0 39.881295,187.61112 C -13.193486,134.98457 -13.375197,105.44343 39.846153,53.042078 A 67.468749,67.468749 0 0 0 36.204,52.936658 Z m 9.814904,0.71985 c 0.05051,0.007 0.09965,0.0145 0.150378,0.0217 a 67.468749,67.468749 0 0 0 -0.150378,-0.0217 z m 0.861446,0.14521 c 1.037733,0.168 2.073037,0.35485 3.103687,0.56999 a 67.468749,67.468749 0 0 0 -3.103687,-0.56999 z m 4.077271,0.78858 c 0.88247,0.19754 1.761231,0.41155 2.635499,0.64389 a 67.468749,67.468749 0 0 0 -2.635499,-0.64389 z m 3.855062,0.98134 c 0.776395,0.22191 1.547042,0.46242 2.314588,0.7121 a 67.468749,67.468749 0 0 0 -2.314588,-0.7121 z m 3.649905,1.15342 c 0.844397,0.29468 1.679345,0.61322 2.509925,0.94206 a 67.468749,67.468749 0 0 0 -2.509925,-0.94206 z m 3.287655,1.24178 c -72.0524,50.004702 -71.878407,74.600272 -0.132292,124.785152 A 67.468749,67.468749 0 0 0 103.67275,120.40541 67.468749,67.468749 0 0 0 61.750243,57.966838 Z m -6.35775,127.106972 c -0.09262,0.0275 -0.185833,0.0613 -0.278537,0.0884 a 67.468749,67.468749 0 0 0 0.278537,-0.0884 z m -9.354468,2.06292 c -0.140393,0.021 -0.28067,0.0439 -0.421164,0.0641 a 67.468749,67.468749 0 0 0 0.421164,-0.0641 z"
+       inkscape:label="circle-negative" />
+  </g>
+</svg>

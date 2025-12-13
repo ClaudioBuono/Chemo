@@ -1,7 +1,5 @@
 package queryBean;
 
-import connector.DatabaseConnector;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -10,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import patientmanagement.application.TherapyBean;
 import patientmanagement.application.TherapyMedicineBean;
 import patientmanagement.storage.PatientQueryBean;
+
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,13 +26,7 @@ class UpdatePatientProfileTest {
 
     @BeforeEach
     final void setUp(){
-        DatabaseConnector.setDbName("Chemo_TEST");
         MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    void tearDown() {
-        DatabaseConnector.setDbName("Chemo");
     }
 
     //TC_UC_PM_05_3

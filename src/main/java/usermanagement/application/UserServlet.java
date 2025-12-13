@@ -27,7 +27,7 @@ public class UserServlet extends HttpServlet {
     private static final String USERNAME = "username";
     private static final String LOGIN_ERROR = "loginError";
     private static final String PAGE_DASHBOARD = "dashboard.jsp";
-    private static final String PAGE_LOGIN = "login.jsp";
+    private static final String PAGE_LOGIN = "logIn.jsp";
     private static final String PAGE_HOME = "index.jsp";
     private static final String PAGE_USER_DETAILS = "userDetails.jsp";
 
