@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8"
-         import="userManagement.application.UserBean"%>
+         import="usermanagement.application.UserBean"%>
 <%@ page import="medicinemanagement.application.MedicineBean" %>
 <%@ page import="medicinemanagement.application.PackageBean" %>
 <!DOCTYPE html>

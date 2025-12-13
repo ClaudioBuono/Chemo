@@ -6,18 +6,17 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8"
          import="patientmanagement.application.PatientBean"
-         import="userManagement.application.UserBean"%>
-<%@ page import="medicinemanagement.application.MedicineBean" %>
-<%@ page import="connector.Facade" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Objects" %>
+         import="usermanagement.application.UserBean"
+         import="patientmanagement.application.TherapyMedicineBean"
+%>
+
 
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Chemo | Pagina paziente</title>
-    <link rel="stylesheet" href="./static/styles/main_stylesheet.css">
+    <link rel="stylesheet" href="static/styles/main_css.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
@@ -118,8 +117,8 @@
             <div class="input-fields-row">
                 <div id="status-icon" class="icon <%=patientStatus%>">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
                     </svg>
                 </div>
                 <div class="field">
@@ -179,19 +178,17 @@
                 <div id="new-medicine-item-0" class="input-fields-row">
                     <div class="field left">
                         <label for="medicine-name-item-0">1° Medicinale</label>
-                        <select id="medicine-name-item-0" class="input-field" name="medicineName1">
-                            <option value="false" selected>Seleziona medicinale</option>
-                            <%
-                                ArrayList<MedicineBean> medicines = new ArrayList<MedicineBean>();
-                                Facade facade = new Facade();
-                                medicines = facade.findAllMedicines(user);
-                                for (MedicineBean medicine: medicines) {
-                            %>
-                            <option value="<%=medicine.getId()%>"><%=medicine.getName()%></option>
-                            <%
-                                }
-                            %>
-                        </select>
+                        <input type="text"
+                               id="search-patient-medicine-new"
+                               class="input-field"
+                               name="patientMedicine"
+                               list="medicine-suggestions-new"
+                               autocomplete="off"
+                               placeholder="Cerca farmaco..."
+                               oninput="fetchMedicineSuggestions(this.value, 'medicine-suggestions-new')">
+
+                        <datalist id="medicine-suggestions-new"></datalist>
+
                         <p id="medicine-0-validity" class="validity-paragraph status-unavailable"></p>
                     </div>
                     <div class="field right">
@@ -242,29 +239,26 @@
                 </div>
                 <p id="medicines-number" class="hidden">1</p>
                 <div id="saved-medicines">
-                    <% for(int i = 0; i < patient.getTherapy().getMedicines().size(); i++) { %>
+                    <% for(int i = 0; i < patient.getTherapy().getMedicines().size(); i++) {
+                        // Creiamo una variabile comoda
+                        TherapyMedicineBean med = patient.getTherapy().getMedicines().get(i);
+                    %>
                     <div id="medicine-item-<%=i%>" class="input-fields-row">
                         <div class="field left">
                             <label for="medicine-name-item-<%=i%>"><%=i+1%>° Medicinale</label>
-                            <select required id="medicine-name-item-<%=i%>" class="input-field inactive" name="medicineName<%=i%>">
-                                <option value="false" selected>Seleziona medicinale</option>
-                                <%
-                                    ArrayList<MedicineBean> medicines = new ArrayList<MedicineBean>();
-                                    Facade facade = new Facade();
-                                    medicines = facade.findAllMedicines(user);
-                                    for (MedicineBean medicine: medicines) {
-                                        if (Objects.equals(medicine.getId(), patient.getTherapy().getMedicines().get(i).getMedicineId())){
-                                %>
-                                <option value="<%=medicine.getId()%>" selected><%=medicine.getName()%></option>
-                                <%
-                                        } else {
-                                %>
-                                <option value="<%=medicine.getId()%>"><%=medicine.getName()%></option>
-                                <%
-                                        }
-                                    }
-                                %>
-                            </select>
+
+                            <input type="text"
+                                   id="medicine-name-item-<%=i%>"
+                                   class="input-field inactive"
+                                   name="patientMedicine"
+                                   list="medicine-suggestions-<%=i%>"
+                                   autocomplete="off"
+                            <%-- ATTENZIONE: Assicurati che nel Bean il metodo si chiami getMedicineName() o getName() --%>
+                                   value="<%= (med.getMedicineName() != null) ? med.getMedicineName() : "" %>"
+                                   oninput="fetchMedicineSuggestions(this.value, 'medicine-suggestions-<%=i%>')">
+
+                            <datalist id="medicine-suggestions-<%=i%>"></datalist>
+
                             <p id="medicine-<%=i%>-validity" class="validity-paragraph status-unavailable"></p>
                         </div>
                         <div class="field right">

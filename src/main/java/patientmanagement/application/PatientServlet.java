@@ -1,7 +1,8 @@
 package patientmanagement.application;
 
 import connector.Facade;
-import userManagement.application.UserBean;
+import medicinemanagement.application.MedicineBean;
+import usermanagement.application.UserBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,6 +32,9 @@ public class PatientServlet extends HttpServlet {
     private static final String STATUS = "status";
     private static final String MEDICINE = "medicine";
     private static final String ACTION = "action";
+    private static final String ERROR_MESSAGE = "ERROR_MESSAGE";
+    private static final String OPERATION_RESULT = "OPERATION_RESULT";
+    private static final String FALSE = "false";
     final Logger logger = Logger.getLogger(getClass().getName());
 
     static final int PAGE_SIZE = 10;
@@ -61,107 +65,27 @@ public class PatientServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(final HttpServletRequest request,final HttpServletResponse response) throws ServletException, IOException {
-        //Recupero l'action dalla request
+    protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        // Recupero action e user
         final String action = request.getParameter(ACTION);
-
-        //Recupero l'utente dalla sessione
-        UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
+        final UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
 
         try {
+            if (action == null) return;
+
             switch (action) {
-                case "createPatientProfile" -> {  //Creazione profilo paziente
-                    PatientBean patient = new PatientBean(
-                            request.getParameter(TAX_CODE),
-                            request.getParameter(NAME),
-                            request.getParameter(SURNAME),
-                            dateParser(request.getParameter(BIRTH_DATE)),
-                            request.getParameter(CITY),
-                            request.getParameter(PHONE_NUMBER),
-                            false ,
-                            request.getParameter(NOTES));
-
-                    if (!patientValidation(patient)) {
-                        response.addHeader("OPERATION_RESULT","false");
-                        response.addHeader("ERROR_MESSAGE","I dati inseriti non sono validi.");
-                    } else {
-                        patient = facade.insertPatient(patient,user);
-
-                        //salvataggio id paziente nel response header così da poterlo reindirizzare alla sua pagina
-                        response.addHeader("OPERATION_RESULT","true");
-                        response.addHeader("PATIENT_ID", patient.getPatientId());
-                    }
-                }
-
-                case "completePatientProfile" -> {  //Completamento profilo paziente e modifica terapia
-                    //Recupero l'id del paziente
-                    String patientId = request.getParameter("id");
-
-                    //Recupero i dati della terapia dalla request
-                    String condition = request.getParameter("condition");
-                    int duration = Integer.parseInt(request.getParameter("duration"));
-                    int frequency = Integer.parseInt(request.getParameter("frequency"));
-                    int sessions = Integer.parseInt(request.getParameter("sessions"));
-                    ArrayList<TherapyMedicineBean> medicines = new ArrayList<>();
-                    //Recupero i medicinali dalla request e li aggiungo a medicines
-                    int medicinesNumber = Integer.parseInt(request.getParameter("medicinesNumber"));
-                    String currentMedicineId, currentMedicineDose;
-                    for(int i = 0; i < medicinesNumber; i++) {
-                        currentMedicineId = "medicineId" + i;
-                        currentMedicineDose = "medicineDose" + i;
-                        TherapyMedicineBean medicine = new TherapyMedicineBean(request.getParameter(currentMedicineId), Integer.parseInt(request.getParameter(currentMedicineDose)));
-                        medicines.add(medicine);
-                    }
-
-                    TherapyBean therapy = new TherapyBean(
-                            sessions,
-                            medicines,
-                            duration,
-                            frequency
-                    );
-
-                    if (!therapyValidation(condition, therapy)) {
-                        response.addHeader("OPERATION_RESULT","false");
-                        response.addHeader("ERROR_MESSAGE","I dati inseriti non sono validi.");
-                    } else {
-                        //Aggiorno il profilo paziente con la malattia
-                        facade.updatePatient("_id", patientId, "condition", request.getParameter("condition"), user);
-                        //Inserisco la terapia
-                        facade.insertTherapy(patientId, therapy, user);
-
-                        //Reindirizzo alla pagina del paziente appena creato
-                        response.addHeader("OPERATION_RESULT","true");
-                        response.addHeader("PATIENT_ID", request.getParameter("id"));
-                    }
-                }
-
-                case "editPatientStatus" -> { //Modifica stato paziente
-                    String operationResult;
-                    String patientId = request.getParameter("id");
-
-                    ArrayList<PatientBean> patients = facade.findPatients("_id", patientId, user);
-                    //controlla se esiste una condition e una terapia per quel paziente
-                    if (patients.get(0).getTherapy() == null || request.getParameter(STATUS) == null) {
-                        //se non esiste c'è un errore e l'operazione fallisce
-                        operationResult = "false";
-                        response.addHeader("ERROR_MESSAGE","Modifica stato fallita.");
-                    } else {
-                        final boolean patientStatus = Boolean.parseBoolean(request.getParameter(STATUS));
-                        //se esiste viene effettuata la modifica
-                        operationResult = "true";
-                        if (patients.get(0).getStatus() != patientStatus) {
-                            //Aggiorno lo stato del paziente
-                            facade.updatePatient("_id", patientId, STATUS, patientStatus, user);
-                        }
-                    }
-
-                    //Reindirizzo alla pagina del paziente appena creato
-                    response.addHeader("OPERATION_RESULT",operationResult);
-                }
+                case "createPatientProfile" -> handleCreatePatientProfile(request, response, user);
+                case "completePatientProfile" -> handleCompletePatientProfile(request, response, user);
+                case "editPatientStatus" -> handleEditPatientStatus(request, response, user);
+                default -> logger.log(Level.WARNING, "Azione sconosciuta: {0}", action);
             }
-        }
-        catch (Throwable e) {
-            System.out.println(e.getMessage());
+        } catch (final Exception e) {
+            logger.log(Level.SEVERE, "Errore nella doPost", e);
+            try {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore interno del server");
+            } catch (final IOException ex) {
+                logger.log(Level.SEVERE, "Errore nella doPost", e);
+            }
         }
     }
 
@@ -230,6 +154,127 @@ public class PatientServlet extends HttpServlet {
         request.getRequestDispatcher("patientList.jsp").forward(request, response);
     }
 
+    /**
+     * Handles the creation of a new patient profile.
+     * Validates input data and persists the patient if valid.
+     */
+    private void handleCreatePatientProfile(final HttpServletRequest request, final HttpServletResponse response, final UserBean user) {
+        PatientBean patient = new PatientBean(
+                request.getParameter(TAX_CODE),
+                request.getParameter(NAME),
+                request.getParameter(SURNAME),
+                dateParser(request.getParameter(BIRTH_DATE)),
+                request.getParameter(CITY),
+                request.getParameter(PHONE_NUMBER),
+                false,
+                request.getParameter(NOTES));
+
+        if (!patientValidation(patient)) {
+            response.addHeader(OPERATION_RESULT, FALSE);
+            response.addHeader(ERROR_MESSAGE, "Invalid input data for patient creation.");
+        } else {
+            patient = facade.insertPatient(patient, user);
+            response.addHeader(OPERATION_RESULT, "true");
+            response.addHeader("PATIENT_ID", patient.getPatientId());
+        }
+    }
+
+    /**
+     * Handles the completion of the patient profile by adding/editing a therapy.
+     * Orchestrates data parsing, medicine lookup logic, and data persistence.
+     */
+    private void handleCompletePatientProfile(final HttpServletRequest request, final HttpServletResponse response, final UserBean user) {
+        final String patientId = request.getParameter("id");
+        final String condition = request.getParameter("condition");
+
+        // Parse numeric parameters
+        final int duration = Integer.parseInt(request.getParameter("duration"));
+        final int frequency = Integer.parseInt(request.getParameter("frequency"));
+        final int sessions = Integer.parseInt(request.getParameter("sessions"));
+        final int medicinesNumber = Integer.parseInt(request.getParameter("medicinesNumber"));
+
+        // Extract and validate medicines using the helper method
+        final ArrayList<TherapyMedicineBean> medicines;
+        try {
+            medicines = extractMedicinesFromRequest(request, medicinesNumber);
+        } catch (final IllegalArgumentException e) {
+            // Handle specific lookup errors (e.g., medicine name not found)
+            response.addHeader(OPERATION_RESULT, FALSE);
+            response.addHeader(ERROR_MESSAGE, e.getMessage());
+            return;
+        }
+
+        final TherapyBean therapy = new TherapyBean(sessions, medicines, duration, frequency);
+
+        if (!therapyValidation(condition, therapy)) {
+            response.addHeader(OPERATION_RESULT, FALSE);
+            response.addHeader(ERROR_MESSAGE, "Invalid therapy data.");
+        } else {
+            // Update patient condition and insert the therapy
+            facade.updatePatient("_id", patientId, "condition", condition, user);
+            facade.insertTherapy(patientId, therapy, user);
+
+            response.addHeader(OPERATION_RESULT, "true");
+            response.addHeader("PATIENT_ID", patientId);
+        }
+    }
+
+    /**
+     * Helper method per estrarre e validare i medicinali dalla request.
+     * Gestisce la logica di Lookup (Nome -> ID).
+     */
+    private ArrayList<TherapyMedicineBean> extractMedicinesFromRequest(final HttpServletRequest request, final int medicinesNumber) {
+        final ArrayList<TherapyMedicineBean> medicines = new ArrayList<>();
+
+        for (int i = 0; i < medicinesNumber; ++i) {
+            final String inputVal = request.getParameter("medicineId" + i); // Qui arriva il NOME
+            final int doseVal = Integer.parseInt(request.getParameter("medicineDose" + i));
+            String realIdToSave = null;
+
+            // A. Retrocompatibilità ID
+            if (inputVal != null && inputVal.matches("^[0-9a-fA-F]{24}$")) {
+                realIdToSave = inputVal;
+            }
+            // B. Lookup per Nome
+            else if (inputVal != null) {
+                final MedicineBean foundMed = facade.findMedicineByName(inputVal.trim());
+                if (foundMed != null) {
+                    realIdToSave = foundMed.getId();
+                } else {
+                    // Lanciamo eccezione per interrompere il flusso pulitamente
+                    throw new IllegalArgumentException("Errore: Il medicinale '" + inputVal + "' non esiste nel sistema.");
+                }
+            }
+
+            if (realIdToSave != null) {
+                medicines.add(new TherapyMedicineBean(realIdToSave, doseVal));
+            }
+        }
+        return medicines;
+    }
+
+    /**
+     * Handles the update of the patient's status (Available/Unavailable).
+     */
+    private void handleEditPatientStatus(final HttpServletRequest request, final HttpServletResponse response, final UserBean user) {
+        final String patientId = request.getParameter("id");
+        final ArrayList<PatientBean> patients = (ArrayList<PatientBean>) facade.findPatients("_id", patientId, user);
+        final String statusParam = request.getParameter(STATUS);
+
+        // Validation check
+        if (patients.isEmpty() || patients.get(0).getTherapy() == null || statusParam == null) {
+            response.addHeader(OPERATION_RESULT, FALSE);
+            response.addHeader(ERROR_MESSAGE, "Failed to update status: Invalid patient or missing therapy.");
+        } else {
+            final boolean newStatus = Boolean.parseBoolean(statusParam);
+            // Only update if the status has actually changed
+            if (patients.get(0).getStatus() != newStatus) {
+                facade.updatePatient("_id", patientId, STATUS, newStatus, user);
+            }
+            response.addHeader(OPERATION_RESULT, "true");
+        }
+    }
+
     // ===============
     // HELPER METHODS
     // ===============
@@ -277,8 +322,9 @@ public class PatientServlet extends HttpServlet {
 
     private void redirectToPatientDetailsPage(final HttpServletRequest request, final HttpServletResponse response, final String id, final UserBean user) {
         // Find the patient
-        final ArrayList<PatientBean> patients = facade.findPatients("_id", id, user);
+        final ArrayList<PatientBean> patients = (ArrayList<PatientBean>) facade.findPatients("_id", id, user);
         if (!patients.isEmpty()) {
+            enrichPatientsWithMedicineNames(patients, user);
             request.setAttribute("patient", patients.get(0));
             try {
                 // Redirect to patient details page
@@ -298,49 +344,144 @@ public class PatientServlet extends HttpServlet {
     }
 
 
+    /**
+     * Builds the dynamic search parameters for patient filtering.
+     */
     private StringBuilder buildParameters(final HttpServletRequest request, final ArrayList<String> keys, final ArrayList<Object> values) {
         final StringBuilder searchParams = new StringBuilder(128);
 
         // Check if action requested is a filtered search
         final String action = request.getParameter(ACTION);
-        if ("searchPatient".equals(action)) {
-            logger.info("Action: searchPatient");
-            searchParams.append("&action=searchPatient");
 
-            // --- Name filter ---
-            final String name = request.getParameter(NAME);
-            if (name != null && !name.trim().isEmpty()) {
-                keys.add(NAME);
-                values.add(name.trim());
-                searchParams.append("&name=").append(name.trim());
-            }
-
-            // --- Surname filter ---
-            final String surname = request.getParameter(SURNAME);
-            if (surname != null && !surname.trim().isEmpty()) {
-                keys.add(SURNAME);
-                values.add(surname.trim());
-                searchParams.append("&surname=").append(surname.trim());
-            }
-
-            // --- Medicine filter ---
-            final String medicine = request.getParameter("patientMedicine");
-            if (medicine != null && !medicine.equals("null") && !medicine.isEmpty()) {
-                keys.add(MEDICINE);
-                values.add(medicine);
-                searchParams.append("&patientMedicine=").append(medicine);
-            }
-
-            // --- Patient status filter ---
-            final String status = request.getParameter("patientStatus");
-            if (status != null && !status.equals("na") && !status.isEmpty()) {
-                keys.add(STATUS);
-                values.add(Boolean.parseBoolean(status));
-                searchParams.append("&patientStatus=").append(status);
-            }
+        // Early return pattern: reduces nesting indentation
+        if (!"searchPatient".equals(action)) {
+            return searchParams;
         }
 
+        searchParams.append("&action=searchPatient");
+
+        // Delegate logic to helper methods
+        addStringFilter(request, NAME, keys, values, searchParams);
+        addStringFilter(request, SURNAME, keys, values, searchParams);
+        addMedicineFilter(request, keys, values, searchParams);
+        addStatusFilter(request, keys, values, searchParams);
+
         return searchParams;
+    }
+
+    /**
+     * Helper method to handle standard string filters (Name, Surname).
+     */
+    private void addStringFilter(final HttpServletRequest request, final String paramName, final ArrayList<String> keys, final ArrayList<Object> values, final StringBuilder searchParams) {
+        final String value = request.getParameter(paramName);
+        if (value != null && !value.trim().isEmpty()) {
+            keys.add(paramName); // Assuming constant name matches param name
+            values.add(value.trim());
+            searchParams.append("&").append(paramName).append("=").append(value.trim());
+        }
+    }
+
+    /**
+     * Handles the medicine filter logic, including the Name-to-ID lookup strategy.
+     * Checks if the input is a raw ID (legacy) or a Name (autocomplete) and resolves the correct DB ID.
+     */
+    private void addMedicineFilter(final HttpServletRequest request, final ArrayList<String> keys, final ArrayList<Object> values, final StringBuilder searchParams) {
+        final String medicineInput = request.getParameter("patientMedicine");
+
+        // Robustness check: not null, not string "null", not empty
+        if (medicineInput != null && !medicineInput.equals("null") && !medicineInput.trim().isEmpty()) {
+
+            // CASE 1: Input is already a valid MongoDB ObjectId (Retro-compatibility)
+            if (medicineInput.matches("^[0-9a-fA-F]{24}$")) {
+                keys.add(MEDICINE);
+                values.add(medicineInput);
+            }
+            // CASE 2: Input is a NAME (Autocomplete context) -> Perform DB Lookup
+            else {
+                final MedicineBean med = facade.findMedicineByName(medicineInput.trim());
+
+                keys.add(MEDICINE);
+                if (med != null) {
+                    values.add(med.getId());
+                } else {
+                    // Force 0 results instead of ignoring the filter
+                    values.add("000000000000000000000000");
+                }
+            }
+
+            // Append the original NAME to the URL for UI consistency during pagination
+            searchParams.append("&patientMedicine=").append(medicineInput.trim());
+        }
+    }
+
+    /**
+     * Helper method to handle the patient status filter (boolean parsing).
+     */
+    private void addStatusFilter(final HttpServletRequest request, final ArrayList<String> keys, final ArrayList<Object> values, final StringBuilder searchParams) {
+        final String status = request.getParameter("patientStatus");
+        if (status != null && !status.equals("na") && !status.isEmpty()) {
+            keys.add(STATUS);
+            values.add(Boolean.parseBoolean(status));
+            searchParams.append("&patientStatus=").append(status);
+        }
+    }
+
+    /**
+     * Enrich TherapyBeans on-the-fly.
+     * Iterates through the patient list and delegates the enrichment logic for each patient.
+     */
+    private void enrichPatientsWithMedicineNames(final ArrayList<PatientBean> patients, final UserBean user) {
+        // Safety check
+        if (patients == null || patients.isEmpty()) return;
+
+        // Iterate over patients and delegate to helper method
+        for (final PatientBean patient : patients) {
+            enrichSinglePatientTherapy(patient, user);
+        }
+    }
+
+    /**
+     * Helper method to process a single patient's therapy.
+     * Checks for therapy existence and iterates through medicines.
+     */
+    private void enrichSinglePatientTherapy(final PatientBean patient, final UserBean user) {
+        // Skip processing if patient has no therapy or no medicines assigned
+        if (patient.getTherapy() == null || patient.getTherapy().getMedicines() == null) {
+            return;
+        }
+
+        // Iterate over therapy medicines and delegate the lookup
+        for (final TherapyMedicineBean therapyMed : patient.getTherapy().getMedicines()) {
+            performMedicineLookup(therapyMed, user);
+        }
+    }
+
+    /**
+     * Performs the actual DB lookup to find the medicine name from its ID.
+     * Implements the "Green IT" optimization by skipping lookup if name is already present.
+     */
+    private void performMedicineLookup(final TherapyMedicineBean therapyMed, final UserBean user) {
+        // Optimization: If the name is already present (e.g., from cache), skip the query
+        if (therapyMed.getMedicineName() != null && !therapyMed.getMedicineName().isEmpty()) {
+            return;
+        }
+
+        final String medId = therapyMed.getMedicineId();
+
+        // Proceed only if we have a valid ID
+        if (medId != null && !medId.isEmpty()) {
+            // QUERY LOOKUP: Retrieve the actual medicine object using the ID
+            // Note: findMedicines returns a list. We retrieve the first match.
+            final ArrayList<MedicineBean> meds = (ArrayList<MedicineBean>) facade.findMedicines("_id", medId, user);
+
+            if (!meds.isEmpty()) {
+                // DATA ENRICHMENT: Set the name in the "volatile" field
+                therapyMed.setMedicineName(meds.get(0).getName());
+            } else {
+                // Fallback for data consistency issues
+                therapyMed.setMedicineName("Medicine not found (ID: " + medId + ")");
+            }
+        }
     }
 
     /**
@@ -376,50 +517,61 @@ public class PatientServlet extends HttpServlet {
     // ==============================
     // PARSING AND VALIDATION METHODS
     // ==============================
-    private Date dateParser(String date) {
-        SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
+    private Date dateParser(final String date) {
+        final SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
         try {
             return pattern.parse(date);
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             return null;
         }
     }
-    private String dateReverseParser(Date date) {
-        DateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
+    private String dateReverseParser(final Date date) {
+        final DateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
         try {
             return pattern.format(date);
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             return null;
         }
     }
 
-    private boolean patientValidation(PatientBean patient){
+    private boolean patientValidation(final PatientBean patient){
+        // Validazione Nome
         if (!namesValidity(patient.getName())) {
             return false;
         }
+        // Validazione Cognome
         if (!namesValidity(patient.getSurname())) {
             return false;
         }
-        if (!dateValidity(dateReverseParser(patient.getBirthDate()))) {
+
+        // Validazione Data
+        final String processedBirthDate = dateReverseParser(patient.getBirthDate());
+
+        if (processedBirthDate == null || !dateValidity(processedBirthDate)) {
             return false;
         }
+        // Validazione Città
         if (!cityValidity(patient.getCity())) {
             return false;
         }
+        // Validazione Codice Fiscale
         if (!taxCodeValidity(patient.getTaxCode())) {
             return false;
         }
+        // Validazione Numero di Telefono
         if (!phoneNumberValidity(patient.getPhoneNumber())) {
             return false;
         }
+        // Validazione Note
         if (!notesValidity(patient.getNotes())) {
             return false;
         }
+
         return true;
     }
-    private boolean therapyValidation(String condition, TherapyBean therapy){
+    private boolean therapyValidation(final String condition, final TherapyBean therapy){
         if (!conditionValidity(condition)) {
             return false;
         }
@@ -432,7 +584,7 @@ public class PatientServlet extends HttpServlet {
         if (!durationValidity(therapy.getDuration())) {
             return false;
         }
-        for (TherapyMedicineBean medicine: therapy.getMedicines()) {
+        for (final TherapyMedicineBean medicine: therapy.getMedicines()) {
             if (!idValidity(medicine.getMedicineId())) {
                 return false;
             }
@@ -443,64 +595,64 @@ public class PatientServlet extends HttpServlet {
 
         return true;
     }
-    private boolean idValidity(String id) {
-        String format = "^[a-f\\d]{24}$";
+    private boolean idValidity(final String id) {
+        final String format = "^[a-f\\d]{24}$";
         return id.matches(format);
     }
-    private boolean numberValidity(String notes) {
-        String format = "^[0-9]+$";
+    private boolean numberValidity(final String notes) {
+        final String format = "^\\d+$";
         return notes.matches(format);
     }
-    private boolean dateValidity(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate newDate = LocalDate.parse(date, formatter );
-        LocalDate currentDate = LocalDate.now();
+    private boolean dateValidity(final String date) {
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        final LocalDate newDate = LocalDate.parse(date, formatter );
+        final LocalDate currentDate = LocalDate.now();
         if (newDate.isAfter(currentDate))
             return false;
-        String format = "^(19|20)[0-9]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$";
+        final String format = "^(19|20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12]\\d|3[01])$";
         return date.matches(format);
     }
-    private boolean nameValidity(String name) {
-        String format = "^[A-Za-z][A-Za-z'-]+([ A-Za-z][A-Za-z'-]+)*$";
+    private boolean nameValidity(final String name) {
+        final String format = "^[A-Za-z][A-Za-z'-]++([ A-Za-z][A-Za-z'-]++)*+$";
         return name.matches(format);
     }
-    private boolean namesValidity(String name) {
+    private boolean namesValidity(final String name) {
         if (name.length() > 32)
             return false;
         return nameValidity(name);
     }
-    private boolean cityValidity(String city) {
+    private boolean cityValidity(final String city) {
         if (city.length() > 32)
             return false;
         return nameValidity(city);
     }
-    private boolean taxCodeValidity(String taxCode) {
-        String format = "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$";
+    private boolean taxCodeValidity(final String taxCode) {
+        final String format = "^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$";
         return taxCode.matches(format);
     }
-    private boolean phoneNumberValidity(String phoneNumber) {
-        String format = "^[+]?[(]?[0-9]{2,3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,7}$";
+    private boolean phoneNumberValidity(final String phoneNumber) {
+        final String format = "^[+]?[(]?\\d{2,3}\\)?[-\\s.]?\\d{3}[-\\s.]?\\d{4,7}$";
         return phoneNumber.matches(format);
     }
-    private boolean notesValidity(String notes) {
+    private boolean notesValidity(final String notes) {
         if (notes.length() > 255)
             return false;
-        String format = "^[A-Za-z0-9][A-Za-z0-9'.,\\n-]+([ A-Za-z0-9][A-Za-z0-9'.,\\n-]+)*$";
+        final String format = "^[A-Za-z0-9][A-Za-z0-9'.,\\n-]++([ A-Za-z0-9][A-Za-z0-9'.,\\n-]++)*+$";
         return notes.matches(format);
     }
-    private boolean conditionValidity(String condition) {
+    private boolean conditionValidity(final String condition) {
         return nameValidity(condition);
     }
-    private boolean sessionsValidity(Integer sessions) {
+    private boolean sessionsValidity(final Integer sessions) {
         return numberValidity(String.valueOf(sessions));
     }
-    private boolean frequencyValidity(Integer frequency) {
+    private boolean frequencyValidity(final Integer frequency) {
         return numberValidity(String.valueOf(frequency));
     }
-    private boolean durationValidity(Integer duration) {
+    private boolean durationValidity(final Integer duration) {
         return numberValidity(String.valueOf(duration));
     }
-    private boolean doseValidity(Integer dose) {
+    private boolean doseValidity(final Integer dose) {
         return numberValidity(String.valueOf(dose));
     }
 }

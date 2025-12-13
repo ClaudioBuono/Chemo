@@ -1,7 +1,7 @@
 package medicinemanagement.application;
 
 import connector.Facade;
-import userManagement.application.UserBean;
+import usermanagement.application.UserBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +19,9 @@ import java.util.logging.Logger;
 @WebServlet("/MedicineServlet")
 public class MedicineServlet extends HttpServlet {
     private static final Facade facade = new Facade();
+    private static final String ACTION = "action";
+    private static final String OPERATION_RESULT = "OPERATION_RESULT";
+    public static final String EXPIRY_DATE = "expiryDate";
     private final Logger logger = Logger.getLogger(MedicineServlet.class.getName());
     private static final int PAGE_SIZE = 10;
 
@@ -29,8 +32,17 @@ public class MedicineServlet extends HttpServlet {
         if (user == null) return;
 
         // Routing logic
+        final String action = request.getParameter(ACTION);
         final String id = request.getParameter("id");
+
         try {
+            // --- AJAX ENDPOINT: Autocomplete ---
+            if ("autocompleteMedicine".equals(action)) {
+                handleAutocomplete(request, response);
+                return;
+            }
+
+            // --- STANDARD VIEWS ---
             if (id != null) {
                 redirectToMedicineDetailsPage(request, response, id, user);
             } else {
@@ -42,38 +54,38 @@ public class MedicineServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
+    protected void doPost(final HttpServletRequest request,final HttpServletResponse response) throws ServletException, IOException {
+        final String action = request.getParameter(ACTION);
+        final UserBean user = (UserBean) request.getSession().getAttribute("currentSessionUser");
 
         try {
             if (action == null) return;
 
             if (action.equals("insertMedicine")) {// Inserimento medicinale
-                MedicineBean medicine = new MedicineBean(request.getParameter("name"), request.getParameter("ingredients"));
+                final MedicineBean medicine = new MedicineBean(request.getParameter("name"), request.getParameter("ingredients"));
 
                 // Validazione
                 if (!medicineValidation(medicine)) {
-                    response.addHeader("OPERATION_RESULT", "false");
+                    response.addHeader(OPERATION_RESULT, "false");
                     response.addHeader("ERROR_MESSAGE", "Aggiunta medicinale fallita: i dati inseriti non sono validi.");
                 } else {
                     facade.insertMedicine(medicine, user);
-                    response.addHeader("OPERATION_RESULT", "true");
+                    response.addHeader(OPERATION_RESULT, "true");
                     response.addHeader("MEDICINE_ID", medicine.getId());
                 }
             } else if (action.equals("insertPackage")) {// Inserimento confezione
-                String medicineId = request.getParameter("medicineId");
-                int capacity = Integer.parseInt(request.getParameter("capacity"));
-                Date expiryDate = dateParser(request.getParameter("expiryDate"));
+                final String medicineId = request.getParameter("medicineId");
+                final int capacity = Integer.parseInt(request.getParameter("capacity"));
+                final Date expiryDate = dateParser(request.getParameter(EXPIRY_DATE));
 
-                PackageBean medicinePackage = new PackageBean(true, expiryDate, capacity, "");
+                final PackageBean medicinePackage = new PackageBean(true, expiryDate, capacity, "");
 
                 if (!packageValidation(medicinePackage)) {
-                    response.addHeader("OPERATION_RESULT", "false");
+                    response.addHeader(OPERATION_RESULT, "false");
                     response.addHeader("ERROR_MESSAGE", "Aggiunta confezione fallita: i dati inseriti non sono validi.");
                 } else {
                     facade.insertMedicinePackage(medicineId, medicinePackage, user);
-                    response.addHeader("OPERATION_RESULT", "true");
+                    response.addHeader(OPERATION_RESULT, "true");
                 }
             }
         } catch (final Exception e) {
@@ -170,11 +182,42 @@ public class MedicineServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Handle AJAX autocomplete logic
+     */
+    private void handleAutocomplete(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        final String query = request.getParameter("q");
+
+        // If query is too short, don't do it
+        if (query == null || query.trim().length() < 2) {
+            return;
+        }
+
+        // Get suggestions
+        final ArrayList<String> suggestions = (ArrayList<String>) facade.findMedicineNamesLike(query.trim());
+
+        // 3. Costruzione manuale del JSON (per evitare dipendenze esterne come GSON)
+        final StringBuilder json = new StringBuilder("[");
+        final int suggestionsSize = suggestions.size();
+        for (int i = 0; i < suggestionsSize; ++i) {
+            json.append("\"").append(suggestions.get(i)).append("\""); // Aggiunge virgolette: "Nome"
+            if (i < suggestions.size() - 1) {
+                json.append(","); // Virgola separatrice
+            }
+        }
+        json.append("]");
+
+        // 4. Invio Risposta
+        response.setContentType("application/json"); // Diciamo al browser che è JSON
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json.toString());
+    }
+
     private StringBuilder buildParameters(final HttpServletRequest request, final ArrayList<String> keys, final ArrayList<Object> values) {
         final StringBuilder searchParams = new StringBuilder(128);
 
         // Check if action requested is a filtered search
-        final String action = request.getParameter("action");
+        final String action = request.getParameter(ACTION);
         if ("searchMedicine".equals(action)) {
             searchParams.append("&action=searchMedicine");
 
@@ -187,9 +230,9 @@ public class MedicineServlet extends HttpServlet {
             }
 
             // --- Expiry Date Filter ---
-            final String expiryDate = request.getParameter("expiryDate");
+            final String expiryDate = request.getParameter(EXPIRY_DATE);
             if (expiryDate != null && !expiryDate.trim().isEmpty()) {
-                keys.add("expiryDate");
+                keys.add(EXPIRY_DATE);
                 values.add(dateParser(expiryDate.trim()));
                 searchParams.append("&expiryDate=").append(expiryDate.trim());
             }
@@ -209,17 +252,17 @@ public class MedicineServlet extends HttpServlet {
 
 
     //Metodi di supporto
-    private Date dateParser(String date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private Date dateParser(final String date) {
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             return format.parse(date);
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             return null;
         }
     }
 
-    private boolean medicineValidation(MedicineBean medicine) {
+    private boolean medicineValidation(final MedicineBean medicine) {
         if (!medicineNameValidity(medicine.getName())) {
             return false;
         }
@@ -228,7 +271,7 @@ public class MedicineServlet extends HttpServlet {
         }
         return true;
     }
-    private boolean packageValidation(PackageBean medicinePackage) {
+    private boolean packageValidation(final PackageBean medicinePackage) {
         if (!capacityValidity(medicinePackage.getCapacity())) {
             return false;
         }
@@ -237,30 +280,30 @@ public class MedicineServlet extends HttpServlet {
         }
         return true;
     }
-    private boolean numberValidity(String notes) {
-        String format = "^[0-9]+$";
+    private boolean numberValidity(final String notes) {
+        final String format = "^[0-9]+$";
         return notes.matches(format);
     }
-    private boolean dateValidity(String date) {
-        String format = "^(19|20)[0-9]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$";
+    private boolean dateValidity(final String date) {
+        final String format = "^(19|20)[0-9]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$";
         return date.matches(format);
     }
-    private boolean nameValidity(String name) {
-        String format = "^[A-Za-z][A-Za-z'-]+([ A-Za-z][A-Za-z'-]+)*$";
+    private boolean nameValidity(final String name) {
+        final String format = "^[A-Za-z][A-Za-z'-]++([ A-Za-z][A-Za-z'-]++)*+$";
         return name.matches(format);
     }
-    private boolean medicineNameValidity(String name) {
+    private boolean medicineNameValidity(final String name) {
         if (name.length() > 32)
             return false;
         return nameValidity(name);
     }
-    private boolean ingredientsValidity(String ingredients) {
+    private boolean ingredientsValidity(final String ingredients) {
         if (ingredients.length() > 100)
             return false;
-        String format = "^[A-Za-z0-9][A-Za-z0-9'\\-]+([ A-Za-z0-9][A-Za-z0-9'-]+)*$";
+        final String format = "^[A-Za-z0-9][A-Za-z0-9'\\-]++([ A-Za-z0-9][A-Za-z0-9'-]++)*+$";
         return ingredients.matches(format);
     }
-    private boolean capacityValidity(Integer capacity) {
+    private boolean capacityValidity(final Integer capacity) {
         return numberValidity(String.valueOf(capacity));
     }
 }

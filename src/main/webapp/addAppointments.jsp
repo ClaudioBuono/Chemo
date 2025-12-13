@@ -5,7 +5,7 @@
   Time: 20:07
 --%>
 <%@ page contentType="text/html;charset=UTF-8"
-         import="userManagement.application.UserBean"%>
+         import="usermanagement.application.UserBean"%>
 <%@ page import="patientmanagement.application.PatientBean" %>
 <%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
@@ -13,7 +13,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Chemo Nuove sedute</title>
-    <link rel="stylesheet" href="./static/styles/main_stylesheet.css">
+    <link rel="stylesheet" href="./static/styles/main_css.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
