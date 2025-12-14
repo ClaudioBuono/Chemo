@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class PlannerBean {
     private String id;
@@ -84,6 +85,21 @@ public class PlannerBean {
                 ", dataFine=" + endDate +
                 ", appuntamenti=" + appointments +
                 '}';
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        final PlannerBean that = (PlannerBean) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(endDate, that.endDate) &&
+                Objects.equals(appointments, that.appointments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, startDate, endDate, appointments);
     }
 
     private String dateParser(Date date) {

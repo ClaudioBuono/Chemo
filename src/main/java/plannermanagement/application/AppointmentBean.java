@@ -1,6 +1,7 @@
 package plannermanagement.application;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class AppointmentBean {
     private String idPatient;
@@ -69,5 +70,21 @@ public class AppointmentBean {
                 ", chair='" + chair + '\'' +
                 ", duration=" + duration +
                 '}';
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        final AppointmentBean that = (AppointmentBean) o;
+        return duration == that.duration &&
+                Objects.equals(idPatient, that.idPatient) &&
+                Objects.equals(idMedicine, that.idMedicine) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(chair, that.chair);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idPatient, idMedicine, date, chair, duration);
     }
 }
