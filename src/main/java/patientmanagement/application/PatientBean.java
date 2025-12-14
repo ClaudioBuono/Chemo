@@ -171,11 +171,21 @@ public class PatientBean {
     public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         final PatientBean that = (PatientBean) o;
-        return Objects.equals(patientId, that.patientId) && Objects.equals(taxCode, that.taxCode) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(condition, that.condition) && Objects.equals(therapy, that.therapy);
+        return status == that.status &&
+                Objects.equals(patientId, that.patientId) &&
+                Objects.equals(taxCode, that.taxCode) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(surname, that.surname) &&
+                Objects.equals(birthDate, that.birthDate) &&
+                Objects.equals(city, that.city) &&
+                Objects.equals(phoneNumber, that.phoneNumber) &&
+                Objects.equals(condition, that.condition) &&
+                Objects.equals(notes, that.notes) &&
+                Objects.equals(therapy, that.therapy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(patientId, taxCode, name, surname, condition, therapy);
+        return Objects.hash(patientId, taxCode, name, surname, birthDate, city, phoneNumber, status, condition, notes, therapy);
     }
 }

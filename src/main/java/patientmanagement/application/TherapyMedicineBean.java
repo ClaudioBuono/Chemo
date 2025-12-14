@@ -1,5 +1,7 @@
 package patientmanagement.application;
 
+import java.util.Objects;
+
 public class TherapyMedicineBean {
 
     //Parametri
@@ -50,5 +52,19 @@ public class TherapyMedicineBean {
                 ", dose=" + dose +
                 ", medicineName='" + medicineName + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        final TherapyMedicineBean that = (TherapyMedicineBean) o;
+        return dose == that.dose &&
+                Objects.equals(medicineId, that.medicineId) &&
+                Objects.equals(medicineName, that.medicineName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(medicineId, medicineName, dose);
     }
 }
