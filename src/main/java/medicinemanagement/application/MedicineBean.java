@@ -2,6 +2,7 @@ package medicinemanagement.application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MedicineBean {
 
@@ -89,6 +90,22 @@ public class MedicineBean {
                 ", amount=" + amount +
                 ", packages=" + packages +
                 '}';
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        final MedicineBean that = (MedicineBean) o;
+        return amount == that.amount &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(ingredients, that.ingredients) &&
+                Objects.equals(packages, that.packages);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, ingredients, amount, packages);
     }
 
     //Altri metodi

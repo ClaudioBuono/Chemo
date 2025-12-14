@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class UserBean implements Serializable {
     private String id;
@@ -119,6 +120,26 @@ public class UserBean implements Serializable {
                 ", specializzazione='" + specialization + '\'' +
                 ", tipo=" + type +
                 '}';
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        final UserBean userBean = (UserBean) o;
+        return type == userBean.type &&
+                Objects.equals(id, userBean.id) &&
+                Objects.equals(name, userBean.name) &&
+                Objects.equals(surname, userBean.surname) &&
+                Objects.equals(birthDate, userBean.birthDate) &&
+                Objects.equals(birthplace, userBean.birthplace) &&
+                Objects.equals(username, userBean.username) &&
+                Objects.equals(password, userBean.password) &&
+                Objects.equals(specialization, userBean.specialization);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname, birthDate, birthplace, username, password, specialization, type);
     }
 
     private String dateParser(final Date date) {

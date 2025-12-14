@@ -139,12 +139,6 @@ public class PatientServlet extends HttpServlet {
         final ArrayList<PatientBean> paginatedResult = (ArrayList<PatientBean>) facade.findPatientsPaginated(keys, values, page, PAGE_SIZE, user);
         final long totalRecords = facade.countPatientsFiltered(keys, values, user);
 
-        // ETag Check
-        // If the browser already has this data, send 304 and stop execution.
-//        if (manageETagCache(request, response, paginatedResult, page, totalRecords)) {
-//            return;
-//        }
-
         // Setup JSP Attributes
         setupPaginationAttributes(request, page, totalRecords);
         request.setAttribute("patientsResult", paginatedResult); // Standard attribute name
@@ -483,36 +477,6 @@ public class PatientServlet extends HttpServlet {
             }
         }
     }
-
-    /**
-     * Implements the Conditional GET logic (ETag).
-     * Calculates a unique hash for the current data view. If it matches the client's cache,
-     * returns 304 Not Modified to save bandwidth and server CPU (JSP rendering).
-     */
-//    private boolean manageETagCache(final HttpServletRequest request, final HttpServletResponse response,
-//                                    final ArrayList<PatientBean> results, final int page, final long totalRecords) {
-//
-//        // Calculate the unique signature (Hash) of the visible data.
-//        final String contentSignature = results.toString() + page + totalRecords;
-//
-//        // Generate the ETag (W/ indicates a "Weak ETag", sufficient for semantic comparison)
-//        final String eTag = "W/\"" + contentSignature.hashCode() + "\"";
-//
-//        // Check the header sent by the browser
-//        final String incomingETag = request.getHeader("If-None-Match");
-//
-//        // Compare the ETags
-//        if (incomingETag != null && incomingETag.equals(eTag)) {
-//            // MATCH. he client has the latest version.
-//            // Return 304. The server will NOT send the JSP body.
-//            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-//            return true; // Stop execution
-//        }
-//
-//        // No MATCH. Set the ETag for the next visit and proceed.
-//        response.setHeader("ETag", eTag);
-//        return false;
-//    }
 
     // ==============================
     // PARSING AND VALIDATION METHODS

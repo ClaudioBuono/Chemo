@@ -31,7 +31,7 @@ public class TherapyBean {
         return sessions;
     }
 
-    public ArrayList<TherapyMedicineBean> getMedicines() {
+    public List<TherapyMedicineBean> getMedicines() {
         return medicines;
     }
 
@@ -77,11 +77,14 @@ public class TherapyBean {
     public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         final TherapyBean that = (TherapyBean) o;
-        return sessions == that.sessions;
+        return sessions == that.sessions &&
+                duration == that.duration &&
+                frequency == that.frequency &&
+                Objects.equals(medicines, that.medicines);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(sessions);
+        return Objects.hash(sessions, medicines, duration, frequency);
     }
 }

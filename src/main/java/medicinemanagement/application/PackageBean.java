@@ -3,6 +3,7 @@ package medicinemanagement.application;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class PackageBean {
 
@@ -73,6 +74,18 @@ public class PackageBean {
                 ", capacity=" + capacity +
                 ", packageId='" + packageId + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        final PackageBean that = (PackageBean) o;
+        return status == that.status && capacity == that.capacity && Objects.equals(expiryDate, that.expiryDate) && Objects.equals(packageId, that.packageId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status, expiryDate, capacity, packageId);
     }
 
     private String dateParser(final Date date) {

@@ -33,4 +33,14 @@
         <error-code>503</error-code>
         <location>/error503.jsp</location>
     </error-page>
+
+    <filter>
+        <filter-name>EtagFilter</filter-name>
+        <filter-class>filters.EtagFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>EtagFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>
